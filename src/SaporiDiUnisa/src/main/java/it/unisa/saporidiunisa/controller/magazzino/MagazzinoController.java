@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.control.magazzino;
+package it.unisa.saporidiunisa.controller.magazzino;
 
 import it.unisa.saporidiunisa.model.entity.magazzino.Fornitura;
 import it.unisa.saporidiunisa.model.entity.magazzino.Lotto;

@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.control.autenticazione;
+package it.unisa.saporidiunisa.controller.autenticazione;
 
 import it.unisa.saporidiunisa.model.entity.magazzino.Dipendente;
 

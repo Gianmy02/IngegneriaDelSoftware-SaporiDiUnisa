@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.control.scaffale;
+package it.unisa.saporidiunisa.controller.scaffale;
 
 import it.unisa.saporidiunisa.model.entity.magazzino.Esposizione;
 

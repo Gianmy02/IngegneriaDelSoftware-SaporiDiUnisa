@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.control.finanze;
+package it.unisa.saporidiunisa.controller.finanze;
 
 import it.unisa.saporidiunisa.model.entity.finanze.AndamentoProdotto;
 import it.unisa.saporidiunisa.model.entity.finanze.Bilancio;
