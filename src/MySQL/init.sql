@@ -1,15 +1,17 @@
-create database if not exists saporiDiUnisa;
+DROP DATABASE IF EXISTS saporiDiUnisa;
+create database saporiDiUnisa;
 use saporiDiUnisa;
 
 create table if not exists dipendente(
     id int not null auto_increment primary key,
     ruolo enum('admin', 'cassiere', 'magazziniere', 'finanze') not null,
-    pin char(4) not null
+    pin varchar(4) not null
 );
 
 create table if not exists fornitura(
     id int not null auto_increment primary key,
     giorno date not null
+    #poi sara current_date all inserimento
 );
 
 create table if not exists prodotto(
@@ -23,19 +25,19 @@ create table if not exists prodotto(
     foto mediumblob not null,
     check(prezzo >= 0),
     check(prezzo_scontato > 0 and prezzo_scontato < prezzo),
-    # check(inizio_sconto > current_date),
+    check(inizio_sconto > current_date),
     check(inizio_sconto <= fine_sconto)
 );
-
-create trigger if not exists check_inizio_sconto
+/*
+create trigger check_inizio_sconto
     before insert on prodotto
     for each row
 begin
     if NEW.inizio_sconto <= CURRENT_DATE THEN
         SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'La data di inizio_sconto deve essere maggiore di quella odierna';
+            SET MESSAGE_TEXT = "La data di inizio_sconto deve essere maggiore di quella odierna"
     end if;
-end;
+end;*/
 
 create table if not exists lotto(
     id int not null auto_increment primary key,
@@ -43,9 +45,9 @@ create table if not exists lotto(
     data_scadenza date not null,
     quantita int not null,
     quantita_attuale int not null,
-    fornitura int not null references fornitura(id),
-    prodotto int not null references prodotto(id),
-    check(costo > 0),
+    fornitura int not null references fornitura(id) on delete cascade,
+    prodotto int not null references prodotto(id) on delete cascade,
+    check(costo > 0.00),
     check(quantita > 0),
     check(quantita_attuale >= 0)
 );
@@ -61,9 +63,9 @@ create table if not exists vendita_prodotto(
     prodotto int not null references prodotto(id) on delete cascade,
     giorno date not null references vendita(giorno),
     primary key(giorno, prodotto),
-    check(costo > 0),
+    check(costo > 0.00),
     check(quantita > 0),
-    check(guadagno > 0)
+    check(guadagno > 0.00)
 );
 
 create table if not exists esposizione(
