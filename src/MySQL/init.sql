@@ -12,8 +12,7 @@ create table dipendente
 create table fornitura
 (
     id int not null auto_increment primary key,
-    giorno date not null
-    #poi sara current_date all inserimento
+    giorno date not null # poi sarà current_date all'inserimento
 );
 
 create table prodotto
@@ -28,19 +27,21 @@ create table prodotto
     foto mediumblob not null,
     check(prezzo >= 0),
     check(prezzo_scontato > 0 and prezzo_scontato < prezzo),
-    check(inizio_sconto > current_date),
     check(inizio_sconto <= fine_sconto)
 );
-/*
+
+delimiter |
 create trigger check_inizio_sconto
     before insert on prodotto
     for each row
-begin
-    if NEW.inizio_sconto <= CURRENT_DATE THEN
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = "La data di inizio_sconto deve essere maggiore di quella odierna"
-    end if;
-end;*/
+	begin
+		if new.inizio_sconto <= current_date() then
+			signal sqlstate '45000'
+				set message_text = "La data di inizio_sconto deve essere maggiore di quella odierna";
+		end if;
+	end;
+|
+delimiter ;
 
 create table lotto
 (
