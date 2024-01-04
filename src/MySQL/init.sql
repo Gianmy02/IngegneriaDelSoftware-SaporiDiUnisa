@@ -1,20 +1,23 @@
-DROP DATABASE IF EXISTS saporiDiUnisa;
-create database saporiDiUnisa;
-use saporiDiUnisa;
+drop database if exists sapori_di_unisa;
+create database sapori_di_unisa;
+use sapori_di_unisa;
 
-create table if not exists dipendente(
+create table dipendente
+(
     id int not null auto_increment primary key,
     ruolo enum('admin', 'cassiere', 'magazziniere', 'finanze') not null,
     pin varchar(4) not null
 );
 
-create table if not exists fornitura(
+create table fornitura
+(
     id int not null auto_increment primary key,
     giorno date not null
     #poi sara current_date all inserimento
 );
 
-create table if not exists prodotto(
+create table prodotto
+(
     id int not null auto_increment primary key,
     nome varchar(255) not null,
     marchio varchar(255) not null,
@@ -39,7 +42,8 @@ begin
     end if;
 end;*/
 
-create table if not exists lotto(
+create table lotto
+(
     id int not null auto_increment primary key,
     costo decimal(5,2) not null,
     data_scadenza date not null,
@@ -52,11 +56,13 @@ create table if not exists lotto(
     check(quantita_attuale >= 0)
 );
 
-create table if not exists vendita(
+create table vendita
+(
     giorno date not null primary key
 );
 
-create table if not exists vendita_prodotto(
+create table vendita_prodotto
+(
     costo decimal(5,2) not null,
     quantita int not null,
     guadagno decimal(5,2) not null,
@@ -68,7 +74,8 @@ create table if not exists vendita_prodotto(
     check(guadagno > 0.00)
 );
 
-create table if not exists esposizione(
+create table esposizione
+(
     prodotto int not null references prodotto(id) on delete cascade,
     lotto int not null references lotto(id) on delete cascade,
     quantita int not null,
