@@ -1,5 +1,7 @@
 package it.unisa.saporidiunisa.utils;
 
+import lombok.val;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,7 +21,7 @@ public class Database
 
     private Database()
     {
-        final var properties = getProperties();
+        val properties = getProperties();
 
         this.url = properties.getProperty(PROPERTY_URL);
         this.username = properties.getProperty(PROPERTY_USERNAME);
@@ -30,9 +32,9 @@ public class Database
     {
         try
         {
-            final var properties = new Properties();
+            val properties = new Properties();
 
-            try (final var inputStream = getClass().getClassLoader().getResourceAsStream(RESOURCE_DATABASE))
+            try (val inputStream = getClass().getClassLoader().getResourceAsStream(RESOURCE_DATABASE))
             {
                 properties.load(inputStream);
             }

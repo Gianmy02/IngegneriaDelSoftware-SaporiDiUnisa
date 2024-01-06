@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.utils;
 
+import lombok.val;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -11,20 +12,23 @@ public class DatabaseTest
     @Test
     public void getConnectionTest()
     {
-        assertNotNull(Database.getConnection());
+        val connection = Database.getConnection();
+
+        assertNotNull(connection);
+        assertDoesNotThrow(connection::close);
     }
 
     @Test
     public void executeSelectDatabaseTest()
     {
-        try (final var connection = Database.getConnection())
+        try (val connection = Database.getConnection())
         {
-            final var preparedStatement = connection.prepareStatement("select database();");
-            final var resultSet = preparedStatement.executeQuery();
+            val preparedStatement = connection.prepareStatement("select database();");
+            val resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next())
             {
-                final var value = resultSet.getString(resultSet.getMetaData().getColumnCount());
+                val value = resultSet.getString(resultSet.getMetaData().getColumnCount());
                 assertTrue(value != null && !value.isEmpty());
                 System.out.println(value);
             }
