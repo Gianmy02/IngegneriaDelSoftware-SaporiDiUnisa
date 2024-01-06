@@ -6,13 +6,13 @@ create table dipendente
 (
     id int not null auto_increment primary key,
     ruolo enum('admin', 'cassiere', 'magazziniere', 'finanze') not null,
-    pin varchar(4) not null
+    pin int(4) not null
 );
 
 create table fornitura
 (
     id int not null auto_increment primary key,
-    giorno date not null # poi sarà current_date all'inserimento
+    giorno date not null /*poi sarà current_date all'inserimento*/
 );
 
 create table prodotto
