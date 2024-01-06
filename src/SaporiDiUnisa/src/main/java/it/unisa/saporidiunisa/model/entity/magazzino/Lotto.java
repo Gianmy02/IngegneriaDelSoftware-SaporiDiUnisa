@@ -1,14 +1,14 @@
 package it.unisa.saporidiunisa.model.entity.magazzino;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Lotto
 {
     private int id;
     private float costo;
-    private Date dataScadenza;
+    private LocalDate dataScadenza;
     private int quantita;
     private int quantitaAttuale;
-    private Fornitura[] forniture;
+    private Fornitura fornitura;
     private Prodotto prodotto;
 }

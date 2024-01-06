@@ -1,6 +1,6 @@
 package it.unisa.saporidiunisa.model.entity.magazzino;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Prodotto
 {
@@ -9,7 +9,7 @@ public class Prodotto
     private String marchio;
     private float prezzo;
     private float prezzoScontato;
-    private Date inizioSconto;
-    private Date fineSconto;
+    private LocalDate inizioSconto;
+    private LocalDate fineSconto;
     private byte[] foto;
 }

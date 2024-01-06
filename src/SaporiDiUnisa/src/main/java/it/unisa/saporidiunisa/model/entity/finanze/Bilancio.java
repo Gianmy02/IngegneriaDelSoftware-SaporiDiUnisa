@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Bilancio
 {
-    private float profitti;
+    private float guadagno;
     private float spese;
     private float incasso;
     private LocalDate dataInizio;

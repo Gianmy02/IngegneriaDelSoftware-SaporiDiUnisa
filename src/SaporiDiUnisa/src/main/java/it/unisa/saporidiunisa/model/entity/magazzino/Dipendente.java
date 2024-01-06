@@ -12,5 +12,5 @@ public class Dipendente
 
     private int id;
     private Ruolo ruolo;
-    private char[] pin;
+    private int pin;
 }
