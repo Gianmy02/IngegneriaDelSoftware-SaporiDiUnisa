@@ -4,17 +4,27 @@ import it.unisa.saporidiunisa.model.entity.magazzino.Prodotto;
 import it.unisa.saporidiunisa.model.entity.magazzino.Venduto;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 
 public class VenditaController
 {
-    public boolean venditaProdotti(List<Prodotto> prodotti, int quantita, float costo)
+    public boolean venditaProdotti(ArrayList<Prodotto> prodotti)
     {
         return false;
     }
 
-    public List<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine)
+    public ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine)
     {
         return null;
+    }
+
+    public float getIncassi(LocalDate dataInizio, LocalDate dataFine)
+    {
+        return 0;
+    }
+
+    public float getIncassiTotali()
+    {
+        return 0;
     }
 }

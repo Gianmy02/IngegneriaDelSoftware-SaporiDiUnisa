@@ -4,6 +4,7 @@ import it.unisa.saporidiunisa.model.entity.magazzino.Fornitura;
 import it.unisa.saporidiunisa.model.entity.magazzino.Lotto;
 import it.unisa.saporidiunisa.model.entity.magazzino.Prodotto;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,5 +34,15 @@ public class MagazzinoController
     public List<Fornitura> visualizzaForniture()
     {
         return null;
+    }
+
+    public float getSpese(LocalDate dataInizio, LocalDate dataFine)
+    {
+        return 0;
+    }
+
+    public float getSpeseTotali()
+    {
+        return 0;
     }
 }

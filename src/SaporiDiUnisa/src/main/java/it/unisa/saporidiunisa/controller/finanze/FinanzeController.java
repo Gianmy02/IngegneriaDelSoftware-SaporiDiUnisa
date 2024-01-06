@@ -1,11 +1,11 @@
 package it.unisa.saporidiunisa.controller.finanze;
 
-import it.unisa.saporidiunisa.model.entity.finanze.AndamentoProdotto;
 import it.unisa.saporidiunisa.model.entity.finanze.Bilancio;
 import it.unisa.saporidiunisa.model.entity.magazzino.Prodotto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FinanzeController
@@ -15,7 +15,7 @@ public class FinanzeController
         return null;
     }
 
-    public AndamentoProdotto visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto p)
+    public ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto p)
     {
         return null;
     }
