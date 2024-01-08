@@ -10,12 +10,24 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DatabaseTest
 {
     @Test
-    public void getConnectionTest()
+    public void connectionTest()
     {
         val connection = Database.getConnection();
-
         assertNotNull(connection);
         assertDoesNotThrow(connection::close);
+    }
+
+    @Test
+    public void autoCloseableConnectionTest()
+    {
+        try (val connection = Database.getConnection())
+        {
+            assertNotNull(connection);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
