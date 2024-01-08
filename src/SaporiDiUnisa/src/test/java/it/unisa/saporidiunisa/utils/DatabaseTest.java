@@ -25,13 +25,13 @@ public class DatabaseTest
         {
             val preparedStatement = connection.prepareStatement("select database();");
             val resultSet = preparedStatement.executeQuery();
+            assertTrue(resultSet.next());
 
-            if (resultSet.next())
-            {
-                val value = resultSet.getString(resultSet.getMetaData().getColumnCount());
-                assertTrue(value != null && !value.isEmpty());
-                System.out.println(value);
-            }
+            val value = resultSet.getString(resultSet.getMetaData().getColumnCount());
+            assertNotNull(value);
+            assertFalse(value.isEmpty());
+
+            System.out.println(value);
         }
         catch (SQLException e)
         {
