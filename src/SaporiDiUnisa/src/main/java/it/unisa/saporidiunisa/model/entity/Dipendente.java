@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class Dipendente
 {
-    private enum Ruolo
+    public enum Ruolo
     {
         CASSIERE,
         ADMIN,
