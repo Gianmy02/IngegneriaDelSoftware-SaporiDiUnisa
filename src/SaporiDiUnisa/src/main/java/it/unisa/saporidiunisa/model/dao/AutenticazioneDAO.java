@@ -40,7 +40,7 @@ public class AutenticazioneDAO {
             ps.setInt(1, pin);
             ps.setString(2, ruolo);
             if (ps.executeUpdate() != 1) {
-                throw new RuntimeException("UPDATE error.");
+                throw new RuntimeException("UPDATE error..");
             }
             return true;
         }
