@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.model.entity.magazzino;
+package it.unisa.saporidiunisa.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package it.unisa.saporidiunisa.controller.vendite;
 
-import it.unisa.saporidiunisa.model.entity.magazzino.Prodotto;
-import it.unisa.saporidiunisa.model.entity.magazzino.Venduto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.model.entity.Venduto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

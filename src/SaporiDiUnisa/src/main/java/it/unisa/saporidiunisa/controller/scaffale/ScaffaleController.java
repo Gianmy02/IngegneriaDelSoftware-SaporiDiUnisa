@@ -1,6 +1,6 @@
 package it.unisa.saporidiunisa.controller.scaffale;
 
-import it.unisa.saporidiunisa.model.entity.magazzino.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Esposizione;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package it.unisa.saporidiunisa.controller.autenticazione;
 
-import it.unisa.saporidiunisa.model.entity.magazzino.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
 
 public class AutenticazioneController
 {

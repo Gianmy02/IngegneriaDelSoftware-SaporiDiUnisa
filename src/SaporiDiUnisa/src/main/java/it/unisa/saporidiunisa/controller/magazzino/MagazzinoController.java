@@ -1,8 +1,8 @@
 package it.unisa.saporidiunisa.controller.magazzino;
 
-import it.unisa.saporidiunisa.model.entity.magazzino.Fornitura;
-import it.unisa.saporidiunisa.model.entity.magazzino.Lotto;
-import it.unisa.saporidiunisa.model.entity.magazzino.Prodotto;
+import it.unisa.saporidiunisa.model.entity.Fornitura;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
