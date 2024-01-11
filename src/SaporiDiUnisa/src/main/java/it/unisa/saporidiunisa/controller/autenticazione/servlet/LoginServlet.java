@@ -26,7 +26,8 @@ public class LoginServlet extends HttpServlet {
             Matcher matcherPin = patternPin.matcher(pin);
             if(!matcherPin.matches()) {
                 //errore da gestire
-            }else{
+            }else
+            {
                 Dipendente d = ac.login(Integer.parseInt(pin));
                 if(d == null) {
                     //errore da gestire
