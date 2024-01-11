@@ -17,9 +17,10 @@ import java.util.regex.Pattern;
 public class UpdatePinServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("utenteLoggato") == null && session.getAttribute("adminLoggato") != null){
+        Dipendente d = (Dipendente) session.getAttribute("utenteLoggato");
+        if(d != null && d.getRuolo() == Dipendente.Ruolo.ADMIN){
             String pin = String.valueOf(request.getParameter("newPin"));
-            String ruolo = request.getParameter("ruolo");
+            Dipendente.Ruolo ruolo = Dipendente.Ruolo.valueOf(request.getParameter("ruolo"));
             String regPin = "^[0-9]{4}$";
             Pattern patternPin = Pattern.compile(regPin);
             Matcher matcherPin = patternPin.matcher(pin);

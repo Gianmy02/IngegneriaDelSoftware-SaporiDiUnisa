@@ -18,7 +18,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("utenteLoggato") == null && session.getAttribute("adminLoggato") == null){
+        if(session.getAttribute("utenteLoggato") == null){
             AutenticazioneController ac = new AutenticazioneController();
             String pin = String.valueOf(request.getParameter("pin"));
             String regPin = "^[0-9]{4}$";
@@ -32,11 +32,7 @@ public class LoginServlet extends HttpServlet {
                 if(d == null) {
                     //errore da gestire
                 }else {
-                    if(d.getRuolo() != Dipendente.Ruolo.ADMIN) {
                         session.setAttribute("utenteLoggato", d);
-                    }else {
-                        session.setAttribute("adminLoggato", d);
-                    }
                 }
 
                 /*

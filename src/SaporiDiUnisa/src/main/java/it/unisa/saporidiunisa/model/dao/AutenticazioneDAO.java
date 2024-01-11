@@ -19,7 +19,7 @@ public class AutenticazioneDAO {
             if(rs.next()){
                 Dipendente d = new Dipendente();
                 d.setId(rs.getInt(1));
-               // d.setRuolo(rs.getString(2));
+                d.setRuolo(Dipendente.Ruolo.valueOf(rs.getString(2)));
                 d.setPin(rs.getInt(3));
                 return d;
             }
@@ -32,15 +32,15 @@ public class AutenticazioneDAO {
 
     }
 
-    public boolean updatePin(int pin, String ruolo){
+    public boolean updatePin(int pin, Dipendente.Ruolo ruolo){
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
                     connection.prepareStatement("UPDATE dipendente SET pin = ? WHERE ruolo = ? ");
             ps.setInt(1, pin);
-            ps.setString(2, ruolo);
+            ps.setInt(2, ruolo.ordinal());
             if (ps.executeUpdate() != 1) {
-                throw new RuntimeException("UPDATE error..");
+                throw new RuntimeException("UPDATE error.");
             }
             return true;
         }

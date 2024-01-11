@@ -12,7 +12,7 @@ public class AutenticazioneController
     }
 
 
-    public boolean modificaPin(int newPin, String ruolo)
+    public boolean modificaPin(int newPin, Dipendente.Ruolo ruolo)
     {
         AutenticazioneDAO ad = new AutenticazioneDAO();
         return ad.updatePin(newPin,ruolo);
