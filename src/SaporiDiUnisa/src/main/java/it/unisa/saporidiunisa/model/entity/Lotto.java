@@ -16,4 +16,8 @@ public class Lotto
     private int quantitaAttuale;
     private Fornitura fornitura;
     private Prodotto prodotto;
+
+    public float getCostoProdotto(){
+        return this.quantita/this.costo;
+    }
 }

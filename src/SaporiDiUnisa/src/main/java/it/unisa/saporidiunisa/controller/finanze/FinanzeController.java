@@ -20,7 +20,7 @@ public class FinanzeController
         return null;
     }
 
-    public boolean impostaSconto(Prodotto prodotto, BigDecimal sconto, LocalDate dataInizio, LocalDate dataFine)
+    public boolean impostaSconto(Prodotto prodotto, int sconto, LocalDate dataInizio, LocalDate dataFine)
     {
         return false;
     }

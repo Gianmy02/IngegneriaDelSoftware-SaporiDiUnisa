@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.controller.scaffale;
 
+import it.unisa.saporidiunisa.model.dao.GestioneScaffaliDAO;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
 
 import java.util.ArrayList;
@@ -16,8 +17,13 @@ public class ScaffaleController
         return false;
     }
 
+    /**
+     * Il metodo <code>visualizzaProdottiScaffale()</code>  serve per avere tutti i prodotti in esposizione al giorno della chiamata
+     * @return ritorna l'arraylist con tutti in esposizione
+     */
     public ArrayList<Esposizione> visualizzaProdottiScaffale()
     {
-        return null;
+        GestioneScaffaliDAO gdao = new GestioneScaffaliDAO();
+        return gdao.getEsposizione();
     }
 }

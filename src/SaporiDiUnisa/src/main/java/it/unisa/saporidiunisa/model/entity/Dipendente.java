@@ -9,8 +9,8 @@ public class Dipendente
 {
     public enum Ruolo
     {
-        CASSIERE,
         ADMIN,
+        CASSIERE,
         MAGAZZINIERE,
         FINANZE,
     }
