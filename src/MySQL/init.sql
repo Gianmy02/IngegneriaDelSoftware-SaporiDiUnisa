@@ -62,7 +62,7 @@ create table vendita
     giorno date not null primary key
 );
 
-create table vendita_prodotto
+create table venduto
 (
     costo decimal(5,2) not null,
     quantita int not null,
