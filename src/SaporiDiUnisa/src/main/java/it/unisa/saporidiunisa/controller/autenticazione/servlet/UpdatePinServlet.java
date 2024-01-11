@@ -29,7 +29,11 @@ public class UpdatePinServlet extends HttpServlet {
             }else {
 
                 AutenticazioneController ac = new AutenticazioneController();
-                ac.modificaPin(Integer.parseInt(pin), ruolo);
+                if(ac.modificaPin(Integer.parseInt(pin), ruolo)){
+                    System.out.println("Andato a buon fine");
+                }else {
+                    //errore modifica pin
+                }
 
             }
         }

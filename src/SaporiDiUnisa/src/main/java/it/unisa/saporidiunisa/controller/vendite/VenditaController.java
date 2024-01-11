@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class VenditaController
 {
-    public boolean venditaProdotti(ArrayList<Prodotto> prodotti)
+    public boolean venditaProdotti(ArrayList<Venduto> venduti)
     {
         return false;
     }

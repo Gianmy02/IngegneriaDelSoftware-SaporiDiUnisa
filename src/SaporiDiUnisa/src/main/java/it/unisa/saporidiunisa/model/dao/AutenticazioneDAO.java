@@ -33,16 +33,25 @@ public class AutenticazioneDAO {
     }
 
     public boolean updatePin(int pin, Dipendente.Ruolo ruolo){
+        //controllo che il nuovo pin non sia uguale a quello in uso
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
-                    connection.prepareStatement("UPDATE dipendente SET pin = ? WHERE ruolo = ? ");
+                    connection.prepareStatement("SELECT pin FROM dipendente WHERE pin = ? AND ruolo = ?;");
             ps.setInt(1, pin);
             ps.setInt(2, ruolo.ordinal());
-            if (ps.executeUpdate() != 1) {
-                throw new RuntimeException("UPDATE error.");
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()){
+                ps = connection.prepareStatement("UPDATE dipendente SET pin = ? WHERE ruolo = ? ");
+                ps.setInt(1, pin);
+                ps.setInt(2, ruolo.ordinal());
+                if (ps.executeUpdate() != 1) {
+                    throw new RuntimeException("UPDATE error.");
+                }
+                return true;
             }
-            return true;
+            else
+                return false; //il pin e già impostato
         }
         catch (SQLException e)
         {
