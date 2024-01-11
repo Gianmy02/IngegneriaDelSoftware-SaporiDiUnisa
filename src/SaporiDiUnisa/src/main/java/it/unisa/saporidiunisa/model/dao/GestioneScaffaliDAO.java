@@ -49,7 +49,6 @@ public class GestioneScaffaliDAO {
         {
             throw new RuntimeException(e);
         }
-
     }
 
 
