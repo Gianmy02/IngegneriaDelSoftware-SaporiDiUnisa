@@ -5,6 +5,12 @@
         <title>Sapori di Unisa</title>
     </head>
     <body>
-    <h1><%= "Ciao, Sapori di Unisa!" %></h1>
+        <%@ include file="WEB-INF/include/header.jsp" %>
+
+        <a href="view/login.jsp">
+            <input type="button" value="Login">
+        </a>
+
+        <%@ include file="WEB-INF/include/footer.jsp" %>
     </body>
 </html>
