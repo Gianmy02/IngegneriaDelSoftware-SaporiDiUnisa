@@ -11,16 +11,31 @@ public class FinanzeController
 {
     public Bilancio visualizzaBilancio(LocalDate dataInizio, LocalDate dataFine)
     {
+        if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
+        {
+
+        }
+
         return null;
     }
 
     public ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
     {
+        if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
+        {
+
+        }
+
         return null;
     }
 
     public boolean impostaSconto(Prodotto prodotto, int sconto, LocalDate dataInizio, LocalDate dataFine)
     {
+        if (!prodotto.isSconto())
+        {
+
+        }
+
         return false;
     }
 

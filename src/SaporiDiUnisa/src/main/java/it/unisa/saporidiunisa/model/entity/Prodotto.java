@@ -17,4 +17,9 @@ public class Prodotto
     private LocalDate inizioSconto;
     private LocalDate fineSconto;
     private byte[] foto;
+
+    public boolean isSconto()
+    {
+        return this.prezzoScontato != 0;
+    }
 }
