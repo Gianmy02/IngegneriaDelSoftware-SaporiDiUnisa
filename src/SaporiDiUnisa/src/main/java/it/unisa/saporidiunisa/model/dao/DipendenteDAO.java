@@ -21,7 +21,7 @@ public class DipendenteDAO
                 val dipendente = new Dipendente();
                 dipendente.setId(resultSet.getInt(1));
                 dipendente.setRuolo(Dipendente.Ruolo.valueOf(resultSet.getString(2)));
-                dipendente.setPin(resultSet.getInt(3));
+                dipendente.setPin(resultSet.getString(3).toCharArray());
                 return dipendente;
             }
 
