@@ -15,15 +15,10 @@ public class ProdottoDAO
         try (val connection = Database.getConnection())
         {
             val prodotti = new ArrayList<Prodotto>();
-
-            val preparedStatement = connection.prepareStatement("select id, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto from prodotto;");
-            val resultSet = preparedStatement.executeQuery();
+            val resultSet = connection.prepareStatement("select id, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto from prodotto;").executeQuery();
 
             while (resultSet.next())
-            {
-                val prodotto = _build(resultSet);
-                prodotti.add(prodotto);
-            }
+                prodotti.add(_build(resultSet));
 
             return prodotti;
         }
@@ -33,24 +28,25 @@ public class ProdottoDAO
         }
     }
 
-    public Prodotto selectByNameAndBrand(final String nome, final String marchio) {
-        try {
-            val con = Database.getConnection();
-            val ps = con.prepareStatement("select * from prodotto where nome=(?) and marchio=(?)");
+    public Prodotto selectByNameAndBrand(final String nome, final String marchio)
+    {
+        try (val con = Database.getConnection())
+        {
+            val ps = con.prepareStatement("select * from prodotto where nome=? and marchio=?;");
             ps.setString(1, nome);
             ps.setString(2, marchio);
+
             val rs = ps.executeQuery();
-            val prodotto = rs.next() ? _build(rs) : null;
-            rs.close();
-            ps.close();
-            con.close();
-            return prodotto;
-        } catch (SQLException e) {
+            return rs.next() ? _build(rs) : null;
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    private static Prodotto _build(final ResultSet rs) throws SQLException {
+    private static Prodotto _build(final ResultSet rs) throws SQLException
+    {
         val prodotto = new Prodotto();
         prodotto.setId(rs.getInt("id"));
         prodotto.setNome(rs.getString("nome"));
