@@ -1,11 +1,11 @@
 package it.unisa.saporidiunisa.controller.finanze;
 
+import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
 import it.unisa.saporidiunisa.model.entity.Bilancio;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FinanzeController
 {
@@ -14,7 +14,7 @@ public class FinanzeController
         return null;
     }
 
-    public ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto p)
+    public ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
     {
         return null;
     }
@@ -24,8 +24,8 @@ public class FinanzeController
         return false;
     }
 
-    public List<Prodotto> visualizzaProdotti()
+    public static ArrayList<Prodotto> visualizzaProdotti()
     {
-        return null;
+        return ProdottoDAO.findProdotti();
     }
 }
