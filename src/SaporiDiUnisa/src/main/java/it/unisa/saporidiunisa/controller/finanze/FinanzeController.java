@@ -3,7 +3,6 @@ package it.unisa.saporidiunisa.controller.finanze;
 import it.unisa.saporidiunisa.model.entity.Bilancio;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

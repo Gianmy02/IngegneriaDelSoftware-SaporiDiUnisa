@@ -8,7 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AutenticazioneDAO {
+public class DipendenteDAO
+{
     public Dipendente login(int pin){
         try (val connection = Database.getConnection())
         {

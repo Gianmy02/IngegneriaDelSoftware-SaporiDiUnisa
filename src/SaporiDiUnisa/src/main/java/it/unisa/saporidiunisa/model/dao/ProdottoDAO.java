@@ -1,4 +1,5 @@
 package it.unisa.saporidiunisa.model.dao;
 
-public class GestioneMagazzinoDAO {
+public class ProdottoDAO
+{
 }

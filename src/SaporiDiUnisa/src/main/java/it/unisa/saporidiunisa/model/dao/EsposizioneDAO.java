@@ -13,7 +13,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class GestioneScaffaliDAO {
+public class EsposizioneDAO
+{
 
     public ArrayList<Esposizione> getEsposizione(){
         try (val connection = Database.getConnection())

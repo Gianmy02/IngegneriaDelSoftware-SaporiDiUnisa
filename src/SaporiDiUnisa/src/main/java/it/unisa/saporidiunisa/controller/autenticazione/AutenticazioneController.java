@@ -1,6 +1,6 @@
 package it.unisa.saporidiunisa.controller.autenticazione;
 
-import it.unisa.saporidiunisa.model.dao.AutenticazioneDAO;
+import it.unisa.saporidiunisa.model.dao.DipendenteDAO;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 
 /**
@@ -16,7 +16,7 @@ public class AutenticazioneController
      */
     public Dipendente login(int pin)
     {
-        AutenticazioneDAO adao = new AutenticazioneDAO();
+        DipendenteDAO adao = new DipendenteDAO();
         return adao.login(pin);
     }
 
@@ -29,7 +29,7 @@ public class AutenticazioneController
      */
     public boolean modificaPin(int newPin, Dipendente.Ruolo ruolo)
     {
-        AutenticazioneDAO ad = new AutenticazioneDAO();
+        DipendenteDAO ad = new DipendenteDAO();
         return ad.updatePin(newPin,ruolo);
     }
 }
