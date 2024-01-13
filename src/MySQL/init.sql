@@ -6,7 +6,7 @@ create table dipendente
 (
     id int not null auto_increment primary key,
     ruolo enum('admin', 'cassiere', 'magazziniere', 'finanze') not null,
-    pin int(4) not null
+    pin char(4) not null
 );
 
 create table fornitura
