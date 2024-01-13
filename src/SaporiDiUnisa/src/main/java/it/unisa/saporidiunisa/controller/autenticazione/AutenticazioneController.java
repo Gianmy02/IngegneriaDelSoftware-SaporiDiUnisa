@@ -2,6 +2,7 @@ package it.unisa.saporidiunisa.controller.autenticazione;
 
 import it.unisa.saporidiunisa.model.dao.DipendenteDAO;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
+import lombok.val;
 
 /**
  * @author Riviello Gianmarco
@@ -16,10 +17,9 @@ public class AutenticazioneController
      */
     public Dipendente login(int pin)
     {
-        DipendenteDAO adao = new DipendenteDAO();
-        return adao.login(pin);
+        val dipendenteDAO = new DipendenteDAO();
+        return dipendenteDAO.findDipendenteByPin(pin);
     }
-
 
     /**
      * Effettua la modifica del pin in un ruolo da parte dell'admin.
@@ -29,7 +29,7 @@ public class AutenticazioneController
      */
     public boolean modificaPin(int newPin, Dipendente.Ruolo ruolo)
     {
-        DipendenteDAO ad = new DipendenteDAO();
-        return ad.updatePin(newPin,ruolo);
+        val dipendenteDAO = new DipendenteDAO();
+        return dipendenteDAO.updatePin(newPin,ruolo);
     }
 }

@@ -4,55 +4,61 @@ import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DipendenteDAO
 {
-    public Dipendente login(int pin){
+    public Dipendente findDipendenteByPin(int pin)
+    {
         try (val connection = Database.getConnection())
         {
-            PreparedStatement ps =
-                    connection.prepareStatement("SELECT * FROM dipendente WHERE pin = ?;");
-            ps.setInt(1, pin);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                Dipendente d = new Dipendente();
-                d.setId(rs.getInt(1));
-                d.setRuolo(Dipendente.Ruolo.valueOf(rs.getString(2)));
-                d.setPin(rs.getInt(3));
-                return d;
+            val preparedStatement = connection.prepareStatement("select id, ruolo, pin from dipendente where pin = ?;");
+            preparedStatement.setInt(1, pin);
+            val resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                val dipendente = new Dipendente();
+                dipendente.setId(resultSet.getInt(1));
+                dipendente.setRuolo(Dipendente.Ruolo.valueOf(resultSet.getString(2)));
+                dipendente.setPin(resultSet.getInt(3));
+                return dipendente;
             }
+
             return null;
         }
         catch (SQLException e)
         {
             throw new RuntimeException(e);
         }
-
     }
 
-    public boolean updatePin(int pin, Dipendente.Ruolo ruolo){
-        //controllo che il nuovo pin non sia uguale a quello in uso
+    public boolean updatePin(int pin, Dipendente.Ruolo ruolo)
+    {
         try (val connection = Database.getConnection())
         {
-            PreparedStatement ps =
-                    connection.prepareStatement("SELECT pin FROM dipendente WHERE pin = ? AND ruolo = ?;");
-            ps.setInt(1, pin);
-            ps.setInt(2, ruolo.ordinal());
-            ResultSet rs = ps.executeQuery();
-            if(!rs.next()){
-                ps = connection.prepareStatement("UPDATE dipendente SET pin = ? WHERE ruolo = ? ");
-                ps.setInt(1, pin);
-                ps.setInt(2, ruolo.ordinal());
-                if (ps.executeUpdate() != 1) {
+            var preparedStatement = connection.prepareStatement("select pin from dipendente where pin = ? and ruolo = ?;");
+            preparedStatement.setInt(1, pin);
+            preparedStatement.setInt(2, ruolo.ordinal());
+            val resultSet = preparedStatement.executeQuery();
+
+            // Controllo che il nuovo pin non sia uguale a quello in uso
+            if (!resultSet.next())
+            {
+                preparedStatement = connection.prepareStatement("update dipendente set pin = ? where ruolo = ?;");
+                preparedStatement.setInt(1, pin);
+                preparedStatement.setInt(2, ruolo.ordinal());
+
+                if (preparedStatement.executeUpdate() != 1)
+                {
                     throw new RuntimeException("UPDATE error.");
                 }
+
                 return true;
             }
-            else
-                return false; //il pin e già impostato
+
+            // Il pin è già impostato
+            return false;
         }
         catch (SQLException e)
         {
