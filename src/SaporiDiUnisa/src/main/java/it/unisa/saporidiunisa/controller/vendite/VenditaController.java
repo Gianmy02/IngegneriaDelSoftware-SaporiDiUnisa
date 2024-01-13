@@ -1,8 +1,9 @@
 package it.unisa.saporidiunisa.controller.vendite;
 
-import it.unisa.saporidiunisa.model.dao.ScaffaleDAO;
-import it.unisa.saporidiunisa.model.dao.VenditeDAO;
+import it.unisa.saporidiunisa.model.dao.GestioneScaffaliDAO;
+import it.unisa.saporidiunisa.model.dao.GestioneVenditeDAO;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.entity.Venduto;
 
 import java.time.LocalDate;
@@ -12,8 +13,8 @@ public class VenditaController
 {
     public boolean venditaProdotti(ArrayList<Venduto> venduti)
     {
-        VenditeDAO vdao = new VenditeDAO();
-        ScaffaleDAO gdao = new ScaffaleDAO();
+        GestioneVenditeDAO vdao = new GestioneVenditeDAO();
+        GestioneScaffaliDAO gdao = new GestioneScaffaliDAO();
         boolean b = false;
         /*itero sulla lista di prodotti che si vogliono acquistare*/
         for(Venduto v: venduti){

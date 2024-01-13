@@ -11,8 +11,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class VenditeDAO
-{
+public class GestioneVenditeDAO {
     public ArrayList<Esposizione> visualizzaProdottiEsposti(){
         try (val connection = Database.getConnection())
         {

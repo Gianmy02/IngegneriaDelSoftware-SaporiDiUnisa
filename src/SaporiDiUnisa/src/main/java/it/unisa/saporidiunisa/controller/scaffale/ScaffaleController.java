@@ -1,6 +1,6 @@
 package it.unisa.saporidiunisa.controller.scaffale;
 
-import it.unisa.saporidiunisa.model.dao.ScaffaleDAO;
+import it.unisa.saporidiunisa.model.dao.GestioneScaffaliDAO;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class ScaffaleController
      */
     public ArrayList<Esposizione> visualizzaProdottiScaffale()
     {
-        ScaffaleDAO gdao = new ScaffaleDAO();
+        GestioneScaffaliDAO gdao = new GestioneScaffaliDAO();
         return gdao.getEsposizione();
     }
 }
