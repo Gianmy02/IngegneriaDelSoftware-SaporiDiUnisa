@@ -4,13 +4,13 @@ import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
-import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProdottoDAO
 {
-    public static ArrayList<Prodotto> findProdotti()
+    public static ArrayList<Prodotto> selectAll()
     {
         try (val connection = Database.getConnection())
         {
@@ -21,23 +21,45 @@ public class ProdottoDAO
 
             while (resultSet.next())
             {
-                val prodotto = new Prodotto();
-                prodotto.setId(resultSet.getInt(1));
-                prodotto.setNome(resultSet.getString(2));
-                prodotto.setMarchio(resultSet.getString(3));
-                prodotto.setPrezzo(resultSet.getFloat(4));
-                prodotto.setPrezzoScontato(resultSet.getFloat(5));
-                prodotto.setInizioSconto(resultSet.getDate(6).toLocalDate());
-                prodotto.setFineSconto(resultSet.getDate(7).toLocalDate());
-                prodotto.setFoto(resultSet.getBlob(8).getBinaryStream().readAllBytes());
+                val prodotto = _build(resultSet);
                 prodotti.add(prodotto);
             }
 
             return prodotti;
         }
-        catch (SQLException | IOException e)
+        catch (SQLException e)
         {
             throw new RuntimeException(e);
         }
+    }
+
+    public Prodotto selectByNameAndBrand(final String nome, final String marchio) {
+        try {
+            val con = Database.getConnection();
+            val ps = con.prepareStatement("select * from prodotto where nome=(?) and marchio=(?)");
+            ps.setString(1, nome);
+            ps.setString(2, marchio);
+            val rs = ps.executeQuery();
+            val prodotto = rs.next() ? _build(rs) : null;
+            rs.close();
+            ps.close();
+            con.close();
+            return prodotto;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Prodotto _build(final ResultSet rs) throws SQLException {
+        val prodotto = new Prodotto();
+        prodotto.setId(rs.getInt("id"));
+        prodotto.setNome(rs.getString("nome"));
+        prodotto.setMarchio(rs.getString("marchio"));
+        prodotto.setPrezzo(rs.getFloat("prezzo"));
+        prodotto.setPrezzoScontato(rs.getFloat("prezzoScontato"));
+        prodotto.setInizioSconto(rs.getDate("inizioSconto").toLocalDate());
+        prodotto.setFineSconto(rs.getDate("fineSconto").toLocalDate());
+        prodotto.setFoto(rs.getBytes("foto"));
+        return prodotto;
     }
 }

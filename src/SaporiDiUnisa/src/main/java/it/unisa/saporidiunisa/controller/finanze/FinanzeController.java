@@ -41,6 +41,6 @@ public class FinanzeController
 
     public static ArrayList<Prodotto> visualizzaProdotti()
     {
-        return ProdottoDAO.findProdotti();
+        return ProdottoDAO.selectAll();
     }
 }
