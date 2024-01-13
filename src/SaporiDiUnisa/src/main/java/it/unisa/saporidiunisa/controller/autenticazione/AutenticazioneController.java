@@ -15,7 +15,7 @@ public class AutenticazioneController
      * @param pin
      * @return Dipendente loggato oppure null nel caso non esista nel db
      */
-    public Dipendente login(int pin)
+    public static Dipendente login(char[] pin)
     {
         val dipendenteDAO = new DipendenteDAO();
         return dipendenteDAO.findDipendenteByPin(pin);
@@ -27,7 +27,7 @@ public class AutenticazioneController
      * @param ruolo ruolo al quale modificare il pin
      * @return booleano di conferma
      */
-    public boolean modificaPin(int newPin, Dipendente.Ruolo ruolo)
+    public static boolean modificaPin(char[] newPin, Dipendente.Ruolo ruolo)
     {
         val dipendenteDAO = new DipendenteDAO();
         return dipendenteDAO.updatePin(newPin,ruolo);

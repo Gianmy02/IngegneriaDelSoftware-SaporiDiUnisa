@@ -5,8 +5,10 @@
         <title>Sapori di Unisa</title>
     </head>
     <body>
-        <label for="password">Login</label>
-        <input type="password" id="password" name="password">
-        <input type="submit" value="Accedi">
+        <form name="login" method="post" action="${pageContext.request.contextPath}/login-servlet">
+            <label for="pin">PIN</label>
+            <input type="password" id="pin" name="pin">
+            <input type="submit" value="Accedi">
+        </form>
     </body>
 </html>

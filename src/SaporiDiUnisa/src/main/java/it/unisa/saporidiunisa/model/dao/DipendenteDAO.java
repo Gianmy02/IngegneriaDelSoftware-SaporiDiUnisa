@@ -5,15 +5,16 @@ import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class DipendenteDAO
 {
-    public Dipendente findDipendenteByPin(int pin)
+    public Dipendente findDipendenteByPin(char[] pin)
     {
         try (val connection = Database.getConnection())
         {
             val preparedStatement = connection.prepareStatement("select id, ruolo, pin from dipendente where pin = ?;");
-            preparedStatement.setInt(1, pin);
+            preparedStatement.setObject(1, Arrays.toString(pin).toCharArray());
             val resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next())
@@ -33,12 +34,12 @@ public class DipendenteDAO
         }
     }
 
-    public boolean updatePin(int pin, Dipendente.Ruolo ruolo)
+    public boolean updatePin(char[] pin, Dipendente.Ruolo ruolo)
     {
         try (val connection = Database.getConnection())
         {
             var preparedStatement = connection.prepareStatement("select pin from dipendente where pin = ? and ruolo = ?;");
-            preparedStatement.setInt(1, pin);
+            preparedStatement.setObject(1, Arrays.toString(pin).toCharArray());
             preparedStatement.setInt(2, ruolo.ordinal());
             val resultSet = preparedStatement.executeQuery();
 
@@ -46,7 +47,7 @@ public class DipendenteDAO
             if (!resultSet.next())
             {
                 preparedStatement = connection.prepareStatement("update dipendente set pin = ? where ruolo = ?;");
-                preparedStatement.setInt(1, pin);
+                preparedStatement.setObject(1, Arrays.toString(pin).toCharArray());
                 preparedStatement.setInt(2, ruolo.ordinal());
 
                 if (preparedStatement.executeUpdate() != 1)
