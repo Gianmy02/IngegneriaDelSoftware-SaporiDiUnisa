@@ -164,5 +164,37 @@ public class VendutoDAO
         }
     }
 
+    /*la funzione prende la somma dal db nei giorni richiesti di tutti i prodotti*/
+    public ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine){
+        try (val connection = Database.getConnection())
+        {
+            PreparedStatement ps =
+                    connection.prepareStatement("SELECT p.id AS id_prodotto, p.nome AS nome_prodotto, p.marchio, p.foto, SUM(v.quantita) AS totale_quantita_venduta, SUM(v.guadagno) AS totale_guadagno, SUM(v.costo * v.quantita) AS costo_totale FROM prodotto p JOIN venduto v ON p.id = v.prodotto WHERE v.giorno BETWEEN ? AND ? GROUP BY p.id, p.nome, p.marchio, p.foto;");
+            ps.setString(1, String.valueOf(inizio));
+            ps.setString(2, String.valueOf(fine));
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Venduto> venduti = new ArrayList<>();
+            while(rs.next()){
+                Venduto v = new Venduto();
+                Prodotto p = new Prodotto();
+                p.setId(rs.getInt(1));
+                p.setNome(rs.getString(2));
+                p.setMarchio(rs.getString(3));
+                p.setFoto(rs.getBytes(4));
+                v.setQuantita(rs.getInt(5));
+                v.setGuadagno(rs.getFloat(6));
+                v.setCosto(rs.getFloat(7));
+                v.setProdotto(p);
+                v.setGiorno(fine);
+                venduti.add(v);
+            }
+            return venduti;
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

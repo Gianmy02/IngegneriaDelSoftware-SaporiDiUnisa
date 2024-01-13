@@ -8,8 +8,17 @@ import it.unisa.saporidiunisa.model.entity.Venduto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * @author Gianmarco Riviello
+ * La classe <code>VenditaController</code>si interpone fra il database e le servlet rispetto alle vendite
+ */
 public class VenditaController
 {
+    /**
+     * Il metodo conferma le vendite richieste di tutti i prodotti
+     * @param venduti sono tutti i prodotti venduti in un determinato momento ad un cliente ipotetico
+     * @return booleano di conferma
+     */
     public boolean venditaProdotti(ArrayList<Venduto> venduti)
     {
         VendutoDAO vdao = new VendutoDAO();
@@ -48,9 +57,16 @@ public class VenditaController
         return b;
     }
 
+    /**
+     * Il metodo <code>visualizzaStoricoVendite</code> restituisce la somma delle attivita di vendita di tutti i Prodotti in un determinato periodo scelto
+     * @param dataInizio data che delimita l'inizio del periodo
+     * @param dataFine data che delimita la fine del periodo
+     * @return ArrayList di venduti
+     */
     public ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine)
     {
-        return null;
+        VendutoDAO vdao = new VendutoDAO();
+        return vdao.getStorico(dataInizio, dataFine);
     }
 
     public float getIncassi(LocalDate dataInizio, LocalDate dataFine)
