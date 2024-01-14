@@ -13,34 +13,6 @@ import java.util.ArrayList;
 
 public class VendutoDAO
 {
-    public ArrayList<Esposizione> visualizzaProdottiEsposti(){
-        try (val connection = Database.getConnection())
-        {
-            PreparedStatement ps =
-                    connection.prepareStatement("SELECT e.prodotto, p.nome, p.marchio, p.foto, CASE WHEN p.inizio_sconto <= CURRENT_DATE() AND p.fine_sconto >= CURRENT_DATE() THEN p.prezzo_scontato ELSE p.prezzo END AS prezzo, SUM(e.quantita) AS quantita_totale FROM esposizione e JOIN lotto l ON e.lotto = l.id JOIN prodotto p ON e.prodotto = p.id WHERE l.data_scadenza >= CURRENT_DATE() GROUP BY e.prodotto, p.nome, p.marchio, prezzo;");
-            ResultSet rs = ps.executeQuery();
-            ArrayList<Esposizione> esposti = new ArrayList<>();
-            while(rs.next()){
-                Esposizione e = new Esposizione();
-                Prodotto p = new Prodotto();
-                Lotto l = new Lotto();
-                p.setId(rs.getInt(1));
-                p.setNome(rs.getString(2));
-                p.setMarchio(rs.getString(3));
-                p.setFoto(rs.getBytes(4));
-                p.setPrezzo(rs.getFloat(5));
-                e.setQuantita(rs.getInt(6));
-                e.setProdotto(p);
-                e.setLotto(l);
-                esposti.add(e);
-            }
-            return esposti;
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 
     public ArrayList<Venduto> getVendutiGiornalieri(){
         try (val connection = Database.getConnection())
@@ -147,22 +119,6 @@ public class VendutoDAO
         }
     }
 
-    public void diminuisciEsposizione(int quantita, Esposizione es){
-        try (val connection = Database.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(
-                    "UPDATE esposizione SET quantita = quantita - ? WHERE esposizione.prodotto = ? AND esposizione.lotto = ?");
-            ps.setInt(1, quantita);
-            ps.setInt(2, es.getProdotto().getId());
-            ps.setInt(3, es.getLotto().getId());
-
-            if (ps.executeUpdate() != 1) {
-                throw new RuntimeException("INSERT error.");
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /*la funzione prende la somma dal db nei giorni richiesti di tutti i prodotti*/
     public ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine){

@@ -35,12 +35,12 @@ public class VenditaController
                     if(quantitaCount>es.getQuantita()) {
                         guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * es.getQuantita();
                         quantitaCount = quantitaCount- es.getQuantita();
-                        vdao.diminuisciEsposizione(es.getQuantita(), es);
+                        gdao.diminuisciEsposizione(es.getQuantita(), es);
                     }
                     //se e minore o ugualela quantita esposta di quel lotto va bene e quindi sarà l'ultima
                     else {
                         guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * v.getQuantita();
-                        vdao.diminuisciEsposizione(v.getQuantita(), es);
+                        gdao.diminuisciEsposizione(v.getQuantita(), es);
                         break;
                     }
                 }
@@ -67,6 +67,11 @@ public class VenditaController
     {
         VendutoDAO vdao = new VendutoDAO();
         return vdao.getStorico(dataInizio, dataFine);
+    }
+
+    public ArrayList<Esposizione> visualizzaProdottiEsposti(){
+        EsposizioneDAO edao = new EsposizioneDAO();
+        return edao.visualizzaProdottiEspostiCassiere();
     }
 
     public float getIncassi(LocalDate dataInizio, LocalDate dataFine)
