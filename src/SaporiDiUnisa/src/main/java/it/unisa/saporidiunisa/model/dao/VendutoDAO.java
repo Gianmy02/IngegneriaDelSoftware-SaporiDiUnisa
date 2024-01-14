@@ -152,5 +152,40 @@ public class VendutoDAO
         }
     }
 
+    public float getIncassiTotali(){
+        try (val connection = Database.getConnection())
+        {
+            PreparedStatement ps =
+                    connection.prepareStatement("SELECT SUM(costo * quantita) AS somma_costi_per_quantita FROM venduto;");
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+               return rs.getFloat(1);
+            }
+            return 0;
+
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public float getGuadagniTotali(){
+        try (val connection = Database.getConnection())
+        {
+            PreparedStatement ps =
+                    connection.prepareStatement("SELECT SUM(guadagno) FROM venduto;");
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return rs.getFloat(1);
+            }
+            return 0;
+
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

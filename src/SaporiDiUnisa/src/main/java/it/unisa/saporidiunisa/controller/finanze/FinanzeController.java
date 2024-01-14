@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.controller.finanze;
 
+import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
 import it.unisa.saporidiunisa.model.entity.Bilancio;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
@@ -9,13 +10,8 @@ import java.util.ArrayList;
 
 public class FinanzeController
 {
-    public Bilancio visualizzaBilancio(LocalDate dataInizio, LocalDate dataFine)
+    public Bilancio visualizzaBilancio()
     {
-        if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
-        {
-
-        }
-
         return null;
     }
 

@@ -81,6 +81,12 @@ public class VenditaController
 
     public float getIncassiTotali()
     {
-        return 0;
+        VendutoDAO vdao = new VendutoDAO();
+        return vdao.getIncassiTotali();
+    }
+
+    public float getGuadagniTotali(){
+        VendutoDAO vdao = new VendutoDAO();
+        return vdao.getGuadagniTotali();
     }
 }

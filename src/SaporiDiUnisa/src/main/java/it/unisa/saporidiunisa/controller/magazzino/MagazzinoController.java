@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.controller.magazzino;
 
+import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
@@ -43,6 +44,7 @@ public class MagazzinoController
 
     public float getSpeseTotali()
     {
-        return 0;
+        LottoDAO ldao= new LottoDAO();
+        return ldao.getSpeseTotali();
     }
 }
