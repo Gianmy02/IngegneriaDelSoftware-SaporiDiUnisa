@@ -28,7 +28,7 @@ public class ProdottoDAO
         }
     }
 
-    public Prodotto selectByNameAndBrand(final String nome, final String marchio)
+    public static Prodotto selectByNameAndBrand(final String nome, final String marchio)
     {
         try (val con = Database.getConnection())
         {
@@ -45,8 +45,36 @@ public class ProdottoDAO
         }
     }
 
-    private static Prodotto _build(final ResultSet rs) throws SQLException
-    {
+    public static void insert(final Prodotto prodotto){
+        try {
+            val con = Database.getConnection();
+            val ps = con.prepareStatement("insert into prodotto(nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto) values(?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, prodotto.getNome());
+            ps.setString(2, prodotto.getMarchio());
+            ps.setFloat(3, prodotto.getPrezzo());
+            ps.setFloat(4, prodotto.getPrezzoScontato());
+            ps.setDate(5, java.sql.Date.valueOf(prodotto.getInizioSconto()));
+            ps.setDate(6, java.sql.Date.valueOf(prodotto.getFineSconto()));
+            ps.setBytes(7, prodotto.getFoto());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void updatePrice(final float prezzo, final int id){
+        try {
+            val con = Database.getConnection();
+            val ps = con.prepareStatement("update prodotto set prezzo=(?) where id=(?)");
+            ps.setFloat(1, prezzo);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Prodotto _build(final ResultSet rs) throws SQLException {
         val prodotto = new Prodotto();
         prodotto.setId(rs.getInt("id"));
         prodotto.setNome(rs.getString("nome"));

@@ -1,12 +1,16 @@
 package it.unisa.saporidiunisa.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Lotto
 {
     private int id;
@@ -18,6 +22,6 @@ public class Lotto
     private Prodotto prodotto;
 
     public float getCostoProdotto(){
-        return this.quantita/this.costo;
+        return this.costo/this.quantita;
     }
 }
