@@ -6,14 +6,14 @@
         <link rel="stylesheet" href="./style/index.css">
     </head>
     <body>
-        <%@ include file="WEB-INF/include/header.jsp" %>
+        <%@ include file="WEB-INF/include/header.html" %>
 
-        <div id="loginIndex">
-            <a href="view/login.jsp">
-                <input type="button" value="Login">
-            </a>
-        </div>
+        <form name="login" method="post" action="${pageContext.request.contextPath}/login-servlet">
+            <label for="pin">PIN</label>
+            <input type="password" id="pin" name="pin">
+            <input type="submit" value="Accedi">
+        </form>
 
-        <%@ include file="WEB-INF/include/footer.jsp" %>
+        <%@ include file="WEB-INF/include/footer.html" %>
     </body>
 </html>
