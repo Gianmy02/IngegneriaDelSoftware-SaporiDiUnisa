@@ -1,7 +1,6 @@
 package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
-import it.unisa.saporidiunisa.utils.Patterns;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +15,7 @@ public class LoginServlet extends HttpServlet
     {
         val session = request.getSession();
 
+        /*
         if (session.getAttribute("dipendente") == null)
         {
             val pin = request.getParameter("pin");
@@ -42,11 +42,12 @@ public class LoginServlet extends HttpServlet
 
             session.setAttribute("dipendente", dipendente);
 
-            /*
+
             RequestDispatcher dispatcher = request.getRequestDispatcher(address);
             dispatcher.forward(request, response);
-            */
+
         }
+         */
     }
 }
 

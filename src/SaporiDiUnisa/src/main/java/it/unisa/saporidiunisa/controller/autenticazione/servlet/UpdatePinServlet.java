@@ -2,7 +2,7 @@ package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.utils.Patterns;
+// import it.unisa.saporidiunisa.utils.Patterns;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,6 +20,7 @@ public class UpdatePinServlet extends HttpServlet
         val session = request.getSession();
         val dipendente = (Dipendente)session.getAttribute("dipendente");
 
+        /*
         if (dipendente != null && dipendente.getRuolo() == Dipendente.Ruolo.ADMIN)
         {
             val pin = request.getParameter("newPin");
@@ -41,5 +42,6 @@ public class UpdatePinServlet extends HttpServlet
                 // TODO: errore modifica pin
             }
         }
+         */
     }
 }
