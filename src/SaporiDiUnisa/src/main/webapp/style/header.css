@@ -1,0 +1,12 @@
+#header-background{
+    background-color: #07d200;
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+#header-logo{
+}
