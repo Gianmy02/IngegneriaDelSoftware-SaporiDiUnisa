@@ -46,8 +46,7 @@ public class ProdottoDAO
     }
 
     public static void insert(final Prodotto prodotto){
-        try {
-            val con = Database.getConnection();
+        try(val con = Database.getConnection()) {
             val ps = con.prepareStatement("insert into prodotto(nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto) values(?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, prodotto.getNome());
             ps.setString(2, prodotto.getMarchio());
@@ -63,8 +62,7 @@ public class ProdottoDAO
     }
 
     public static void updatePrice(final float prezzo, final int id){
-        try {
-            val con = Database.getConnection();
+        try(val con = Database.getConnection()) {
             val ps = con.prepareStatement("update prodotto set prezzo=(?) where id=(?)");
             ps.setFloat(1, prezzo);
             ps.setInt(2, id);
