@@ -9,12 +9,12 @@ import java.util.Arrays;
 
 public class DipendenteDAO
 {
-    public Dipendente findDipendenteByPin(char[] pin)
+    public Dipendente findDipendenteByPin(String pin)
     {
         try (val connection = Database.getConnection())
         {
             val preparedStatement = connection.prepareStatement("select id, ruolo, pin from dipendente where pin = ?;");
-            preparedStatement.setObject(1, Arrays.toString(pin).toCharArray());
+            preparedStatement.setString(1, pin);
             val resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next())
@@ -22,7 +22,7 @@ public class DipendenteDAO
                 val dipendente = new Dipendente();
                 dipendente.setId(resultSet.getInt(1));
                 dipendente.setRuolo(Dipendente.Ruolo.valueOf(resultSet.getString(2)));
-                dipendente.setPin(resultSet.getString(3).toCharArray());
+                dipendente.setPin(resultSet.getString(3));
                 return dipendente;
             }
 
@@ -34,12 +34,12 @@ public class DipendenteDAO
         }
     }
 
-    public boolean updatePin(char[] pin, Dipendente.Ruolo ruolo)
+    public boolean updatePin(String pin, Dipendente.Ruolo ruolo)
     {
         try (val connection = Database.getConnection())
         {
             var preparedStatement = connection.prepareStatement("select pin from dipendente where pin = ? and ruolo = ?;");
-            preparedStatement.setObject(1, Arrays.toString(pin).toCharArray());
+            preparedStatement.setString(1, pin);
             preparedStatement.setInt(2, ruolo.ordinal());
             val resultSet = preparedStatement.executeQuery();
 
@@ -47,7 +47,7 @@ public class DipendenteDAO
             if (!resultSet.next())
             {
                 preparedStatement = connection.prepareStatement("update dipendente set pin = ? where ruolo = ?;");
-                preparedStatement.setObject(1, Arrays.toString(pin).toCharArray());
+                preparedStatement.setString(1, pin);
                 preparedStatement.setInt(2, ruolo.ordinal());
 
                 if (preparedStatement.executeUpdate() != 1)

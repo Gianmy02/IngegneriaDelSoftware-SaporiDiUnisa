@@ -24,6 +24,6 @@ public class Prodotto
 
     public boolean isSconto()
     {
-        return this.prezzoScontato != 0;
+        return this.fineSconto.isAfter(LocalDate.now());
     }
 }
