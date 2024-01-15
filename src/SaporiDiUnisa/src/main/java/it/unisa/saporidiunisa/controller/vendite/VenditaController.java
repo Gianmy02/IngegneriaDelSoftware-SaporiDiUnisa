@@ -20,7 +20,7 @@ public class VenditaController
      * @param venduti sono tutti i prodotti venduti in un determinato momento a un cliente ipotetico
      * @return booleano di conferma
      */
-    public boolean venditaProdotti(ArrayList<Venduto> venduti)
+    public static boolean venditaProdotti(ArrayList<Venduto> venduti)
     {
         VendutoDAO vdao = new VendutoDAO();
         EsposizioneDAO gdao = new EsposizioneDAO();
@@ -84,6 +84,8 @@ public class VenditaController
         return edao.visualizzaProdottiEspostiCassiere();
     }
 
+
+
     public float getIncassi(LocalDate dataInizio, LocalDate dataFine)
     {
         return 0;
@@ -97,5 +99,11 @@ public class VenditaController
     public static float getGuadagniTotali()
     {
         return VendutoDAO.getGuadagniTotali();
+    }
+
+    public static void addGiornoVendite(){
+        VendutoDAO vdao = new VendutoDAO();
+        if(!vdao.searchGiornoLavorativo())
+            vdao.doSaveGiornoLavorativo();
     }
 }

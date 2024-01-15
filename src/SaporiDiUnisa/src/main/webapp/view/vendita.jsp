@@ -9,6 +9,7 @@
     <title>Sapori Di Unisa - Regsitra Vendita</title>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <script src="${pageContext.request.contextPath}/script/calculateTotal.js" defer></script>
+    <script src="${pageContext.request.contextPath}/script/confirmSale.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/table.css">
 </head>
@@ -42,7 +43,7 @@
 
         %>
 
-            <tr class = "vendita-item">
+            <tr class = "vendita-item" id="<%=e.getProdotto().getId()%>">
                 <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
                 <td><%=e.getProdotto().getNome()%></td>
                 <td><%=e.getProdotto().getMarchio()%></td>
@@ -72,7 +73,7 @@
     </div>
     <div id = "buttons-container">
         <button id="cancel-button"><a href="${pageContext.request.contextPath}/view/select_Cassiere.jsp">Annulla</a></button>
-        <button id="confirm-button">Conferma</button>
+        <button id="confirm-button" onclick="confirmSale()">Conferma</button>
     </div>
     <%@ include file="/WEB-INF/include/footer.html" %>
 </div>

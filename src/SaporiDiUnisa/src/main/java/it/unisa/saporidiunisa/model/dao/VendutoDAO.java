@@ -116,6 +116,25 @@ public class VendutoDAO
         }
     }
 
+    public boolean searchGiornoLavorativo()
+    {
+        try (val connection = Database.getConnection())
+        {
+            PreparedStatement ps = connection.prepareStatement(
+                    "SELECT * FROM vendita WHERE giorno = CURDATE()");
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next())
+            {
+                return true;
+            }
+            return false;
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean doUpdateVendita(Venduto v)
     {
         try (val connection = Database.getConnection())
