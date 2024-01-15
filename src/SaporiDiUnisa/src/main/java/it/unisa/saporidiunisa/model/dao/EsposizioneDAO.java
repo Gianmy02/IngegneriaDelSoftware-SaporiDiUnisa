@@ -38,8 +38,10 @@ public class EsposizioneDAO
                 p.setMarchio(rs.getString(9));
                 p.setPrezzo(rs.getFloat(10));
                 p.setPrezzoScontato(rs.getFloat(11));
-                p.setInizioSconto(LocalDate.parse(rs.getString(12)));
-                p.setFineSconto(LocalDate.parse(rs.getString(13)));
+                if((rs.getString(12)) != null)
+                    p.setInizioSconto(LocalDate.parse(rs.getString(12)));
+                if((rs.getString(13)) != null)
+                    p.setFineSconto(LocalDate.parse(rs.getString(13)));
                 p.setFoto(rs.getBytes(14));
                 e.setProdotto(p);
                 e.setLotto(l);

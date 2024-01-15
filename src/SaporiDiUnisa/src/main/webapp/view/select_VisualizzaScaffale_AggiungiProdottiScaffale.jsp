@@ -16,10 +16,9 @@
         <p>Visualizza Scaffale</p>
         <input type="hidden" name="address" value="visualizzaScaffale">
     </form>
-    <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
+    <form action="${pageContext.request.contextPath}/VisualizzaScaffale" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">list_alt_add</span>
         <p>Aggiungi Prodotti Scaffale</p>
-        <input type="hidden" name="address" value="aggiunta_scaffale">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>
