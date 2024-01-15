@@ -1,13 +1,35 @@
 main{
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-button{
+form{
     border-radius: 10px;
     padding: 19px;
     margin: 5px;
     box-shadow: 3px 3px 8px #888;
     color: white;
     font-size: 48px;
-    background: #ff0000 /*url('icon.png') no-repeat top left*/;
+    background-color: #ff0000;
+    width: 500px;
+    cursor: pointer;
+}
+
+form span.material-symbols-outlined{
+    color: white;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    font-size: 160px;
+}
+
+form p{
+    color: white;
+    font-weight: bold;
+    margin: 0;
 }
