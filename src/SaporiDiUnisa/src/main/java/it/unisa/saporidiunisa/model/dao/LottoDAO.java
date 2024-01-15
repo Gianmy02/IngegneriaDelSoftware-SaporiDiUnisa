@@ -56,7 +56,7 @@ public class LottoDAO {
     /**
      * Restituisce tutti i lotti scaduti con solo gli attributi che servono
      */
-    public ArrayList<Lotto> getPerditeTotali(){
+    public static ArrayList<Lotto> getPerditeTotali(){
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =

@@ -5,8 +5,8 @@ import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
 import it.unisa.saporidiunisa.model.entity.Bilancio;
-import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
+import lombok.val;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,22 +17,22 @@ public class FinanzeController
      * La funzione <code>visualizzaBilancio</code> restituisce il bilancio aggiornato al modello della chiamata
      * @return Bilancio
      */
-    public Bilancio visualizzaBilancio()
+    public static Bilancio visualizzaBilancio()
     {
-        LottoDAO ldao = new LottoDAO();
-        ArrayList<Lotto> lotti = ldao.getPerditeTotali();
-        float perdite = 0;
-        for(Lotto l : lotti){
-            perdite += l.getCostoProdotto()*l.getQuantitaAttuale();
-        }
-        Bilancio b = new Bilancio();
-        b.setPerdite(perdite);
-        VenditaController vc = new VenditaController();
-        b.setGuadagno(vc.getGuadagniTotali());
-        b.setIncasso(vc.getIncassiTotali());
-        MagazzinoController mc =new MagazzinoController();
-        b.setSpese(mc.getSpeseTotali());
-        return b;
+        val bilancio = new Bilancio();
+
+        // NOTA: da testare
+        // val perdite = (float)LottoDAO.getPerditeTotali().stream().mapToDouble(l -> l.getCostoProdotto() * l.getQuantitaAttuale()).sum();
+        var perdite = (float)0;
+        for (val l : LottoDAO.getPerditeTotali())
+            perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
+
+        bilancio.setPerdite(perdite);
+        bilancio.setGuadagno(VenditaController.getGuadagniTotali());
+        bilancio.setIncasso(VenditaController.getIncassiTotali());
+        bilancio.setSpese(MagazzinoController.getSpeseTotali());
+
+        return bilancio;
     }
 
     public ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
