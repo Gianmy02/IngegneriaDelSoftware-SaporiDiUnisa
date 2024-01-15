@@ -15,7 +15,7 @@ public class FinanzeController
 {
     /**
      * La funzione <code>visualizzaBilancio</code> restituisce il bilancio aggiornato al modello della chiamata
-     * @return Bilancio
+     * @return Bilancio calcolato
      */
     public static Bilancio visualizzaBilancio()
     {
@@ -45,6 +45,14 @@ public class FinanzeController
         return null;
     }
 
+    /**
+     * La funzione <code>impostaSconto</code> serve ad applicare uno sconto ad un prodotto scelto
+     * @param prodotto prodotto al quale applicare lo sconto
+     * @param sconto percentuale dello sconto da applicare da 1 a 100
+     * @param dataInizio data di inizio dello sconto
+     * @param dataFine data di fine dello sconto
+     * @return booleano di conferma
+     */
     public static boolean impostaSconto(Prodotto prodotto, int sconto, LocalDate dataInizio, LocalDate dataFine)
     {
         if (!prodotto.isSconto())

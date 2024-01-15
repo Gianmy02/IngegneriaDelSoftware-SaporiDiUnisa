@@ -34,10 +34,14 @@ public class ImpostaScontoServlet extends HttpServlet
             }
             int id = Integer.parseInt(req.getParameter("prodotto"));
             Prodotto p = MagazzinoController.getProdottoById(id);
-            if(FinanzeController.impostaSconto(p, sconto, dataInizioSconto, dataFineSconto))
-            {
-                //TODO: dispatch alla pagina di conferma
-            }else{
+            if(p!=null){
+                if(FinanzeController.impostaSconto(p, sconto, dataInizioSconto, dataFineSconto))
+                {
+                    //TODO: dispatch alla pagina di conferma
+                }else{
+                    //TODO: dispatch alla pagina di errore
+                }
+            }else {
                 //TODO: dispatch alla pagina di errore
             }
         }else {

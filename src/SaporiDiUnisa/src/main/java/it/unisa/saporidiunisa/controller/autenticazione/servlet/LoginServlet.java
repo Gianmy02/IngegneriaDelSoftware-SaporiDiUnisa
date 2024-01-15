@@ -45,7 +45,8 @@ public class LoginServlet extends HttpServlet
 
             val address = switch (dipendente.getRuolo())
             {
-                case CASSIERE, ADMIN -> "index.jsp";
+                case CASSIERE -> "view/select_Cassiere.jsp";
+                case ADMIN -> "index.jsp";
                 case FINANZE -> "view/select/finanze.jsp";
                 case MAGAZZINIERE -> "view/select_Magazzino_Scaffale.jsp";
             };

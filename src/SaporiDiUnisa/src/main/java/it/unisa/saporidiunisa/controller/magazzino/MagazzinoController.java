@@ -48,6 +48,11 @@ public class MagazzinoController
         return LottoDAO.getSpeseTotali();
     }
 
+    /**
+     * La funzione <code>getProdottoById</code> cerca il prodotto corrispondente all'id richiesto
+     * @param id prodotto da ricercare
+     * @return Prodotto trovato nel caso
+     */
     public static Prodotto getProdottoById(int id){
         return ProdottoDAO.findProdottobyId(id);
     }

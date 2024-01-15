@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "mostraProdottiCassiereServlet", value = "/mostraProdottiCassiereServlet")
+@WebServlet(name = "MostraProdottiCassiereServlet", value = "/MostraProdottiCassiereServlet")
 public class MostraProdottiCassiereServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,10 +22,12 @@ public class MostraProdottiCassiereServlet extends HttpServlet {
         if(d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE){
             VenditaController vc = new VenditaController();
             ArrayList<Esposizione> esposti = vc.visualizzaProdottiEsposti();
+            session.setAttribute("prodottiEsposti", esposti);
         }
         else{
             //errore da gestire, mandare ad una pagina di errore TODO
         }
-           //TODO: dispatch verso la pagina di errore nel caso oppure verso quella della view
+
+        req.getRequestDispatcher("view/vendita.jsp").forward(req, resp);
     }
 }

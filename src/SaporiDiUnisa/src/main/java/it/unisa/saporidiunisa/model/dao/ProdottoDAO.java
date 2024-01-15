@@ -110,7 +110,10 @@ public class ProdottoDAO
             val ps = con.prepareStatement("SELECT * FROM prodotto WHERE id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            return _build(rs);
+            if(rs.next()){
+                return _build(rs);
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
