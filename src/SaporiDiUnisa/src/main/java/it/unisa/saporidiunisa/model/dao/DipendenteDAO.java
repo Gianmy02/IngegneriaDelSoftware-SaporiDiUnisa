@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class DipendenteDAO
 {
-    public Dipendente findDipendenteByPin(String pin)
+    public static Dipendente findDipendenteByPin(String pin)
     {
         try (val connection = Database.getConnection())
         {

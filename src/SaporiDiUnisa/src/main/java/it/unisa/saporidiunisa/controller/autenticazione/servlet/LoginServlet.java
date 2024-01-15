@@ -2,7 +2,6 @@ package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
 import it.unisa.saporidiunisa.utils.Patterns;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,16 +14,15 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet
 {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
         val session = request.getSession();
-
 
         if (session.getAttribute("dipendente") == null)
         {
             val pin = request.getParameter("pin");
             if (pin == null)
             {
-
                 // TODO: errore da gestire
                 return;
             }
@@ -37,7 +35,6 @@ public class LoginServlet extends HttpServlet
             }
 
             val dipendente = AutenticazioneController.login(pin);
-
             if (dipendente == null)
             {
                 // TODO: errore da gestire
@@ -46,16 +43,14 @@ public class LoginServlet extends HttpServlet
 
             session.setAttribute("dipendente", dipendente);
 
-            String address = "";
-            switch(dipendente.getRuolo()){
-                case CASSIERE -> address = "index.jsp";
-                case ADMIN -> address = "index.jsp";
-                case MAGAZZINIERE -> address = "view/select_Magazzino_Scaffale.jsp";
-                case FINANZE -> address = "index.jsp";
-            }
+            val address = switch (dipendente.getRuolo())
+            {
+                case CASSIERE, ADMIN, FINANZE -> "index.jsp";
+                case MAGAZZINIERE -> "view/select_Magazzino_Scaffale.jsp";
+            };
+
             response.sendRedirect(address);
         }
-
     }
 }
 

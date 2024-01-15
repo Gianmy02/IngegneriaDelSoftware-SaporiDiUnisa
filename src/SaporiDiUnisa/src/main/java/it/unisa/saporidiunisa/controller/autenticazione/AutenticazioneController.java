@@ -17,8 +17,7 @@ public class AutenticazioneController
      */
     public static Dipendente login(String pin)
     {
-        val dipendenteDAO = new DipendenteDAO();
-        return dipendenteDAO.findDipendenteByPin(pin);
+        return DipendenteDAO.findDipendenteByPin(pin);
     }
 
     /**
