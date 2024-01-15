@@ -5,7 +5,6 @@ import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class DipendenteDAO
 {
@@ -21,7 +20,7 @@ public class DipendenteDAO
             {
                 val dipendente = new Dipendente();
                 dipendente.setId(resultSet.getInt(1));
-                dipendente.setRuolo(Dipendente.Ruolo.valueOf(resultSet.getString(2)));
+                dipendente.setRuolo(Dipendente.Ruolo.valueOf(resultSet.getString(2).toUpperCase()));
                 dipendente.setPin(resultSet.getString(3));
                 return dipendente;
             }
