@@ -98,31 +98,13 @@ public class LottoDAO
     {
         try (val connection = Database.getConnection())
         {
-            Statement st = connection.createStatement();
-            String query = "DROP VIEW IF EXISTS vista;";
-            st.executeUpdate(query);
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        try (val connection = Database.getConnection())
-        {
-            Statement st = connection.createStatement();
-            String query = "CREATE VIEW vista AS SELECT esposizione.lotto FROM esposizione, lotto, prodotto WHERE esposizione.lotto = lotto.id AND esposizione.prodotto = prodotto.id;";
-            st.executeUpdate(query);
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        try (val connection = Database.getConnection())
-        {
-
             PreparedStatement ps =
-                    connection.prepareStatement("SELECT lotto.id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, lotto.fornitura, lotto.prodotto, fornitura.giorno, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto FROM lotto, fornitura, prodotto WHERE lotto.fornitura = fornitura.id AND lotto.prodotto = prodotto.id AND lotto.id NOT IN (SELECT lotto FROM vista);");
+                    connection.prepareStatement("SELECT lotto.id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, lotto.fornitura, lotto.prodotto, fornitura.giorno, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto " +
+                            "FROM lotto " +
+                            "INNER JOIN fornitura ON lotto.fornitura = fornitura.id " +
+                            "INNER JOIN prodotto ON lotto.prodotto = prodotto.id " +
+                            "WHERE lotto.id NOT IN (SELECT esposizione.lotto FROM esposizione WHERE esposizione.lotto = lotto.id);");
+
             ResultSet rs = ps.executeQuery();
             ArrayList<Lotto> lottiMagazzino = new ArrayList<>();
             while (rs.next())
