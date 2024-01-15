@@ -1,9 +1,3 @@
-html,body{
-    background-color: white;
-    margin: 0;
-    padding: 0;
-}
-
 header{
     background-color: #07d200;
     width: 100%;
@@ -12,7 +6,7 @@ header{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 0;
 }
 
 #header-logo{
