@@ -11,9 +11,9 @@ insert into fornitura (giorno) values
 ('2024-01-14');
 
 insert into prodotto (nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto) values
-('Pasta', 'Garofalo', 10.00, 8.50, '2024-01-15', '2024-01-20', 'BLOB1'),
+('Pasta', 'Garofalo', 10.00, NULL, NULL, NULL, 'BLOB1'),
 ('Farina', 'Caputo', 15.00, NULL, NULL, NULL, 'BLOB2'),
-('Cornetti', 'Kinder', 20.00, 18.00, '2024-01-12', '2024-01-15', 'BLOB3'),
+('Cornetti', 'Kinder', 20.00, NULL, NULL, NULL, 'BLOB3'),
 ('Biscotti', 'Mulino Bianco', 25.00, NULL, NULL, NULL, 'BLOB4');
 
 insert into lotto (costo, data_scadenza, quantita, quantita_attuale, fornitura, prodotto) values
