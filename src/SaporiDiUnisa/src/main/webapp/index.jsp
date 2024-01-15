@@ -5,9 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sapori di Unisa</title>
         <link rel="stylesheet" href="style/index.css">
-        <link rel="stylesheet" href="style/header.css">
-        <link rel="stylesheet" href="style/main.css">
-        <link rel="stylesheet" href="style/footer.css">
+        <link rel="stylesheet" href="style/style.css">
     </head>
     <body>
         <%@ include file="WEB-INF/include/header.html" %>

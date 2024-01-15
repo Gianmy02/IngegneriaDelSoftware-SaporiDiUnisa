@@ -7,9 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <script src="${pageContext.request.contextPath}/script/registraFornitura.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/index.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/header.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
     <title>Sapori di Unisa - Registra Fornitura</title>
 </head>
 <body>
