@@ -53,14 +53,24 @@ public class Database
     public static Connection getConnection()
     {
         if (_instance == null)
+        {
             _instance = new Database();
+
+            try
+            {
+                Class.forName(_instance.driver);
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
 
         try
         {
-            Class.forName(_instance.driver);
             return DriverManager.getConnection(_instance.url, _instance.username, _instance.password);
         }
-        catch (SQLException | ClassNotFoundException e)
+        catch (SQLException e)
         {
             throw new RuntimeException(e);
         }
