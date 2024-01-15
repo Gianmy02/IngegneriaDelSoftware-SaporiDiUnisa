@@ -4,8 +4,10 @@ import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ProdottoDAO
@@ -72,6 +74,8 @@ public class ProdottoDAO
         }
     }
 
+
+
     private static Prodotto _build(final ResultSet rs) throws SQLException {
         val prodotto = new Prodotto();
         prodotto.setId(rs.getInt("id"));
@@ -83,5 +87,32 @@ public class ProdottoDAO
         prodotto.setFineSconto(rs.getDate("fineSconto").toLocalDate());
         prodotto.setFoto(rs.getBytes("foto"));
         return prodotto;
+    }
+
+    public static boolean updateSconto(Prodotto p){
+        try(val con = Database.getConnection()) {
+            val ps = con.prepareStatement("update prodotto set prezzo_scontato = (?), inizio_sconto = ?, fine_sconto = ? where id=(?)");
+            ps.setFloat(1, p.getPrezzoScontato());
+            ps.setDate(2, Date.valueOf(p.getInizioSconto()));
+            ps.setDate(3, Date.valueOf(p.getFineSconto()));
+            ps.setInt(4, p.getId());
+            if (ps.executeUpdate() != 1) {
+                throw new RuntimeException("UPDATE error.");
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Prodotto findProdottobyId(int id){
+        try(val con = Database.getConnection()) {
+            val ps = con.prepareStatement("SELECT * FROM prodotto WHERE id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            return _build(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
