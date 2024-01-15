@@ -108,7 +108,7 @@ public class EsposizioneDAO
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
-                    connection.prepareStatement("SELECT e.prodotto, p.nome, p.marchio, p.foto, CASE WHEN p.inizio_sconto <= CURRENT_DATE() AND p.fine_sconto >= CURRENT_DATE() THEN p.prezzo_scontato ELSE p.prezzo END AS prezzo, SUM(e.quantita) AS quantita_totale FROM esposizione e JOIN lotto l ON e.lotto = l.id JOIN prodotto p ON e.prodotto = p.id WHERE l.data_scadenza >= CURRENT_DATE() GROUP BY e.prodotto, p.nome, p.marchio, prezzo;");
+                    connection.prepareStatement("SELECT e.prodotto, p.nome, p.marchio, p.foto, CASE WHEN p.inizio_sconto <= CURRENT_DATE() AND p.fine_sconto >= CURRENT_DATE() THEN p.prezzo_scontato ELSE p.prezzo END AS prezzo, SUM(e.quantita) AS quantita_totale FROM esposizione e JOIN lotto l ON e.lotto = l.id JOIN prodotto p ON e.prodotto = p.id WHERE l.data_scadenza >= CURRENT_DATE() GROUP BY e.prodotto, p.nome, p.marchio, prezzo HAVING quantita_totale > 0;");
             ResultSet rs = ps.executeQuery();
             ArrayList<Esposizione> esposti = new ArrayList<>();
             while(rs.next()){
