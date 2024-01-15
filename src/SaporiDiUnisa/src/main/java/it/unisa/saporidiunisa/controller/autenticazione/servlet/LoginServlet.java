@@ -46,8 +46,14 @@ public class LoginServlet extends HttpServlet
 
             session.setAttribute("dipendente", dipendente);
 
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-
+            String address = "";
+            switch(dipendente.getRuolo()){
+                case CASSIERE -> address = "index.jsp";
+                case ADMIN -> address = "index.jsp";
+                case MAGAZZINIERE -> address = "view/select_Magazzino_Scaffale.jsp";
+                case FINANZE -> address = "index.jsp";
+            }
+            response.sendRedirect(address);
         }
 
     }
