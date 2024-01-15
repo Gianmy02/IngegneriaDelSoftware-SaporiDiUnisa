@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class EsposizioneDAO
 {
 
-    public ArrayList<Esposizione> getEsposizione(){
+    public static ArrayList<Esposizione> getEsposizione(){
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =

@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sapori di Unisa</title>
         <link rel="stylesheet" href="style/index.css">
         <link rel="stylesheet" href="style/header.css">
