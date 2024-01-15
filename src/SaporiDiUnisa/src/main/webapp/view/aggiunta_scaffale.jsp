@@ -19,7 +19,39 @@
             ArrayList<Esposizione> lottiScaffale = (ArrayList<Esposizione>) request.getAttribute("lottiScaffale");
         %>
 
+        <%
+            for(Esposizione e : lottiScaffale)
+            {
+        %>
 
+        <h2>Esposizione</h2>
+        <div>
+            <p> Nome: <%=e.getProdotto().getNome()%> </p>
+            <p> Azienda: <%=e.getProdotto().getMarchio()%> </p>
+            <p> Data Scadenza: <%=e.getLotto().getDataScadenza()%> </p>
+            <p> Quantità: <%=e.getQuantita()%> </p>
+        </div>
+
+        <%
+            }
+        %>
+
+        <%
+            for(Lotto l: lottiMagazzino)
+            {
+        %>
+
+        <h2>Magazzino</h2>
+        <div>
+            <p> Nome: <%=l.getProdotto().getNome()%> </p>
+            <p> Azienda: <%=l.getProdotto().getMarchio()%> </p>
+            <p> Data Scadenza: <%=l.getDataScadenza()%> </p>
+            <p> Quantità: <%=l.getQuantitaAttuale()%> </p>
+        </div>
+
+        <%
+            }
+        %>
 
 
         <%@ include file="/WEB-INF/include/footer.html" %>

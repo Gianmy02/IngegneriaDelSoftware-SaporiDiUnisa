@@ -27,6 +27,4 @@ public class VisualizzaScaffale extends HttpServlet {
         RequestDispatcher dispatcher = req.getRequestDispatcher("view/aggiunta_scaffale.jsp");
         dispatcher.forward(req, resp);
     }
-
-
 }
