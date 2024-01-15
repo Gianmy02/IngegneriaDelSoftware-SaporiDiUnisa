@@ -1,0 +1,13 @@
+main{
+    text-align: center;
+}
+
+button{
+    border-radius: 10px;
+    padding: 19px;
+    margin: 5px;
+    box-shadow: 3px 3px 8px #888;
+    color: white;
+    font-size: 48px;
+    background: #ff0000 /*url('icon.png') no-repeat top left*/;
+}
