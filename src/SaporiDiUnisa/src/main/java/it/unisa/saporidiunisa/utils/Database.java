@@ -10,11 +10,13 @@ import java.util.Properties;
 
 public class Database
 {
+    private final String driver;
     private final String url;
     private final String username;
     private final String password;
     private static Database _instance = null;
     private static final String RESOURCE_DATABASE = "database.properties";
+    private static final String PROPERTY_DRIVER = "jdbc.driver";
     private static final String PROPERTY_URL = "jdbc.url";
     private static final String PROPERTY_USERNAME = "jdbc.username";
     private static final String PROPERTY_PASSWORD = "jdbc.password";
@@ -23,6 +25,7 @@ public class Database
     {
         val properties = getProperties();
 
+        this.driver = properties.getProperty(PROPERTY_DRIVER);
         this.url = properties.getProperty(PROPERTY_URL);
         this.username = properties.getProperty(PROPERTY_USERNAME);
         this.password = properties.getProperty(PROPERTY_PASSWORD);
@@ -54,9 +57,10 @@ public class Database
 
         try
         {
+            Class.forName(_instance.driver);
             return DriverManager.getConnection(_instance.url, _instance.username, _instance.password);
         }
-        catch (SQLException e)
+        catch (SQLException | ClassNotFoundException e)
         {
             throw new RuntimeException(e);
         }
