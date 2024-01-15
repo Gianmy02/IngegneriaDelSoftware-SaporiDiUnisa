@@ -16,7 +16,7 @@ public class VenditaController
 {
     /**
      * Il metodo conferma le vendite richieste di tutti i prodotti
-     * @param venduti sono tutti i prodotti venduti in un determinato momento ad un cliente ipotetico
+     * @param venduti sono tutti i prodotti venduti in un determinato momento a un cliente ipotetico
      * @return booleano di conferma
      */
     public boolean venditaProdotti(ArrayList<Venduto> venduti)

@@ -12,9 +12,16 @@ public class ScaffaleController
         return false;
     }
 
-    public boolean eliminaScadutiScaffale(ArrayList<Esposizione> esposizioneScaffale)
+    /**
+     * Il metodo <code>eliminaScadutiScaffale</code> elimina tutti gli scaduti dallo scaffale facendo da tramite tra le servlet e il db
+     */
+    public void eliminaScadutiScaffale()
     {
-        return false;
+        EsposizioneDAO edao = new EsposizioneDAO();
+        ArrayList<Esposizione> esposizioneScaffaleScaduti = edao.getEsposizioneScaduti();
+        for(Esposizione e: esposizioneScaffaleScaduti){
+            edao.rimuoviScaduto(e);
+        }
     }
 
     /**
