@@ -12,8 +12,10 @@
         <%@ include file="WEB-INF/include/header.html" %>
         <main>
             <form name="login" method="post" action="${pageContext.request.contextPath}/login-servlet">
-                <label for="pin">PIN</label>
-                <input type="password" id="pin" name="pin">
+                <label for="pin">Login</label>
+                <br>
+                <input type="password" id="pin" name="pin" placeholder="Pin" required>
+                <br>
                 <input type="submit" value="Accedi">
             </form>
         </main>

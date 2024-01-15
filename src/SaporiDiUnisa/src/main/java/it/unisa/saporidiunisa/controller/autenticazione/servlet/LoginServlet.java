@@ -1,7 +1,6 @@
 package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
-import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Patterns;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,6 +24,7 @@ public class LoginServlet extends HttpServlet
             val pin = request.getParameter("pin");
             if (pin == null)
             {
+
                 // TODO: errore da gestire
                 return;
             }
@@ -45,16 +45,15 @@ public class LoginServlet extends HttpServlet
             }
 
             session.setAttribute("dipendente", dipendente);
-            if(dipendente.getRuolo() == Dipendente.Ruolo.ADMIN){
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            } else if (dipendente.getRuolo() == Dipendente.Ruolo.CASSIERE) {
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            } else if (dipendente.getRuolo() == Dipendente.Ruolo.FINANZE) {
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            }else {
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            }
 
+            String address = "";
+            switch(dipendente.getRuolo()){
+                case CASSIERE -> address = "index.jsp";
+                case ADMIN -> address = "index.jsp";
+                case MAGAZZINIERE -> address = "view/select_Magazzino_Scaffale.jsp";
+                case FINANZE -> address = "index.jsp";
+            }
+            response.sendRedirect(address);
         }
 
     }

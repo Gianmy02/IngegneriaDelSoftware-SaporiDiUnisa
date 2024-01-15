@@ -1,0 +1,30 @@
+:root {
+    --font-size: 52px;
+}
+
+main{
+    text-align: center;
+}
+
+label{
+    font-weight: bold;
+    font-size: var(--font-size);
+    color: #ff0000;
+}
+
+#pin{
+    font-size: var(--font-size);
+    width: 250px;
+    text-align: center;
+    color: gray;
+    border: 8px solid gainsboro;
+}
+
+input[type="submit"]{
+    font-size: var(--font-size);
+    color: #ffffff;
+    background-color: #ff0000;
+    padding: 0 25px;
+    margin-top: 7px;
+    border: none;
+}
