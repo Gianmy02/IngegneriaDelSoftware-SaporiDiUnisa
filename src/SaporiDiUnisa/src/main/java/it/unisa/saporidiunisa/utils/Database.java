@@ -24,7 +24,6 @@ public class Database
     private Database()
     {
         val properties = getProperties();
-
         this.driver = properties.getProperty(PROPERTY_DRIVER);
         this.url = properties.getProperty(PROPERTY_URL);
         this.username = properties.getProperty(PROPERTY_USERNAME);
@@ -33,18 +32,37 @@ public class Database
 
     private Properties getProperties()
     {
-        try
+        try (val inputStream = getClass().getClassLoader().getResourceAsStream(RESOURCE_DATABASE))
         {
             val properties = new Properties();
-
-            try (val inputStream = getClass().getClassLoader().getResourceAsStream(RESOURCE_DATABASE))
-            {
-                properties.load(inputStream);
-            }
-
+            properties.load(inputStream);
             return properties;
         }
         catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void loadDriver()
+    {
+        try
+        {
+            Class.forName(this.driver);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Connection getConnectionImpl()
+    {
+        try
+        {
+            return DriverManager.getConnection(this.url, this.username, this.password);
+        }
+        catch (SQLException e)
         {
             throw new RuntimeException(e);
         }
@@ -55,24 +73,9 @@ public class Database
         if (_instance == null)
         {
             _instance = new Database();
-
-            try
-            {
-                Class.forName(_instance.driver);
-            }
-            catch (ClassNotFoundException e)
-            {
-                throw new RuntimeException(e);
-            }
+            _instance.loadDriver();
         }
 
-        try
-        {
-            return DriverManager.getConnection(_instance.url, _instance.username, _instance.password);
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
+        return _instance.getConnectionImpl();
     }
 }
