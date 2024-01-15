@@ -23,7 +23,7 @@ public class FinanzeController
 
         // NOTA: da testare
         // val perdite = (float)LottoDAO.getPerditeTotali().stream().mapToDouble(l -> l.getCostoProdotto() * l.getQuantitaAttuale()).sum();
-        var perdite = (float)0;
+        var perdite = 0.0f;
         for (val l : LottoDAO.getPerditeTotali())
             perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
 
@@ -35,7 +35,7 @@ public class FinanzeController
         return bilancio;
     }
 
-    public ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
+    public static ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
     {
         if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
         {
@@ -45,7 +45,7 @@ public class FinanzeController
         return null;
     }
 
-    public boolean impostaSconto(Prodotto prodotto, int sconto, LocalDate dataInizio, LocalDate dataFine)
+    public static boolean impostaSconto(Prodotto prodotto, int sconto, LocalDate dataInizio, LocalDate dataFine)
     {
         if (!prodotto.isSconto())
         {

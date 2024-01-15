@@ -44,7 +44,6 @@ public class MagazzinoController
 
     public static float getSpeseTotali()
     {
-        LottoDAO ldao= new LottoDAO();
-        return ldao.getSpeseTotali();
+        return LottoDAO.getSpeseTotali();
     }
 }

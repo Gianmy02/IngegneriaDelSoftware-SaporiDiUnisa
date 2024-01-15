@@ -16,6 +16,7 @@ public class VenditaController
 {
     /**
      * Il metodo conferma le vendite richieste di tutti i prodotti
+     *
      * @param venduti sono tutti i prodotti venduti in un determinato momento a un cliente ipotetico
      * @return booleano di conferma
      */
@@ -25,42 +26,50 @@ public class VenditaController
         EsposizioneDAO gdao = new EsposizioneDAO();
         boolean b = false;
         /*itero sulla lista di prodotti che si vogliono acquistare*/
-        for(Venduto v: venduti){
+        for (Venduto v : venduti)
+        {
             float guadagno = 0;
-                ArrayList<Esposizione> e = gdao.getLottibyProdottoWithoutScaduti(v.getProdotto()); //prendo tutti i prodotti in esposizione del prodotto specificato
-                int quantitaCount = v.getQuantita();
-                //itero per la quantita di prodotti da comprare
-                for(Esposizione es: e) {
-                    //se la quantita richiesta e maggiore di quella esposta del lotto preso in questione si continua
-                    if(quantitaCount>es.getQuantita()) {
-                        guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * es.getQuantita();
-                        quantitaCount = quantitaCount- es.getQuantita();
-                        gdao.diminuisciEsposizione(es.getQuantita(), es);
-                    }
-                    //se e minore o ugualela quantita esposta di quel lotto va bene e quindi sarà l'ultima
-                    else {
-                        guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * v.getQuantita();
-                        gdao.diminuisciEsposizione(v.getQuantita(), es);
-                        break;
-                    }
+            ArrayList<Esposizione> e = gdao.getLottibyProdottoWithoutScaduti(v.getProdotto()); //prendo tutti i prodotti in esposizione del prodotto specificato
+            int quantitaCount = v.getQuantita();
+            //itero per la quantita di prodotti da comprare
+            for (Esposizione es : e)
+            {
+                //se la quantita richiesta e maggiore di quella esposta del lotto preso in questione si continua
+                if (quantitaCount > es.getQuantita())
+                {
+                    guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * es.getQuantita();
+                    quantitaCount = quantitaCount - es.getQuantita();
+                    gdao.diminuisciEsposizione(es.getQuantita(), es);
                 }
-                v.setGuadagno(guadagno);
+                //se e minore o ugualela quantita esposta di quel lotto va bene e quindi sarà l'ultima
+                else
+                {
+                    guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * v.getQuantita();
+                    gdao.diminuisciEsposizione(v.getQuantita(), es);
+                    break;
+                }
+            }
+            v.setGuadagno(guadagno);
                 /*salva nel db i nuovi venduti del prodotto,
             vedo se al giorno d'oggi ci sono state altre vendite del prodotto*/
-                Venduto attuale = vdao.getVendutiGiornalieroByProdotto(v.getProdotto());
-                if(attuale!=null){
-                    b = vdao.doUpdateVendita(v);
-                }else {
-                    b = vdao.doSaveVendita(v);
-                }
+            Venduto attuale = vdao.getVendutiGiornalieroByProdotto(v.getProdotto());
+            if (attuale != null)
+            {
+                b = vdao.doUpdateVendita(v);
+            }
+            else
+            {
+                b = vdao.doSaveVendita(v);
+            }
         }
         return b;
     }
 
     /**
      * Il metodo <code>visualizzaStoricoVendite</code> restituisce la somma delle attivita di vendita di tutti i Prodotti in un determinato periodo scelto
+     *
      * @param dataInizio data che delimita l'inizio del periodo
-     * @param dataFine data che delimita la fine del periodo
+     * @param dataFine   data che delimita la fine del periodo
      * @return ArrayList di venduti
      */
     public ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine)
@@ -69,7 +78,8 @@ public class VenditaController
         return vdao.getStorico(dataInizio, dataFine);
     }
 
-    public ArrayList<Esposizione> visualizzaProdottiEsposti(){
+    public ArrayList<Esposizione> visualizzaProdottiEsposti()
+    {
         EsposizioneDAO edao = new EsposizioneDAO();
         return edao.visualizzaProdottiEspostiCassiere();
     }
@@ -81,12 +91,11 @@ public class VenditaController
 
     public static float getIncassiTotali()
     {
-        VendutoDAO vdao = new VendutoDAO();
-        return vdao.getIncassiTotali();
+        return VendutoDAO.getIncassiTotali();
     }
 
-    public static float getGuadagniTotali(){
-        VendutoDAO vdao = new VendutoDAO();
-        return vdao.getGuadagniTotali();
+    public static float getGuadagniTotali()
+    {
+        return VendutoDAO.getGuadagniTotali();
     }
 }

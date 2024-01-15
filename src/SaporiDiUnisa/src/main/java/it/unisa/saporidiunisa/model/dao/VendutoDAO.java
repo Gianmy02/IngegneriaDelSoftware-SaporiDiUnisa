@@ -1,27 +1,29 @@
 package it.unisa.saporidiunisa.model.dao;
 
-import it.unisa.saporidiunisa.model.entity.Esposizione;
-import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.entity.Venduto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class VendutoDAO
 {
 
-    public ArrayList<Venduto> getVendutiGiornalieri(){
+    public ArrayList<Venduto> getVendutiGiornalieri()
+    {
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
                     connection.prepareStatement("SELECT * FROM prodotto, venduto WHERE venduto.prodotto = prodotto.id AND venduto.giorno = CURDATE()");
             ResultSet rs = ps.executeQuery();
             ArrayList<Venduto> venduti = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next())
+            {
                 Prodotto p = new Prodotto();
                 Venduto v = new Venduto();
                 p.setId(rs.getInt(1));
@@ -47,7 +49,8 @@ public class VendutoDAO
         }
     }
 
-    public Venduto getVendutiGiornalieroByProdotto(Prodotto p){
+    public Venduto getVendutiGiornalieroByProdotto(Prodotto p)
+    {
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
@@ -55,7 +58,8 @@ public class VendutoDAO
             ps.setInt(p.getId(), 1);
             ResultSet rs = ps.executeQuery();
             Venduto v = new Venduto();
-            while(rs.next()){
+            while (rs.next())
+            {
 
                 v.setCosto(rs.getFloat(1));
                 v.setQuantita(rs.getInt(2));
@@ -71,57 +75,73 @@ public class VendutoDAO
         }
     }
 
-    public boolean doSaveVendita(Venduto v){
-        try (val connection = Database.getConnection()) {
+    public boolean doSaveVendita(Venduto v)
+    {
+        try (val connection = Database.getConnection())
+        {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO venduto (costo, quantita, guadagno, prodotto, giorno) VALUES(?,?,?,?,CURDATE())");
-            ps.setFloat(1,v.getCosto());
+            ps.setFloat(1, v.getCosto());
             ps.setInt(2, v.getQuantita());
             ps.setFloat(3, v.getGuadagno());
             ps.setInt(4, v.getProdotto().getId());
 
-            if (ps.executeUpdate() != 1) {
+            if (ps.executeUpdate() != 1)
+            {
                 throw new RuntimeException("INSERT error.");
             }
             return true;
 
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    public void doSaveGiornoLavorativo(){
-        try (val connection = Database.getConnection()) {
+    public void doSaveGiornoLavorativo()
+    {
+        try (val connection = Database.getConnection())
+        {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO vendita (giorno) VALUES(CURDATE())");
-            if (ps.executeUpdate() != 1) {
+            if (ps.executeUpdate() != 1)
+            {
                 throw new RuntimeException("INSERT error.");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean doUpdateVendita(Venduto v){
-        try (val connection = Database.getConnection()) {
+    public boolean doUpdateVendita(Venduto v)
+    {
+        try (val connection = Database.getConnection())
+        {
             PreparedStatement ps = connection.prepareStatement(
                     "UPDATE venduto SET guadagno = guadagno + ?, quantita = quantita + ? WHERE venduto.prodotto = ? AND venduto.giorno = ?");
             ps.setFloat(1, v.getGuadagno());
             ps.setInt(2, v.getQuantita());
 
-            if (ps.executeUpdate() != 1) {
+            if (ps.executeUpdate() != 1)
+            {
                 throw new RuntimeException("INSERT error.");
             }
             return true;
 
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
 
     /*la funzione prende la somma dal db nei giorni richiesti di tutti i prodotti*/
-    public ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine){
+    public ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine)
+    {
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
@@ -130,7 +150,8 @@ public class VendutoDAO
             ps.setString(2, String.valueOf(fine));
             ResultSet rs = ps.executeQuery();
             ArrayList<Venduto> venduti = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next())
+            {
                 Venduto v = new Venduto();
                 Prodotto p = new Prodotto();
                 p.setId(rs.getInt(1));
@@ -152,17 +173,14 @@ public class VendutoDAO
         }
     }
 
-    public float getIncassiTotali(){
+    public static float getIncassiTotali()
+    {
         try (val connection = Database.getConnection())
         {
-            PreparedStatement ps =
-                    connection.prepareStatement("SELECT SUM(costo * quantita) AS somma_costi_per_quantita FROM venduto;");
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-               return rs.getFloat(1);
-            }
-            return 0;
+            val ps = connection.prepareStatement("SELECT SUM(costo * quantita) AS somma_costi_per_quantita FROM venduto;");
+            val rs = ps.executeQuery();
 
+            return rs.next() ? rs.getFloat(1) : 0;
         }
         catch (SQLException e)
         {
@@ -170,17 +188,14 @@ public class VendutoDAO
         }
     }
 
-    public float getGuadagniTotali(){
+    public static float getGuadagniTotali()
+    {
         try (val connection = Database.getConnection())
         {
-            PreparedStatement ps =
-                    connection.prepareStatement("SELECT SUM(guadagno) FROM venduto;");
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                return rs.getFloat(1);
-            }
-            return 0;
+            val ps = connection.prepareStatement("SELECT SUM(guadagno) FROM venduto;");
+            val rs = ps.executeQuery();
 
+            return rs.next() ? rs.getFloat(1) : 0;
         }
         catch (SQLException e)
         {
