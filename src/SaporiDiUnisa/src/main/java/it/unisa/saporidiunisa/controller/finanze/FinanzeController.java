@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 public class FinanzeController
 {
+    /**
+     * La funzione <code>visualizzaBilancio</code> restituisce il bilancio aggiornato al modello della chiamata
+     * @return Bilancio
+     */
     public Bilancio visualizzaBilancio()
     {
         LottoDAO ldao = new LottoDAO();
