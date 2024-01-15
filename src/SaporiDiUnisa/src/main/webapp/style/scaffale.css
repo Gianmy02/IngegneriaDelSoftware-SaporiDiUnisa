@@ -1,0 +1,8 @@
+.tabella-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.tabella {
+    margin: 10px;
+}

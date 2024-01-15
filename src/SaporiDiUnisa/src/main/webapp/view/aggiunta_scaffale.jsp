@@ -8,51 +8,85 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sapori di Unisa - Aggiunta Scaffale</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/scaffale.css">
     </head>
     <body>
-        <%@ include file="/WEB-INF/include/header.html" %>
-
 
         <%
             ArrayList<Lotto> lottiMagazzino = (ArrayList<Lotto>) request.getAttribute("lottiMagazzino");
             ArrayList<Esposizione> lottiScaffale = (ArrayList<Esposizione>) request.getAttribute("lottiScaffale");
         %>
 
+        <form action="${pageContext.request.contextPath}/AggiungiScaffale" method="post">
+
+        <div class="table-container">
+            <table class="tabella">
+                <tr>
+                    <th>Nome</th>
+                    <th>Azienda</th>
+                    <th>Data Scadenza</th>
+                </tr>
+
         <%
             for(Esposizione e : lottiScaffale)
             {
+                int qntMax = e.getLotto().getQuantitaAttuale();
+                int qntMin = e.getQuantita();
         %>
 
-        <h2>Esposizione</h2>
-        <div>
-            <p> Nome: <%=e.getProdotto().getNome()%> </p>
-            <p> Azienda: <%=e.getProdotto().getMarchio()%> </p>
-            <p> Data Scadenza: <%=e.getLotto().getDataScadenza()%> </p>
-            <p> Quantità: <%=e.getQuantita()%> </p>
+            <tr>
+            <td><%=e.getProdotto().getNome()%></td>
+            <td><%=e.getProdotto().getMarchio()%></td>
+            <td><%=e.getLotto().getDataScadenza()%></td>
+
+            <td>
+                <select name="quantitaEsposizione_<%=e.getLotto().getId()%>">
+
+                <%
+                    for(int i = qntMin; i <= qntMax; i++)
+                    {
+                %>
+                <option value="<%=i%>"><%=i%></option>
+                <%
+                    }
+                %>
+                </select>
+            </td>
+            </tr>
+            <%
+                }
+            %>
+            </table>
         </div>
+            <input type="submit" value="CONFERMA">
+        </form>
 
-        <%
-            }
-        %>
+        <table class="tabella">
+            <tr>
+                <th>Nome</th>
+                <th>Azienda</th>
+                <th>Data Scadenza</th>
+                <th>Quantità</th>
+            </tr>
 
         <%
             for(Lotto l: lottiMagazzino)
             {
         %>
 
-        <h2>Magazzino</h2>
-        <div>
-            <p> Nome: <%=l.getProdotto().getNome()%> </p>
-            <p> Azienda: <%=l.getProdotto().getMarchio()%> </p>
-            <p> Data Scadenza: <%=l.getDataScadenza()%> </p>
-            <p> Quantità: <%=l.getQuantitaAttuale()%> </p>
-        </div>
+        <tr>
+            <td><%=l.getProdotto().getNome()%> </td>
+            <td><%=l.getProdotto().getMarchio()%> </td>
+            <td><%=l.getDataScadenza()%> </td>
+            <td><%=l.getQuantitaAttuale()%> </td>
+        </tr>
+            <%
+                }
+            %>
 
-        <%
-            }
-        %>
+        </table>
 
 
-        <%@ include file="/WEB-INF/include/footer.html" %>
+
     </body>
 </html>
