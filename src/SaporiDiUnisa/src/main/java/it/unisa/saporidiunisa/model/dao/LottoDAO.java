@@ -128,8 +128,10 @@ public class LottoDAO
                 prodotto.setMarchio(rs.getString(10));
                 prodotto.setPrezzo(rs.getFloat(11));
                 prodotto.setPrezzoScontato(rs.getFloat(12));
-                prodotto.setInizioSconto(rs.getDate(13).toLocalDate());
-                prodotto.setFineSconto(rs.getDate(14).toLocalDate());
+                if(rs.getDate(13) != null)
+                    prodotto.setInizioSconto(rs.getDate(13).toLocalDate());
+                if(rs.getDate(14) != null)
+                    prodotto.setFineSconto(rs.getDate(14).toLocalDate());
                 prodotto.setFoto(rs.getBytes(15));
                 lotto.setProdotto(prodotto);
 
