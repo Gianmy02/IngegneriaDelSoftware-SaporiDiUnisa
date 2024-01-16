@@ -1,16 +1,15 @@
 package it.unisa.saporidiunisa.model.dao;
 
-import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public class LottoDAO
         {
             val ps = con.prepareStatement("insert into lotto(costo, data_scadenza, quantita, quantita_attuale, fornitura, prodotto) values(?, ?, ?, ?, ?, ?)");
             ps.setFloat(1, lotto.getCosto());
-            ps.setDate(2, java.sql.Date.valueOf(lotto.getDataScadenza()));
+            ps.setDate(2, Date.valueOf(lotto.getDataScadenza()));
             ps.setInt(3, lotto.getQuantita());
             ps.setInt(4, lotto.getQuantitaAttuale());
             ps.setInt(5, lotto.getFornitura().getId());
