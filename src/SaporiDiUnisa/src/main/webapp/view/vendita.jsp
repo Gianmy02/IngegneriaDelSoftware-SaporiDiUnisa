@@ -76,7 +76,7 @@
         <h2>Totale: <span id="total-amount">0</span> &euro;</h2>
     </div>
     <div id = "buttons-container">
-        <button id="cancel-button"><a href="${pageContext.request.contextPath}/view/select_Cassiere.jsp">Annulla</a></button>
+        <a href="${pageContext.request.contextPath}/view/select_Cassiere.jsp"><button id="cancel-button">Annulla</button></a>
         <button id="confirm-button" onclick="confirmSale()">Conferma</button>
     </div>
     <%@ include file="/WEB-INF/include/footer.html" %>
