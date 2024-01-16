@@ -21,7 +21,8 @@ public class BilancioServlet extends HttpServlet{
             val b = FinanzeController.visualizzaBilancio();
             //TODO: dispatch alla pagina del bilancio
         }else{
-            //TODO: dispatch alla pagina di errore
+            req.setAttribute("message", "Permessi non concessi per questa pagina");
+            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
         }
     }
 }

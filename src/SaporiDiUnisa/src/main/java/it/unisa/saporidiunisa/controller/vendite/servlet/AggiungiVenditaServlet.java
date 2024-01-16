@@ -69,11 +69,13 @@ public class AggiungiVenditaServlet extends HttpServlet {
             if(VenditaController.venditaProdotti(selezionati)){
                 req.getRequestDispatcher("view/vendita.jsp").forward(req, resp);
             }else {
-                //TODO: errore nella vendita
+                req.setAttribute("message", "Vendita non riuscita");
+                req.getRequestDispatcher("view/error.jsp").forward(req, resp);
             }
         }
         else{
-            //TODO: errore da gestire, mandare ad una pagina di errore
+            req.setAttribute("message", "Permessi non concessi per questa pagina");
+            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
         }
 
     }

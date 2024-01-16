@@ -30,7 +30,8 @@ public class UpdatePinServlet extends HttpServlet
 
             if (!matcherPin.matches())
             {
-                // TODO: errore da gestire
+                request.setAttribute("message", "Il formato del nuovo pin non rispetta quello richiesto");
+                request.getRequestDispatcher("view/error.jsp").forward(request, response);
                 return;
             }
 
@@ -40,8 +41,12 @@ public class UpdatePinServlet extends HttpServlet
             }
             else
             {
-                // TODO: errore modifica pin
+                request.setAttribute("message", "Modifica non avvenuta correttamente");
+                request.getRequestDispatcher("view/error.jsp").forward(request, response);
             }
+        }else{
+            request.setAttribute("message", "Permessi non concessi per questa pagina");
+            request.getRequestDispatcher("view/error.jsp").forward(request, response);
         }
 
     }

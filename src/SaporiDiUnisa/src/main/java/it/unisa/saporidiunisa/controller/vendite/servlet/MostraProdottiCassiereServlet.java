@@ -25,7 +25,9 @@ public class MostraProdottiCassiereServlet extends HttpServlet {
             session.setAttribute("prodottiEsposti", esposti);
         }
         else{
-            //errore da gestire, mandare ad una pagina di errore TODO
+            req.setAttribute("message", "Permessi non concessi per questa pagina");
+            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            return;
         }
 
         req.getRequestDispatcher("view/vendita.jsp").forward(req, resp);
