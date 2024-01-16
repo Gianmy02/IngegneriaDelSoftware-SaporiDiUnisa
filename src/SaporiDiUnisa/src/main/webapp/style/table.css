@@ -27,8 +27,9 @@ th, td {
 }
 
 th {
-    background-color: #000; /* Sfondo nero */
-    color: #fff; /* Testo bianco */
+    background-color: #f2f2f2; /* Sfondo grigio chiaro */
+    color: black;
+    font-weight: bold;
 }
 
 .vendita-item img {
@@ -43,7 +44,7 @@ th {
 }
 
 #total-amount {
-    color: red; /* Colore rosso */
+    color: red;
     font-weight: bold;
 }
 
