@@ -59,7 +59,8 @@ public class EsposizioneDAO
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
-                    connection.prepareStatement("SELECT l.id, l.costo, l.data_scadenza, l.quantita, e.quantita, f.* FROM esposizione e JOIN lotto l ON e.lotto = l.id JOIN fornitura f ON l.fornitura = f.id WHERE l.data_scadenza >= CURRENT_DATE() AND e.prodotto = 1 GROUP BY e.lotto, l.data_scadenza ORDER BY l.data_scadenza;");
+                    connection.prepareStatement("SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, e.quantita, f.* FROM esposizione e JOIN lotto l ON e.lotto = l.id JOIN fornitura f ON l.fornitura = f.id WHERE l.data_scadenza >= CURRENT_DATE() AND e.prodotto = ? GROUP BY e.lotto, l.data_scadenza ORDER BY l.data_scadenza;");
+            ps.setInt(1, p.getId());
             ResultSet rs = ps.executeQuery();
             ArrayList<Esposizione> esposizioni = new ArrayList<>();
             while(rs.next()){
@@ -71,8 +72,9 @@ public class EsposizioneDAO
                 l.setDataScadenza(LocalDate.parse(rs.getString(3)));
                 l.setQuantita(rs.getInt(4));
                 l.setQuantitaAttuale(rs.getInt(5));
-                f.setId(rs.getInt(6));
-                f.setGiorno(LocalDate.parse(rs.getString(7)));
+                e.setQuantita(rs.getInt(6));
+                f.setId(rs.getInt(7));
+                f.setGiorno(LocalDate.parse(rs.getString(8)));
                 l.setProdotto(p);
                 e.setProdotto(p);
                 l.setFornitura(f);

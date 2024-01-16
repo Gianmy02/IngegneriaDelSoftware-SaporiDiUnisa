@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,13 +38,31 @@ public class AggiungiVenditaServlet extends HttpServlet {
             List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<List<Map<String, Object>>>(){});
             ArrayList<Venduto> selezionati = new ArrayList<>();
 
+
             for (Map<String, Object> saleData : saleDataList) {
                 int productId = (int) saleData.get("productId"); // Modifica il tipo a int
                 Venduto v = new Venduto();
                 v.setProdotto(MagazzinoController.getProdottoById(productId));
+                v.setGiorno(LocalDate.now());
                 v.setQuantita((int) saleData.get("quantity"));
-                v.setCosto((float) saleData.get("price"));
-                System.out.println(v.toString());
+                if (saleData.get("price") instanceof Number) {
+                    v.setCosto(((Number) saleData.get("price")).floatValue());
+                } else if (saleData.get("price") instanceof String) {
+                    try {
+                        v.setCosto(Float.valueOf((String) saleData.get("price")));
+                    } catch (NumberFormatException e) {
+                        // Gestione dell'eccezione in caso di errore di conversione
+                        System.err.println("Errore durante la conversione del prezzo a float: " + e.getMessage());
+                        // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
+                        v.setCosto(0.0f);
+                    }
+                } else {
+                    // Gestione di altri casi in cui il valore "price" non può essere convertito a float
+                    System.err.println("Errore: il valore 'price' non è di tipo numerico o stringa.");
+                    // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
+                    v.setCosto(0.0f);
+                }
+
                 selezionati.add(v);
             }
             VenditaController.addGiornoVendite();

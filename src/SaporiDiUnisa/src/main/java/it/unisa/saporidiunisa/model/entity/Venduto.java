@@ -14,15 +14,4 @@ public class Venduto
     private float guadagno;
     private float costo;
     private LocalDate giorno;
-
-    @Override
-    public String toString() {
-        return "Venduto{" +
-                "prodotto=" + prodotto +
-                ", quantita=" + quantita +
-                ", guadagno=" + guadagno +
-                ", costo=" + costo +
-                ", giorno=" + giorno +
-                '}';
-    }
 }

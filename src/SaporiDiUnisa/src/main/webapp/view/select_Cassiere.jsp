@@ -15,7 +15,7 @@
 <body>
 <%@ include file="/WEB-INF/include/header.html" %>
 <main>
-    <form action="${pageContext.request.contextPath}/MostraProdottiCassiereServlet" method="post" onclick="this.submit()">
+    <form action="${pageContext.request.contextPath}/MostraProdottiCassiereServlet" onclick="this.submit()">
         <span class="material-symbols-outlined">add</span>
         <p>Registra Vendita</p>
     </form>

@@ -5,8 +5,6 @@ $(document).ready(function() {
 function calculateTotal() {
     var items = document.getElementsByClassName("vendita-item");
     var totale = 0;
-    console.log(items.length);
-
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var quantita = parseInt(item.querySelector(".item-quantity").value);

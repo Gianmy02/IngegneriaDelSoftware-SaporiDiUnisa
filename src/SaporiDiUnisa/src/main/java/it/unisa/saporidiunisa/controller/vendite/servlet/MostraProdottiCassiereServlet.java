@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @WebServlet(name = "MostraProdottiCassiereServlet", value = "/MostraProdottiCassiereServlet")
 public class MostraProdottiCassiereServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Dipendente d = (Dipendente) session.getAttribute("dipendente");
         if(d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE){
