@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sapori di Unisa - Aggiunta Scaffale</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/scaffale.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/table.css">
         <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/img/favicon/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/img/favicon/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/img/favicon/favicon-16x16.png">
@@ -23,74 +23,76 @@
 
         <form action="${pageContext.request.contextPath}/AggiungiScaffale" method="post">
 
-        <div class="table-container">
-            <table class="tabella">
+        <div class="container">
+            <table>
+                <tr>
+                    <th>Prodotti Scaffale</th>
+                </tr>
                 <tr>
                     <th>Nome</th>
                     <th>Azienda</th>
                     <th>Data Scadenza</th>
+                    <th>Qnt attuale</th>
+                    <th>Qnt da aggiungere</th>
                 </tr>
 
         <%
             for(Esposizione e : lottiScaffale)
             {
-                int qntMax = e.getLotto().getQuantitaAttuale();
-                int qntMin = e.getQuantita();
+                int qntMax = (e.getLotto().getQuantitaAttuale() - e.getQuantita());
         %>
 
-            <tr>
-            <td><%=e.getProdotto().getNome()%></td>
-            <td><%=e.getProdotto().getMarchio()%></td>
-            <td><%=e.getLotto().getDataScadenza()%></td>
+                <tr>
+                <td><%=e.getProdotto().getNome()%></td>
+                <td><%=e.getProdotto().getMarchio()%></td>
+                <td><%=e.getLotto().getDataScadenza()%></td>
+                <td><%=e.getQuantita()%></td>
+                <td><input type="number" name="qntScaffale<%=e.getLotto().getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
+                </tr>
 
-            <td>
-                <select name="quantitaEsposizione_<%=e.getLotto().getId()%>">
+        <%
+            }
+        %>
+
+            </table>
+        </div>
+
+        <div class="container">
+            <table>
+                <tr>
+                    <th>Prodotti Magazzino</th>
+                </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th>Azienda</th>
+                    <th>Data Scadenza</th>
+                    <th>Qnt attuale</th>
+                    <th>Qnt da aggiungere</th>
+                </tr>
 
                 <%
-                    for(int i = qntMin; i <= qntMax; i++)
+                    for(Lotto l: lottiMagazzino)
                     {
+                        int qntMax = l.getQuantitaAttuale();
                 %>
-                <option value="<%=i%>"><%=i%></option>
+
+                <tr>
+                    <td><%=l.getProdotto().getNome()%> </td>
+                    <td><%=l.getProdotto().getMarchio()%> </td>
+                    <td><%=l.getDataScadenza()%> </td>
+                    <td><%=l.getQuantitaAttuale()%> </td>
+                    <td><input type="number" name="qntMagazzino<%=l.getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
+                </tr>
+
                 <%
                     }
                 %>
-                </select>
-            </td>
-            </tr>
-            <%
-                }
-            %>
             </table>
         </div>
-            <input type="submit" value="CONFERMA">
+
+            <input id="confirm-button" type="submit" value="CONFERMA">
+
         </form>
-
-        <table class="tabella">
-            <tr>
-                <th>Nome</th>
-                <th>Azienda</th>
-                <th>Data Scadenza</th>
-                <th>Quantità</th>
-            </tr>
-
-        <%
-            for(Lotto l: lottiMagazzino)
-            {
-        %>
-
-        <tr>
-            <td><%=l.getProdotto().getNome()%> </td>
-            <td><%=l.getProdotto().getMarchio()%> </td>
-            <td><%=l.getDataScadenza()%> </td>
-            <td><%=l.getQuantitaAttuale()%> </td>
-        </tr>
-            <%
-                }
-            %>
-
-        </table>
-
-
 
     </body>
 </html>

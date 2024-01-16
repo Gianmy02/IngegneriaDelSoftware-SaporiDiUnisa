@@ -39,7 +39,7 @@ public class FinanzeController
     {
         if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
         {
-
+            // TODO: da implementare
         }
 
         return null;
@@ -57,7 +57,7 @@ public class FinanzeController
     {
         if (!prodotto.isSconto())
         {
-            prodotto.setPrezzoScontato(prodotto.getPrezzo() - ((prodotto.getPrezzo()*sconto)/100));
+            prodotto.setPrezzoScontato(prodotto.getPrezzo() - ((prodotto.getPrezzo() * sconto) / 100));
             prodotto.setInizioSconto(dataInizio);
             prodotto.setFineSconto(dataFine);
             return ProdottoDAO.updateSconto(prodotto);
