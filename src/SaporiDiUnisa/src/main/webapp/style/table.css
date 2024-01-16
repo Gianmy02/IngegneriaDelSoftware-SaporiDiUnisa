@@ -28,7 +28,7 @@ th, td {
 
 th {
     background-color: #f2f2f2; /* Sfondo grigio chiaro */
-    color: black; /* Testo bianco */
+    color: black;
     font-weight: bold;
 }
 
@@ -44,7 +44,7 @@ th {
 }
 
 #total-amount {
-    color: red; /* Colore rosso */
+    color: red;
     font-weight: bold;
 }
 

@@ -78,6 +78,10 @@ public class VenditaController
         return vdao.getStorico(dataInizio, dataFine);
     }
 
+    /**
+     * Il metodo <code>visualizzaProdottiEsposti</code>mette in correlazione il db con le servlet ed e utile per la vista del cassiere sui prodotti
+     * @return prodotti esposti
+     */
     public ArrayList<Esposizione> visualizzaProdottiEsposti()
     {
         EsposizioneDAO edao = new EsposizioneDAO();
@@ -91,16 +95,28 @@ public class VenditaController
         return 0;
     }
 
+    /**
+     * Il metodo <code>getIncassiTotali</code> restituisce gli incassi fatti dal primo giorno di apertura
+     * @return float incassi
+     */
     public static float getIncassiTotali()
     {
         return VendutoDAO.getIncassiTotali();
     }
 
+    /**
+     * Il metodo <code>getIncassiTotali</code> restituisce i guadagni fatti dal primo giorno di apertura
+     * @return float guadagni
+     */
     public static float getGuadagniTotali()
     {
         return VendutoDAO.getGuadagniTotali();
     }
 
+    /**
+     * Il metodo <code>addGiornoVendite</code> in caso di avvenuta vendita controlla se il giorno lavorativo odierno e gia salvato,
+     * nel caso non fosse così vorrebbe dire che si sta per effettuare la prima vendita della giornata.
+     */
     public static void addGiornoVendite(){
         VendutoDAO vdao = new VendutoDAO();
         if(vdao.searchGiornoLavorativo())
