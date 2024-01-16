@@ -12,7 +12,8 @@ public class Bilancio
     private float incasso;
     private float perdite;
 
-    public float getUtile(){
-        return this.guadagno-this.perdite;
+    public float calculateUtile()
+    {
+        return this.guadagno - this.perdite;
     }
 }
