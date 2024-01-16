@@ -22,13 +22,15 @@ public class BilancioServlet extends HttpServlet
         val dipendente = (Dipendente)session.getAttribute("dipendente");
         if (dipendente == null)
         {
-            // TODO: errore
+            request.setAttribute("message", "Permessi non concessi per questa pagina");
+            request.getRequestDispatcher("view/error.jsp").forward(request, response);
             return;
         }
 
         if (dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
-            // TODO: errore
+            request.setAttribute("message", "Permessi non concessi per questa pagina");
+            request.getRequestDispatcher("view/error.jsp").forward(request, response);
             return;
         }
 

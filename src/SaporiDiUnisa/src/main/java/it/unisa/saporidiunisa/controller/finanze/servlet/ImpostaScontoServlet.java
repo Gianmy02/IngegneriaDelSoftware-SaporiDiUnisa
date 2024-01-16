@@ -24,7 +24,8 @@ public class ImpostaScontoServlet extends HttpServlet
         val dipendente = (Dipendente)session.getAttribute("dipendente");
         if (dipendente == null)
         {
-            // TODO: errore
+            req.setAttribute("message", "Permessi non concessi per questa pagina");
+            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
             return;
         }
 
