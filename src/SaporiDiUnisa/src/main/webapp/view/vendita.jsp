@@ -49,7 +49,7 @@
 
             <tr class = "vendita-item" id="<%=e.getProdotto().getId()%>">
                 <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
-                <td><%=e.getProdotto().getNome()%></td>
+                <td class ="product-name"><%=e.getProdotto().getNome()%></td>
                 <td><%=e.getProdotto().getMarchio()%></td>
                 <td>
                     <select class = "item-quantity" onchange="calculateTotal()">
