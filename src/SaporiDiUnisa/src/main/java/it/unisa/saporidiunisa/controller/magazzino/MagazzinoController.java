@@ -54,6 +54,6 @@ public class MagazzinoController
      * @return Prodotto trovato nel caso
      */
     public static Prodotto getProdottoById(int id){
-        return ProdottoDAO.findProdottobyId(id);
+        return ProdottoDAO.findProdottoById(id);
     }
 }
