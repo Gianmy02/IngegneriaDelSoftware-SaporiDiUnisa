@@ -7,9 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Sapori Di Unisa - Regsitra Vendita</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/calculateTotal.js" defer></script>
-    <script src="${pageContext.request.contextPath}/script/confirmSale.js"></script>
+    <script src="${pageContext.request.contextPath}/script/confirmSale.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/table.css">
     <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/img/favicon/apple-touch-icon.png">

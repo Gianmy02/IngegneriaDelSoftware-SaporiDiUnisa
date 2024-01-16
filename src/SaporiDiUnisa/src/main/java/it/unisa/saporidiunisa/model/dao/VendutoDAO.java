@@ -55,19 +55,19 @@ public class VendutoDAO
         {
             PreparedStatement ps =
                     connection.prepareStatement("SELECT * FROM venduto WHERE venduto.prodotto = ? AND venduto.giorno = CURDATE()");
-            ps.setInt(p.getId(), 1);
+            ps.setInt( 1, p.getId());
             ResultSet rs = ps.executeQuery();
             Venduto v = new Venduto();
             while (rs.next())
             {
-
                 v.setCosto(rs.getFloat(1));
                 v.setQuantita(rs.getInt(2));
                 v.setGuadagno(rs.getFloat(3));
                 v.setProdotto(p);
                 v.setGiorno(LocalDate.parse(rs.getString(5)));
+                return v;
             }
-            return v;
+            return null;
         }
         catch (SQLException e)
         {
@@ -123,11 +123,11 @@ public class VendutoDAO
             PreparedStatement ps = connection.prepareStatement(
                     "SELECT * FROM vendita WHERE giorno = CURDATE()");
             ResultSet rs = ps.executeQuery();
-            if (!rs.next())
+            if (rs.next())
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
         catch (SQLException e)
         {
@@ -140,13 +140,13 @@ public class VendutoDAO
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps = connection.prepareStatement(
-                    "UPDATE venduto SET guadagno = guadagno + ?, quantita = quantita + ? WHERE venduto.prodotto = ? AND venduto.giorno = ?");
+                    "UPDATE venduto SET guadagno = guadagno + ?, quantita = quantita + ? WHERE venduto.prodotto = ? AND venduto.giorno = CURDATE()");
             ps.setFloat(1, v.getGuadagno());
             ps.setInt(2, v.getQuantita());
-
+            ps.setInt(3, v.getProdotto().getId());
             if (ps.executeUpdate() != 1)
             {
-                throw new RuntimeException("INSERT error.");
+                throw new RuntimeException("UPDATE error.");
             }
             return true;
 

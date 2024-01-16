@@ -103,7 +103,7 @@ public class VenditaController
 
     public static void addGiornoVendite(){
         VendutoDAO vdao = new VendutoDAO();
-        if(!vdao.searchGiornoLavorativo())
+        if(vdao.searchGiornoLavorativo())
             vdao.doSaveGiornoLavorativo();
     }
 }

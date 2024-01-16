@@ -82,9 +82,11 @@ public class ProdottoDAO
         prodotto.setNome(rs.getString("nome"));
         prodotto.setMarchio(rs.getString("marchio"));
         prodotto.setPrezzo(rs.getFloat("prezzo"));
-        prodotto.setPrezzoScontato(rs.getFloat("prezzoScontato"));
-        prodotto.setInizioSconto(rs.getDate("inizioSconto").toLocalDate());
-        prodotto.setFineSconto(rs.getDate("fineSconto").toLocalDate());
+        prodotto.setPrezzoScontato(rs.getFloat("prezzo_scontato"));
+        if(rs.getDate("inizio_sconto")!=null)
+            prodotto.setInizioSconto(rs.getDate("inizio_sconto").toLocalDate());
+        if(rs.getDate("fine_sconto")!=null)
+            prodotto.setFineSconto(rs.getDate("fine_sconto").toLocalDate());
         prodotto.setFoto(rs.getBytes("foto"));
         return prodotto;
     }
