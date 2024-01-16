@@ -27,7 +27,7 @@
     // Definisci una lista di oggetti con attributi (nome, azienda, prezzo, quantità)
     ArrayList<Esposizione> prodotti = (ArrayList<Esposizione>) session.getAttribute("prodottiEsposti"); // Supponiamo che tu abbia un metodo che restituisce la lista di prodotti
 %>
-<div class = "container">
+<div class = "container-table">
     <h2>Nuova Vendita</h2>
     <table id = "product-table">
         <thead>
