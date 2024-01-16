@@ -56,4 +56,27 @@ public class MagazzinoController
     public static Prodotto getProdottoById(int id){
         return ProdottoDAO.findProdottoById(id);
     }
+
+    public Prodotto checkProductExists(final String nome, final String marchio){
+        return ProdottoDAO.selectByNameAndBrand(nome, marchio);
+    }
+
+    public String lottoValidation(final String nome, final String marchio, final float prezzo, final int quantita, final LocalDate dataScadenza){
+        if(nome == null || nome.isEmpty() || nome.isBlank() || nome.length() > 255)
+            return "Nome non valido";
+        if(marchio == null || marchio.isEmpty() || marchio.isBlank() || marchio.length() > 255)
+            return "Marchio non valido";
+        if(prezzo <= 0)
+            return "Prezzo non valido";
+        if(quantita <= 0)
+            return "Quantità non valida";
+        if(dataScadenza == null || dataScadenza.isBefore(LocalDate.now()))
+            return "Data scadenza non valida";
+
+        // non controllo la foto inserita
+
+        return null;
+    }
+
+
 }

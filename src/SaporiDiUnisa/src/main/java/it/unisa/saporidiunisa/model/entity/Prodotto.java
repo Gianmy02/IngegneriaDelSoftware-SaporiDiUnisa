@@ -22,6 +22,13 @@ public class Prodotto
     private LocalDate fineSconto;
     private byte[] foto;
 
+    public Prodotto(String nome, String marchio, float prezzo, byte[] foto) {
+        this.nome = nome;
+        this.marchio = marchio;
+        this.prezzo = prezzo;
+        this.foto = foto;
+    }
+
     public boolean isSconto()
     {
         return this.fineSconto.isAfter(LocalDate.now());

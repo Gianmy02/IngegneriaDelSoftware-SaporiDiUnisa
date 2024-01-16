@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sapori Di Unisa - Regsitra Vendita</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="${pageContext.request.contextPath}/script/calculateTotal.js" defer></script>
     <script src="${pageContext.request.contextPath}/script/confirmSale.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
