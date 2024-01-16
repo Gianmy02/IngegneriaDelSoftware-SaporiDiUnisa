@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class ScaffaleController
 {
-    public boolean aggiungiProdottiScaffale(ArrayList<Esposizione> prodottiEsposizione)
+    public static void inserisciEsposizione(int quantita, Lotto l)
     {
-        return false;
+        EsposizioneDAO.inserisciEsposizione(quantita, l);
     }
 
     /**
@@ -38,5 +38,15 @@ public class ScaffaleController
     public static ArrayList<Lotto> visualizzaProdottiMagazzino()
     {
         return LottoDAO.getLottiWithoutEsposizione();
+    }
+
+    public static void aumentaEsposizione(int qnt, Esposizione e)
+    {
+        EsposizioneDAO.aumentaEsposizione(qnt, e);
+    }
+
+    public static void diminuisciLotto(int id, int qnt)
+    {
+        LottoDAO.diminuisciLotto(id, qnt);
     }
 }

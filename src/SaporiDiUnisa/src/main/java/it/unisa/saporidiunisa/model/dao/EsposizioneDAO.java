@@ -104,6 +104,41 @@ public class EsposizioneDAO
         }
     }
 
+    public static void aumentaEsposizione(int quantita, Esposizione es){
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE esposizione SET quantita = quantita + ? WHERE esposizione.prodotto = ? AND esposizione.lotto = ?");
+            ps.setInt(1, quantita);
+            ps.setInt(2, es.getProdotto().getId());
+            ps.setInt(3, es.getLotto().getId());
+
+            if (ps.executeUpdate() != 1) {
+                throw new RuntimeException("UPDATE error.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void inserisciEsposizione(int quantita, Lotto l){
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO esposizione(prodotto, lotto, quantita) VALUES (?, ?, ?)");
+            ps.setInt(1, l.getProdotto().getId());
+            ps.setInt(2, l.getId());
+            ps.setInt(3, quantita);
+
+            if (ps.executeUpdate() != 1) {
+                throw new RuntimeException("UPDATE error.");
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Esposizione> visualizzaProdottiEspostiCassiere(){
         try (val connection = Database.getConnection())
         {

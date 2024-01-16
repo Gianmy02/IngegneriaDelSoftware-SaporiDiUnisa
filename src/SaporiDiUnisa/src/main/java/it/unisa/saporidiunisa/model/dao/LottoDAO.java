@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.model.dao;
 
+import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
@@ -138,6 +139,24 @@ public class LottoDAO
                 lottiMagazzino.add(lotto);
             }
             return lottiMagazzino;
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void diminuisciLotto(int id, int qnt){
+
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE lotto SET quantita_attuale = quantita_attuale - ? WHERE id = ?");
+            ps.setInt(1, qnt);
+            ps.setInt(2, id);
+
+            if (ps.executeUpdate() != 1) {
+                throw new RuntimeException("UPDATE error.");
+            }
         }
         catch (SQLException e)
         {
