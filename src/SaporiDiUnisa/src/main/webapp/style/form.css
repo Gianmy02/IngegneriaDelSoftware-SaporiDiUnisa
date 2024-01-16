@@ -1,0 +1,45 @@
+input[type=text], input[type=number], input[type=date], input[type=file], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.container-form {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.col-50 {
+    float: left;
+    width: 50%;
+    margin-top: 6px;
+    text-align: left;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
