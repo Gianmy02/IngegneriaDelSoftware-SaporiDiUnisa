@@ -103,7 +103,7 @@ public class LottoDAO
                             "FROM lotto " +
                             "INNER JOIN fornitura ON lotto.fornitura = fornitura.id " +
                             "INNER JOIN prodotto ON lotto.prodotto = prodotto.id " +
-                            "WHERE lotto.id NOT IN (SELECT esposizione.lotto FROM esposizione WHERE esposizione.lotto = lotto.id);");
+                            "WHERE lotto.data_scadenza > CURDATE() AND lotto.id NOT IN (SELECT esposizione.lotto FROM esposizione WHERE esposizione.lotto = lotto.id);");
 
             ResultSet rs = ps.executeQuery();
             ArrayList<Lotto> lottiMagazzino = new ArrayList<>();

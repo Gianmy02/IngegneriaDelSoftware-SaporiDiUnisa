@@ -15,8 +15,10 @@
         <link rel="manifest" href="${pageContext.request.contextPath}/img/favicon/site.webmanifest">
     </head>
     <body>
+    <%@ include file="/WEB-INF/include/header.html" %>
+    <main>
 
-        <%
+    <%
             ArrayList<Lotto> lottiMagazzino = (ArrayList<Lotto>) request.getAttribute("lottiMagazzino");
             ArrayList<Esposizione> lottiScaffale = (ArrayList<Esposizione>) request.getAttribute("lottiScaffale");
         %>
@@ -94,5 +96,7 @@
 
         </form>
 
+    </main>
+    <%@ include file="/WEB-INF/include/footer.html" %>
     </body>
 </html>

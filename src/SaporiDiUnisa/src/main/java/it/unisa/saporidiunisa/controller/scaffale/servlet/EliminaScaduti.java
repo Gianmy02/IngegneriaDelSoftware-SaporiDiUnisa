@@ -2,7 +2,6 @@ package it.unisa.saporidiunisa.controller.scaffale.servlet;
 
 import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
-import it.unisa.saporidiunisa.model.entity.Lotto;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,26 +12,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "VisualizzaScaffale", value = "/VisualizzaScaffale")
-public class VisualizzaScaffale extends HttpServlet {
+@WebServlet(name = "EliminaScaduti", value = "/EliminaScaduti")
+public class EliminaScaduti extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ScaffaleController.eliminaScadutiScaffale();
 
-        String address = req.getParameter("address");
         ArrayList<Esposizione> lottiScaffale = ScaffaleController.visualizzaProdottiScaffale();
+        ArrayList<Esposizione> lottiScaffaleScaduti = ScaffaleController.visualizzaProdottiScaffaleScaduti();
         req.setAttribute("lottiScaffale", lottiScaffale);
+        req.setAttribute("lottiScaffaleScaduti", lottiScaffaleScaduti);
 
-        if(address.equalsIgnoreCase("aggiunta_scaffale")){
-            ArrayList<Lotto> lottiMagazzino = ScaffaleController.visualizzaProdottiMagazzino();
-            req.setAttribute("lottiMagazzino", lottiMagazzino);
-        }
-        else
-        {
-            ArrayList<Esposizione> lottiScaffaleScaduti = ScaffaleController.visualizzaProdottiScaffaleScaduti();
-            req.setAttribute("lottiScaffaleScaduti", lottiScaffaleScaduti);
-        }
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher("view/" + address + ".jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("view/visualizza_scaffale.jsp");
         dispatcher.forward(req, resp);
     }
+
 }
