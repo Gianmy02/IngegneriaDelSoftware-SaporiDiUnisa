@@ -36,6 +36,7 @@
         <tr>
             <th>Prodotto</th>
             <th>Nome</th>
+            <th>Marchio</th>
             <th>Quantità</th>
             <th>Incasso</th>
             <th>Guadagno</th>
@@ -47,6 +48,7 @@
         <tr>
             <td><img src="data:image/jpeg;base64,<%=foto %>" alt="foto"></td>
             <td><%= v.getProdotto().getNome() %></td>
+            <td><%=v.getProdotto().getMarchio()%></td>
             <td><%= v.getQuantita() %></td>
             <td><%=v.getCosto()%> &euro;</td>
             <td><%=v.getGuadagno()%> &euro;</td>
@@ -59,8 +61,12 @@
     <p>Nessuna Risultato, inserisci una data</p>
     <%
     } %>
-    <%@ include file="/WEB-INF/include/footer.html" %>
+
+    <div id = "buttons-container">
+        <a href="${pageContext.request.contextPath}/view/select_Cassiere.jsp"><button id="cancel-button">Indietro</button></a>
+    </div>
 </div>
+<%@ include file="/WEB-INF/include/footer.html" %>
 
 </body>
 </html>
