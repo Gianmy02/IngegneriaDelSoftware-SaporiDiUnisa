@@ -72,7 +72,7 @@ public class VenditaController
      * @param dataFine   data che delimita la fine del periodo
      * @return ArrayList di venduti
      */
-    public ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine)
+    public static ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine)
     {
         VendutoDAO vdao = new VendutoDAO();
         return vdao.getStorico(dataInizio, dataFine);

@@ -19,10 +19,9 @@
         <span class="material-symbols-outlined">add</span>
         <p>Registra Vendita</p>
     </form>
-    <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
+    <form action="mostraStoricoVendite.jsp" onclick="this.submit()">
         <span class="material-symbols-outlined">news</span>
         <p>Visualizza Storico Vendite</p>
-        <input type="hidden" name="address" value="visualizzaForniture">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>
