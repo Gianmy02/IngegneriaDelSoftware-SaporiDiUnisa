@@ -11,17 +11,30 @@ import lombok.val;
 
 import java.io.IOException;
 
-@WebServlet(name = "BilancioServet", value = "/bilancio-servlet")
-public class BilancioServlet extends HttpServlet{
+@WebServlet(name = "bilancioServet", value = "/bilancio-servlet")
+public class BilancioServlet extends HttpServlet
+{
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val session = req.getSession();
-        Dipendente d = (Dipendente) session.getAttribute("dipendente");
-        if(d!= null && (d.getRuolo() == Dipendente.Ruolo.FINANZE)){
-            val b = FinanzeController.visualizzaBilancio();
-            //TODO: dispatch alla pagina del bilancio
-        }else{
-            //TODO: dispatch alla pagina di errore
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        val session = request.getSession();
+
+        val dipendente = (Dipendente)session.getAttribute("dipendente");
+        if (dipendente == null)
+        {
+            // TODO: errore
+            return;
         }
+
+        if (dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
+        {
+            // TODO: errore
+            return;
+        }
+
+        val bilancio = FinanzeController.visualizzaBilancio();
+        request.setAttribute("bilancio", bilancio);
+
+        request.getRequestDispatcher("/view/finanze/bilancio.jsp").forward(request, response);
     }
 }

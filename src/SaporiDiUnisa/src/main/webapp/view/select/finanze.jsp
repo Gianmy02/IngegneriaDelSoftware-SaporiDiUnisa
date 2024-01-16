@@ -15,12 +15,12 @@
     <body>
         <%@ include file="/WEB-INF/include/header.html" %>
         <main>
-            <form action="" method="post">
-                <span class="material-symbols-outlined"></span>
+            <form action="${pageContext.request.contextPath}/bilancio-servlet" onclick="this.submit()">
+                <span class="material-symbols-outlined">monitoring</span>
                 <p>Area Bilancio</p>
             </form>
-            <form action="" method="post">
-                <span class="material-symbols-outlined"></span>
+            <form action="" onclick="this.submit()">
+                <span class="material-symbols-outlined">bakery_dining</span>
                 <p>Prodotti</p>
             </form>
         </main>
