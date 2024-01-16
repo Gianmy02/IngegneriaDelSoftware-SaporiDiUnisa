@@ -10,7 +10,9 @@ header{
     z-index: 0;
 }
 
-#header-logo{
+#header-logo > img {
+    height: 120px;
+    margin-top: -18px;
 }
 
 /* Main */
