@@ -229,7 +229,7 @@ public class LottoDAO
     public static HashMap<Prodotto, ArrayList<Lotto>> getMagazzino(){
 
         try (val connection = Database.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT lotto.id AS lotto_id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, fornitura.id AS fornitura_id, fornitura.giorno AS data_fornitura, prodotto.id AS prodotto_id, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto FROM lotto JOIN fornitura ON lotto.fornitura = fornitura.id JOIN prodotto ON lotto.prodotto = prodotto.id ORDER BY prodotto.id");
+            PreparedStatement ps = connection.prepareStatement("SELECT lotto.id AS lotto_id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, fornitura.id AS fornitura_id, fornitura.giorno AS data_fornitura, prodotto.id AS prodotto_id, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto FROM lotto JOIN fornitura ON lotto.fornitura = fornitura.id JOIN prodotto ON lotto.prodotto = prodotto.id WHERE lotto.data_scadenza>= CURDATE() ORDER BY prodotto.id");
                     ResultSet resultSet = ps.executeQuery();
             HashMap<Prodotto, ArrayList<Lotto>> prodottiMap = new HashMap<>();
             while (resultSet.next()) {
