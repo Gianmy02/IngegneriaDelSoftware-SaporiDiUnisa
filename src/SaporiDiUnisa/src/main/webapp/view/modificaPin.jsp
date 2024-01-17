@@ -1,19 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sapori di Unisa - Modifica Pin</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
 </head>
 <body>
-
-
-<h1>Inserisci il nuovo pin</h1>
-<form method="post" action="${pageContext.request.contextPath}/update-pin-servlet">
-
-
-
-
-
-</form>
-
+<%@ include file="/WEB-INF/include/header.html" %>
+<main>
+    <form name="modificaPin" method="post" action="${pageContext.request.contextPath}/update-pin-servlet">
+        <label for="newPin">NewPin</label><br>
+        <input type="password" id="newPin" name="newPin" placeholder="newPin" pattern="[0-9]{4}" maxlength="4" title="Il PIN deve essere numerico e di massimo quattro cifre." required><br>
+        <input type="submit" value="Modifica">
+    </form>
+</main>
+<%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>
