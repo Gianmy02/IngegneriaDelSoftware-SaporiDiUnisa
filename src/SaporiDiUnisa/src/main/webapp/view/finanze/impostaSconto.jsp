@@ -1,7 +1,7 @@
 <%@ page import="it.unisa.saporidiunisa.model.entity.Prodotto" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/finanze/sconto.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="${pageContext.request.contextPath}/script/updatePercentage.js"></script>
-
-
     <title>Sapori Di Unisa - Imposta Sconto</title>
 </head>
 <body>
@@ -47,7 +45,5 @@
        <% }%>
     </main>
     <%@ include file="/WEB-INF/include/footer.html" %>
-
-
 </body>
 </html>

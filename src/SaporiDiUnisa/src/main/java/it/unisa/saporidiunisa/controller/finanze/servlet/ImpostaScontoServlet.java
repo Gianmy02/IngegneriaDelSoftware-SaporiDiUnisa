@@ -3,6 +3,8 @@ package it.unisa.saporidiunisa.controller.finanze.servlet;
 import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,37 +19,28 @@ import java.time.LocalDate;
 public class ImpostaScontoServlet extends HttpServlet
 {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        val session = req.getSession();
+        val session = request.getSession();
 
         val dipendente = (Dipendente)session.getAttribute("dipendente");
-        if (dipendente == null)
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
-            req.setAttribute("message", "Permessi non concessi per questa pagina");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
             return;
         }
 
-        if (dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
-        {
-            req.setAttribute("message", "Permessi non concessi per questa pagina");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
-            return;
-        }
-
-        val dataInizioSconto = req.getParameter("dataInizioSconto");
+        val dataInizioSconto = request.getParameter("dataInizioSconto");
         if (dataInizioSconto == null)
         {
-            req.setAttribute("message", "Data Inizio non inserita");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data inizio"), request, response);
             return;
         }
-        val dataFineSconto = req.getParameter("dataFineSconto");
+
+        val dataFineSconto = request.getParameter("dataFineSconto");
         if (dataFineSconto == null)
         {
-            req.setAttribute("message", "Data Fine Sconto non inserita");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data fine"), request, response);
             return;
         }
 
@@ -55,24 +48,21 @@ public class ImpostaScontoServlet extends HttpServlet
         val dataFineScontoDate = LocalDate.parse(dataFineSconto);
         if (!dataFineScontoDate.isAfter(dataInizioScontoDate))
         {
-            req.setAttribute("message", "Le 2 date non coincidono");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError("Le 2 date non coincidono", request, response);
             return;
         }
 
-        val sconto = Integer.parseInt(req.getParameter("sconto"));
+        val sconto = Integer.parseInt(request.getParameter("sconto"));
         if (sconto < 1 || sconto > 100)
         {
-            req.setAttribute("message", "Sconto impostato con una percentuale non corretta");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError("Sconto impostato con una percentuale non corretta", request, response);
             return;
         }
 
-        val prodottoId = req.getParameter("prodotto");
+        val prodottoId = request.getParameter("prodotto");
         if (prodottoId == null)
         {
-            req.setAttribute("message", "Errore sul prodotto");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("prodotto"), request, response);
             return;
         }
 
@@ -80,19 +70,16 @@ public class ImpostaScontoServlet extends HttpServlet
         val prodotto = MagazzinoController.getProdottoById(id);
         if (prodotto == null)
         {
-            req.setAttribute("message", "Errore sul prodotto non trovato");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            Utils.dispatchError(Errors.NOT_FOUND.formatted("prodotto"), request, response);
             return;
         }
 
-        if (FinanzeController.impostaSconto(prodotto, sconto, dataInizioScontoDate, dataFineScontoDate))
+        if (!FinanzeController.impostaSconto(prodotto, sconto, dataInizioScontoDate, dataFineScontoDate))
         {
-            //TODO: dispatch alla pagina di conferma
+            Utils.dispatchError("Errore nell'impostazione dello sconto", request, response);
+            return;
         }
-        else
-        {
-            req.setAttribute("message", "Errore nell'impostazione dello sconto");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
-        }
+
+        // TODO: dispatch alla pagina di conferma
     }
 }
