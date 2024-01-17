@@ -13,6 +13,8 @@
         <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/img/favicon/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/img/favicon/favicon-16x16.png">
         <link rel="manifest" href="${pageContext.request.contextPath}/img/favicon/site.webmanifest">
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script src="${pageContext.request.contextPath}/script/aggiuntaScaffale.js" defer></script>
     </head>
     <body>
     <%@ include file="/WEB-INF/include/header.html" %>
@@ -21,9 +23,9 @@
     <%
             ArrayList<Lotto> lottiMagazzino = (ArrayList<Lotto>) request.getAttribute("lottiMagazzino");
             ArrayList<Esposizione> lottiScaffale = (ArrayList<Esposizione>) request.getAttribute("lottiScaffale");
-        %>
+    %>
 
-        <form action="${pageContext.request.contextPath}/AggiungiScaffale" method="post">
+        <form id="formAggiunta" action="${pageContext.request.contextPath}/AggiungiScaffale" method="post">
 
         <div class="container">
             <table>
@@ -34,21 +36,21 @@
                     <th>Nome</th>
                     <th>Azienda</th>
                     <th>Data Scadenza</th>
-                    <th>Qnt attuale</th>
-                    <th>Qnt da aggiungere</th>
+                    <th>Qnt Attuale Scaffale</th>
+                    <th>Qnt Aggiunta</th>
                 </tr>
 
         <%
             for(Esposizione e : lottiScaffale)
             {
-                int qntMax = (e.getLotto().getQuantitaAttuale() - e.getQuantita());
+                int qntMax = e.getLotto().getQuantitaAttuale();
         %>
 
-                <tr>
-                <td><%=e.getProdotto().getNome()%></td>
-                <td><%=e.getProdotto().getMarchio()%></td>
-                <td><%=e.getLotto().getDataScadenza()%></td>
-                <td><%=e.getQuantita()%></td>
+                <tr class="RigaS">
+                <td class="nomeProdottoS"><%=e.getProdotto().getNome()%></td>
+                <td class="nomeAziendaS"><%=e.getProdotto().getMarchio()%></td>
+                <td class="dataScadenzaS"><%=e.getLotto().getDataScadenza()%></td>
+                <td class="qntAttualeS"><%=e.getQuantita()%></td>
                 <td><input type="number" name="qntScaffale<%=e.getLotto().getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
                 </tr>
 
@@ -68,8 +70,8 @@
                     <th>Nome</th>
                     <th>Azienda</th>
                     <th>Data Scadenza</th>
-                    <th>Qnt attuale</th>
-                    <th>Qnt da aggiungere</th>
+                    <th>Qnt Attuale Magazzino</th>
+                    <th>Qnt Aggiunta</th>
                 </tr>
 
                 <%
@@ -78,11 +80,11 @@
                         int qntMax = l.getQuantitaAttuale();
                 %>
 
-                <tr>
-                    <td><%=l.getProdotto().getNome()%> </td>
-                    <td><%=l.getProdotto().getMarchio()%> </td>
-                    <td><%=l.getDataScadenza()%> </td>
-                    <td><%=l.getQuantitaAttuale()%> </td>
+                <tr class="RigaM">
+                    <td class="nomeProdottoM"><%=l.getProdotto().getNome()%> </td>
+                    <td class="nomeAziendaM"><%=l.getProdotto().getMarchio()%> </td>
+                    <td class="dataScadenzaM"><%=l.getDataScadenza()%> </td>
+                    <td class="qntAttualeM"><%=l.getQuantitaAttuale()%> </td>
                     <td><input type="number" name="qntMagazzino<%=l.getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
                 </tr>
 
