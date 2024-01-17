@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.controller.magazzino;
 
+import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
 import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MagazzinoController
 {
@@ -18,8 +20,17 @@ public class MagazzinoController
         return false;
     }
 
-    public boolean eliminaLotto(Lotto lotto)
+    public static boolean eliminaLotto(int l)
     {
+        Lotto lotto = LottoDAO.getLottoById(l);
+        if(lotto!=null){
+            if(EsposizioneDAO.getEsposizioneByLotto(lotto)!=null){
+                LottoDAO.eliminaLotto(lotto);
+                EsposizioneDAO.rimuoviScaduto(Objects.requireNonNull(EsposizioneDAO.getEsposizioneByLotto(lotto)));
+                return true;
+            }
+            return false;
+        }
         return false;
     }
 

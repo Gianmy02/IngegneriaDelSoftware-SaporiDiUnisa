@@ -247,4 +247,25 @@ public class EsposizioneDAO
     }
 
 
+    public static Esposizione getEsposizioneByLotto(Lotto l){
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "SELECT prodotto, quantita FROM esposizione WHERE lotto = ?");
+            ps.setInt(1, l.getId());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Esposizione e = new Esposizione();
+                Prodotto p = new Prodotto();
+                e.setLotto(l);
+                p.setId(rs.getInt(1));
+                e.setProdotto(p);
+                e.setQuantita(rs.getInt(2));
+                return e;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

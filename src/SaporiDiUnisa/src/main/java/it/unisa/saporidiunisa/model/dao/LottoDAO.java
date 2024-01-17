@@ -162,4 +162,66 @@ public class LottoDAO
             throw new RuntimeException(e);
         }
     }
+
+    public static void eliminaLotto(Lotto l){
+
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE lotto SET data_scadenza = DATE_SUB(CURDATE(), INTERVAL 1 DAY) WHERE id = ?");
+            ps.setInt(1, l.getId());
+
+            if (ps.executeUpdate() != 1) {
+                throw new RuntimeException("UPDATE error.");
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Lotto getLottoById(int id){
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "SELECT lotto.id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, fornitura.id AS fornitura_id, fornitura.giorno AS data_fornitura, prodotto.id AS prodotto_id, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto FROM lotto JOIN fornitura ON lotto.fornitura = fornitura.id JOIN prodotto ON lotto.prodotto = prodotto.id WHERE lotto.id = ?");
+            ps.setInt(1, id);
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                // Creare un oggetto Lotto con i dati ottenuti dalla query
+                Lotto lotto = new Lotto();
+                lotto.setId(resultSet.getInt("id"));
+                lotto.setCosto(resultSet.getFloat("costo"));
+                lotto.setDataScadenza(resultSet.getDate("data_scadenza").toLocalDate());
+                lotto.setQuantita(resultSet.getInt("quantita"));
+                lotto.setQuantitaAttuale(resultSet.getInt("quantita_attuale"));
+
+                // Creare un oggetto Fornitura
+                Fornitura fornitura = new Fornitura();
+                fornitura.setId(resultSet.getInt("fornitura_id"));
+                fornitura.setGiorno(resultSet.getDate("data_fornitura").toLocalDate());
+                lotto.setFornitura(fornitura);
+
+                // Creare un oggetto Prodotto
+                Prodotto prodotto = new Prodotto();
+                prodotto.setId(resultSet.getInt("prodotto_id"));
+                prodotto.setNome(resultSet.getString("nome"));
+                prodotto.setMarchio(resultSet.getString("marchio"));
+                prodotto.setPrezzo(resultSet.getFloat("prezzo"));
+                prodotto.setPrezzoScontato(resultSet.getFloat("prezzo_scontato"));
+                if(resultSet.getDate("inizio_sconto")!=null)
+                    prodotto.setInizioSconto(resultSet.getDate("inizio_sconto").toLocalDate());
+                if(resultSet.getDate("fine_sconto")!=null)
+                    prodotto.setFineSconto(resultSet.getDate("fine_sconto").toLocalDate());
+                prodotto.setFoto(resultSet.getBytes("foto"));
+                lotto.setProdotto(prodotto);
+
+                return lotto;
+            }
+            return null;
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 }
