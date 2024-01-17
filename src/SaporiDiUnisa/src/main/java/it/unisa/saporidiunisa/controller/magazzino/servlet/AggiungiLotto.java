@@ -46,7 +46,7 @@ public class AggiungiLotto extends HttpServlet {
         Prodotto prodotto = magazzinoController.checkProductExists(nome, marchio);
         if(prodotto == null){
             byte[] foto = req.getPart("foto").getInputStream().readAllBytes();
-            prodotto = new Prodotto(nome, marchio, prezzo, foto);
+            prodotto = new Prodotto(0, nome, marchio, prezzo, prezzo, null, null, foto);
         }
 
         // tengo l'id della fornitura in sessione per evitare ripetute select dal db

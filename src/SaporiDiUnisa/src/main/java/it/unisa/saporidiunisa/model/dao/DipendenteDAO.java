@@ -33,7 +33,7 @@ public class DipendenteDAO
         }
     }
 
-    public boolean updatePin(String pin, Dipendente.Ruolo ruolo)
+    public static boolean updatePin(String pin, Dipendente.Ruolo ruolo)
     {
         try (val connection = Database.getConnection())
         {
