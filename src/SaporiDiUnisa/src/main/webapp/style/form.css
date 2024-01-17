@@ -10,7 +10,7 @@ label {
     display: inline-block;
 }
 
-input[type=submit] {
+input[type=submit], input[type=button] {
     background-color: #04AA6D;
     color: white;
     padding: 12px 20px;
@@ -20,8 +20,16 @@ input[type=submit] {
     margin-top: 15px;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, input[type=button]:hover {
     background-color: #45a049;
+}
+
+#reset-button {
+    background-color: #f44336;
+}
+
+#reset-button:hover {
+    background-color: #d72214;
 }
 
 .container-form {
