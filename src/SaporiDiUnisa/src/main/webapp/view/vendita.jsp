@@ -35,8 +35,8 @@
             <th>Prodotto</th>
             <th>Nome</th>
             <th>Azienda</th>
-            <th>Prezzo</th>
             <th>Quantità</th>
+            <th>Prezzo</th>
         </tr>
         </thead>
         <tbody>
