@@ -1,11 +1,17 @@
 package it.unisa.saporidiunisa.model.dao;
 
 import it.unisa.saporidiunisa.model.entity.Fornitura;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FornituraDAO
 {
@@ -36,4 +42,55 @@ public class FornituraDAO
             throw new RuntimeException(e);
         }
     }
+
+    public static List<Fornitura> selectAll(){
+        try (val connection = Database.getConnection()){
+            val rs = connection.prepareStatement(
+                    "select f.id, giorno, l.id, costo, data_scadenza, quantita, quantita_attuale, p.id, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
+                    "from fornitura f, lotto l, prodotto p " +
+                    "where f.id = l.fornitura and l.prodotto = p.id " +
+                    "order by giorno desc"
+            ).executeQuery();
+
+            val hashMap = new HashMap<Integer, Fornitura>();
+            while (rs.next()){
+                Fornitura fornitura;
+                final int idFornitura = rs.getInt("f.id");
+                if(hashMap.get(idFornitura) == null){
+                    fornitura = new Fornitura(idFornitura, rs.getDate("giorno").toLocalDate(), new ArrayList<>());
+                    hashMap.put(idFornitura, fornitura);
+                }
+                else{
+                    fornitura = hashMap.get(rs.getInt("f.id"));
+                }
+                val lotto = new Lotto(
+                    rs.getInt("l.id"),
+                    rs.getFloat("costo"),
+                    rs.getDate("data_scadenza").toLocalDate(),
+                    rs.getInt("quantita"),
+                    rs.getInt("quantita_attuale"),
+                    fornitura,
+                    null
+                );
+                val prodotto = new Prodotto(
+                    rs.getInt("p.id"),
+                    rs.getString("nome"),
+                    rs.getString("marchio"),
+                    rs.getFloat("prezzo"),
+                    rs.getFloat("prezzo_scontato"),
+                    rs.getDate("inizio_sconto") != null ? rs.getDate("inizio_sconto").toLocalDate() : null,
+                    rs.getDate("fine_sconto") != null ? rs.getDate("fine_sconto").toLocalDate() : null,
+                    rs.getBlob("foto") != null ? rs.getBlob("foto").getBinaryStream().readAllBytes() : null
+                );
+                lotto.setProdotto(prodotto);
+                fornitura.getLotti().add(lotto);
+            }
+
+            return hashMap.values().stream().toList();
+        }
+        catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

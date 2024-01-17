@@ -96,7 +96,7 @@ public class MagazzinoController
      */
     public List<Fornitura> visualizzaForniture()
     {
-        return null;
+        return FornituraDAO.selectAll();
     }
 
     public float getSpese(LocalDate dataInizio, LocalDate dataFine)

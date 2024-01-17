@@ -23,9 +23,9 @@ public class GetFornituraSession extends HttpServlet {
         final HttpSession session = req.getSession();
         val fornitura = (Fornitura) session.getAttribute("fornitura");
 
-        JSONArray jsonArray = new JSONArray();
-        for(var l : fornitura.getLotti()){
-            JSONObject json = new JSONObject();
+        val jsonArray = new JSONArray();
+        for(val l : fornitura.getLotti()){
+            val json = new JSONObject();
             json.put("nome", l.getProdotto().getNome());
             json.put("marchio", l.getProdotto().getMarchio());
             json.put("prezzo", l.getCosto() / l.getQuantita());
