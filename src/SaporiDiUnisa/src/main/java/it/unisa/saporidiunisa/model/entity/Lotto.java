@@ -30,7 +30,7 @@ public class Lotto
         return "Id lotto:" + id +
                 ", costo totale: " + costo +
                 ", dataScadenza: " + dataScadenza +
-                ", quantita: " + quantita +
+                ", quantità: " + quantita +
                 ", " + prodotto.toString();
     }
 }

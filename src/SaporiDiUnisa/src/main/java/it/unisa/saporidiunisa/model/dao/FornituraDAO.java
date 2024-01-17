@@ -2,11 +2,9 @@ package it.unisa.saporidiunisa.model.dao;
 
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
-import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class FornituraDAO
     public static List<Fornitura> selectAll(){
         try (val connection = Database.getConnection()){
             val rs = connection.prepareStatement(
-                    "select f.id, giorno, l.id, costo, data_scadenza, quantita, quantita_attuale, p.id, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
+                    "select f.id, giorno, l.id, costo, data_scadenza, quantita, quantita_attuale, p.id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
                     "from fornitura f, lotto l, prodotto p " +
                     "where f.id = l.fornitura and l.prodotto = p.id " +
                     "order by giorno desc"
@@ -72,23 +70,15 @@ public class FornituraDAO
                     fornitura,
                     null
                 );
-                val prodotto = new Prodotto(
-                    rs.getInt("p.id"),
-                    rs.getString("nome"),
-                    rs.getString("marchio"),
-                    rs.getFloat("prezzo"),
-                    rs.getFloat("prezzo_scontato"),
-                    rs.getDate("inizio_sconto") != null ? rs.getDate("inizio_sconto").toLocalDate() : null,
-                    rs.getDate("fine_sconto") != null ? rs.getDate("fine_sconto").toLocalDate() : null,
-                    rs.getBlob("foto") != null ? rs.getBlob("foto").getBinaryStream().readAllBytes() : null
-                );
+                val prodotto = ProdottoDAO.buildBySQL(rs);
+
                 lotto.setProdotto(prodotto);
                 fornitura.getLotti().add(lotto);
             }
 
             return hashMap.values().stream().toList();
         }
-        catch (SQLException | IOException e) {
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
