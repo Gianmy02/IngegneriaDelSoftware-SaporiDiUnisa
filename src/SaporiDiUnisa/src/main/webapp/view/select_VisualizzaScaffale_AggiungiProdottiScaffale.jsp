@@ -5,6 +5,7 @@
     <title>Sapori di Unisa - Homepage magazziniere</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/box.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/scaffale.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/img/favicon/apple-touch-icon.png">
@@ -26,6 +27,7 @@
         <input type="hidden" name="address" value="aggiunta_scaffale">
     </form>
 </main>
+<a href="${pageContext.request.contextPath}/view/select_Magazzino_Scaffale.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
 <%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>

@@ -6,7 +6,6 @@ $(document).ready(function() {
     $("#cancel-button").click(function(event) {
         event.preventDefault();
 
-        var qnt;
         var nomeProdotto;
         var azienda;
         var scadenza;

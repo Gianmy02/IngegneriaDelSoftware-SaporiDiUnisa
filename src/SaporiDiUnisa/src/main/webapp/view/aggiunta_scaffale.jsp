@@ -67,7 +67,7 @@
                     <th>Azienda</th>
                     <th>Data Scadenza</th>
                     <th>Qnt Attuale Magazzino</th>
-                    <th>Qnt Aggiunta</th>
+                    <th>Qnt Aggiunta Scaffale</th>
                 </tr>
 
                 <%
