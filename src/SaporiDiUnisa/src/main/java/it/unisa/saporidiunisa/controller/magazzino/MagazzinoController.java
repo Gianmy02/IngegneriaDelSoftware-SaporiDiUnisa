@@ -1,11 +1,13 @@
 package it.unisa.saporidiunisa.controller.magazzino;
 
 import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
+import it.unisa.saporidiunisa.model.dao.FornituraDAO;
 import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
+import lombok.val;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,9 +17,31 @@ import java.util.Objects;
 
 public class MagazzinoController
 {
-    public boolean registraFornitura(Fornitura fornitura)
+    public boolean registraFornitura(final Fornitura fornitura)
     {
-        return false;
+        FornituraDAO.insert(fornitura);
+        val idFornitura = FornituraDAO.getLastId();
+
+        val lotti = fornitura.getLotti();
+        for(var l : lotti){
+            l.getFornitura().setId(idFornitura);
+
+            val prodotto = l.getProdotto();
+            if(ProdottoDAO.selectByNameAndBrand(prodotto.getNome(), prodotto.getMarchio()) == null){  // prodotto nuovo
+                ProdottoDAO.insert(prodotto);
+                prodotto.setId(ProdottoDAO.getLastId());
+            }
+            else{
+                // controllo se il prezzo inserito è almeno il doppio di quello attuale
+                float prezzoAttuale = prodotto.getPrezzo();
+                float prezzoInserito = l.getCosto() / l.getQuantita();
+                if((prezzoInserito * 2) > prezzoAttuale){
+                    ProdottoDAO.updatePrice(prezzoInserito * 2, prodotto.getId());
+                }
+            }
+            LottoDAO.insert(l);
+        }
+        return true;
     }
 
     public static boolean eliminaLotto(int l)
