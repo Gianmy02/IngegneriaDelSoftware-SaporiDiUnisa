@@ -5,6 +5,7 @@ import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -80,6 +81,7 @@ public class ImpostaScontoServlet extends HttpServlet
             return;
         }
 
-        // TODO: dispatch alla pagina di conferma
+        session.setAttribute("prodotti", FinanzeController.visualizzaProdotti());
+        request.getRequestDispatcher("view/finanze/visualizzaProdotti.jsp").forward(request, response);
     }
 }
