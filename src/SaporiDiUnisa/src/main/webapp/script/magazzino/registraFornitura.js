@@ -41,7 +41,7 @@ $(document).ready(function(){
             error: function(error) {
                 console.error(error);
             }
-        })
+        });
     });
 
     function buildMessage(json){
