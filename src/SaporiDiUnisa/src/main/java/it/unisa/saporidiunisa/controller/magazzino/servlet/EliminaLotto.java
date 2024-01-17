@@ -18,7 +18,7 @@ public class EliminaLotto extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
-        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.ADMIN)
         {
             Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
             return;
@@ -37,8 +37,7 @@ public class EliminaLotto extends HttpServlet {
             return;
         }
 
-        //TODO: dispatch ad una conferma
+        request.getRequestDispatcher("view/select_admin.jsp").forward(request, response);
     }
-
 
 }

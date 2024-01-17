@@ -53,7 +53,11 @@ public class MagazzinoController
                 EsposizioneDAO.rimuoviScaduto(Objects.requireNonNull(EsposizioneDAO.getEsposizioneByLotto(lotto)));
                 return true;
             }
-            return false;
+            else
+            {
+                LottoDAO.eliminaLotto(lotto);
+                return true;
+            }
         }
         return false;
     }
