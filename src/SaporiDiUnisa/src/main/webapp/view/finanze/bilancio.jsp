@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<jsp:useBean id="bilancio" scope="request" type="it.unisa.saporidiunisa.model.entity.Bilancio"/>
 <!doctype html>
 <html>
     <head>
@@ -6,9 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/finanze/bilancio.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/script/finanze/bilancio.js"></script>
     </head>
     <body>
         <canvas id="pie-chart"></canvas>
-        <script src="${pageContext.request.contextPath}/script/finanze/bilancio.js"></script>
+        <script type="text/javascript">drawPieChart(${bilancio.spese}, ${bilancio.incasso});</script>
     </body>
 </html>
