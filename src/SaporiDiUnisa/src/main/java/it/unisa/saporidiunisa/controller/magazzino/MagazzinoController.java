@@ -62,9 +62,9 @@ public class MagazzinoController
     }
 
     public String lottoValidation(final String nome, final String marchio, final float prezzo, final int quantita, final LocalDate dataScadenza){
-        if(nome == null || nome.isEmpty() || nome.isBlank() || nome.length() > 255)
+        if(nome == null || nome.isBlank() || nome.length() > 255 || nome.length() < 2)
             return "Nome non valido";
-        if(marchio == null || marchio.isEmpty() || marchio.isBlank() || marchio.length() > 255)
+        if(marchio == null || marchio.isBlank() || marchio.length() > 255 || marchio.length() < 2)
             return "Marchio non valido";
         if(prezzo <= 0)
             return "Prezzo non valido";

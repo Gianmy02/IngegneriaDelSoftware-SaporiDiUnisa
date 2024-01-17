@@ -4,6 +4,7 @@ import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.utils.Patterns;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.*;
 import lombok.val;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -63,7 +65,7 @@ public class AggiungiLotto extends HttpServlet {
         json.put("marchio", marchio);
         json.put("prezzo", prezzo);
         json.put("quantita", quantita);
-        json.put("dataScadenza", dataScadenza);
+        json.put("dataScadenza", dataScadenza.format(Patterns.DATE_TIME_FORMATTER));
         resp.setContentType("application/json");
         resp.getWriter().write(String.valueOf(json));
     }

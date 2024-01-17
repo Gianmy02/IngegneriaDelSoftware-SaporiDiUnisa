@@ -15,37 +15,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="${pageContext.request.contextPath}/script/registraFornitura.js" defer></script>
     <title>Sapori di Unisa - Registra Fornitura</title>
-    <!--
-    <script>
-        $(document).ready(function() {
-            const table_lottiInseriti = $("#lottiInseriti");
-
-            $("#ajax-caller").click(function () {
-                $.post("${pageContext.request.contextPath}/AggiungiLotto", {
-                        nome: $("#nome").val(),
-                        marchio: $("#marchio").val(),
-                        prezzo: $("#prezzo").val(),
-                        quantita: $("#quantita").val(),
-                        dataScadenza: $("#dataScadenza").val(),
-                        foto: $("#foto").val(),
-                    },
-                    function (data) {
-                        const lotto = JSON.parse(data);
-                        const tr = $("<tr></tr>")
-                            .append($("<td></td>").text(lotto.nome))
-                            .append($("<td></td>").text(lotto.marchio))
-                            .append($("<td></td>").text(lotto.prezzo))
-                            .append($("<td></td>").text(lotto.quantita))
-                            .append($("<td></td>").text(lotto.dataScadenza));
-                        // .append($("<td></td>").text(lotto.foto));
-                        table_lottiInseriti.append(tr);
-                        // $('#lottiInseriti > tbody:last-child').append();
-                    }
-                );
-            });
-        });
-    </script>
-    -->
 </head>
 <body>
 <%@ include file="/WEB-INF/include/header.html" %>
@@ -102,7 +71,7 @@
                             <label for="foto">Foto</label>
                         </div>
                         <div class="col-50">
-                            <input type="file" name="foto" id="foto">
+                            <input type="file" name="foto" id="foto" accept="image/*">
                         </div>
                     </div>
                     -->
@@ -118,7 +87,6 @@
                         <th>Prezzo cad.</th>
                         <th>Quantità</th>
                         <th>Data scadenza</th>
-                        <th>Foto</th>
                     </tr>
                     </thead>
                     <tbody>
