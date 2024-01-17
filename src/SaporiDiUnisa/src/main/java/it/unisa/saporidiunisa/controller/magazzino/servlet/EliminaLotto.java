@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet(name = "EliminaLotto", value = "/EliminaLotto")
 public class EliminaLotto extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
         {
