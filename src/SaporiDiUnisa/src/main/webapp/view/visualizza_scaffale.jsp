@@ -1,6 +1,5 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.unisa.saporidiunisa.model.entity.Esposizione" %>
-<%@ page import="it.unisa.saporidiunisa.model.entity.Lotto" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!doctype html>
 <html>
@@ -13,6 +12,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/img/favicon/favicon-16x16.png">
     <link rel="manifest" href="${pageContext.request.contextPath}/img/favicon/site.webmanifest">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="${pageContext.request.contextPath}/script/eliminaScaduti.js" defer></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/include/header.html" %>
@@ -24,7 +25,7 @@
     ArrayList<Esposizione> lottiScaffaleScaduti = (ArrayList<Esposizione>) request.getAttribute("lottiScaffaleScaduti");
 %>
 
-<form action="${pageContext.request.contextPath}/EliminaScaduti" method="post">
+<form id="formRimozione" action="${pageContext.request.contextPath}/EliminaScaduti" method="post">
 
     <div class="container">
         <table>
@@ -48,11 +49,11 @@
                             scaduto = true;
             %>
 
-            <tr style="background-color: red">
-                <td><%=e.getProdotto().getNome()%></td>
-                <td><%=e.getProdotto().getMarchio()%></td>
-                <td><%=e.getLotto().getDataScadenza()%></td>
-                <td><%=e.getQuantita()%></td>
+            <tr class="rigaScaduto" style="background-color: red">
+                <td class="nomeProdotto"><%=e.getProdotto().getNome()%></td>
+                <td class="azienda"><%=e.getProdotto().getMarchio()%></td>
+                <td class="scadenza"><%=e.getLotto().getDataScadenza()%></td>
+                <td class="quantia"><%=e.getQuantita()%></td>
             </tr>
 
             <%
