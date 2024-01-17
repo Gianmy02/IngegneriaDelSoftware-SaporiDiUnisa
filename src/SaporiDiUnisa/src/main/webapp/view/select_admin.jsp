@@ -20,10 +20,9 @@
         <p>Gestione Pin</p>
         <input type="hidden" name="address" value="modificaPin">
     </form>
-    <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
+    <form action="${pageContext.request.contextPath}/MostraMagazzino" onclick="this.submit()">
         <span class="material-symbols-outlined">list_alt_add</span>
-        <p>Lista lotti</p>
-        <input type="hidden" name="address" value="index.jsp">
+        <p>Lista Magazzino</p>
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>

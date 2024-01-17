@@ -229,39 +229,45 @@ public class LottoDAO
     public static HashMap<Prodotto, ArrayList<Lotto>> getMagazzino(){
 
         try (val connection = Database.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT lotto.id AS lotto_id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, fornitura.id AS fornitura_id, fornitura.giorno AS data_fornitura, prodotto.id AS prodotto_id, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto FROM lotto JOIN fornitura ON lotto.fornitura = fornitura.id JOIN prodotto ON lotto.prodotto = prodotto.id WHERE lotto.data_scadenza>= CURDATE() ORDER BY prodotto.id");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM prodotto;");
                     ResultSet resultSet = ps.executeQuery();
-            HashMap<Prodotto, ArrayList<Lotto>> prodottiMap = new HashMap<>();
-            while (resultSet.next()) {
-                // Creare oggetto Lotto
-                Lotto lotto = new Lotto();
-                lotto.setId(resultSet.getInt("lotto_id"));
-                lotto.setCosto(resultSet.getFloat("costo"));
-                lotto.setDataScadenza(resultSet.getDate("data_scadenza").toLocalDate());
-                lotto.setQuantita(resultSet.getInt("quantita"));
-                lotto.setQuantitaAttuale(resultSet.getInt("quantita_attuale"));
+                    ArrayList<Prodotto> prodotti = new ArrayList<>();
+                    HashMap<Prodotto, ArrayList<Lotto>> prodottiMap = new HashMap<>();
+                    while(resultSet.next()){
+                        Prodotto prodotto = new Prodotto();
+                        prodotto.setId(resultSet.getInt("id"));
+                        prodotto.setNome(resultSet.getString("nome"));
+                        prodotto.setMarchio(resultSet.getString("marchio"));
+                        prodotto.setPrezzo(resultSet.getFloat("prezzo"));
+                        prodotto.setPrezzoScontato(resultSet.getFloat("prezzo_scontato"));
+                        if(resultSet.getDate("inizio_sconto")!=null)
+                            prodotto.setInizioSconto(resultSet.getDate("inizio_sconto").toLocalDate());
+                        if(resultSet.getDate("fine_sconto")!=null)
+                            prodotto.setFineSconto(resultSet.getDate("fine_sconto").toLocalDate());
+                        prodotto.setFoto(resultSet.getBytes("foto"));
+                        prodotti.add(prodotto);
+                    }
+            for(Prodotto p: prodotti){
+                ps = connection.prepareStatement("SELECT lotto.id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, fornitura.id AS fornitura_id, fornitura.giorno FROM lotto, fornitura WHERE lotto.fornitura = fornitura.id AND lotto.prodotto = ? AND data_scadenza>=CURDATE() AND quantita_attuale >0;");
+                ps.setInt(1, p.getId());
+                resultSet = ps.executeQuery();
+                ArrayList<Lotto> lotti = new ArrayList<>();
+                while(resultSet.next()) {
+                    Lotto lotto = new Lotto();
+                    lotto.setId(resultSet.getInt("id"));
+                    lotto.setCosto(resultSet.getFloat("costo"));
+                    lotto.setDataScadenza(resultSet.getDate("data_scadenza").toLocalDate());
+                    lotto.setQuantita(resultSet.getInt("quantita"));
+                    lotto.setQuantitaAttuale(resultSet.getInt("quantita_attuale"));
 
-                // Creare oggetto Fornitura
-                Fornitura fornitura = new Fornitura();
-                fornitura.setId(resultSet.getInt("fornitura_id"));
-                fornitura.setGiorno(resultSet.getDate("data_fornitura").toLocalDate());
-                lotto.setFornitura(fornitura);
-
-                // Creare oggetto Prodotto
-                Prodotto prodotto = new Prodotto();
-                prodotto.setId(resultSet.getInt("prodotto_id"));
-                prodotto.setNome(resultSet.getString("nome"));
-                prodotto.setMarchio(resultSet.getString("marchio"));
-                prodotto.setPrezzo(resultSet.getFloat("prezzo"));
-                prodotto.setPrezzoScontato(resultSet.getFloat("prezzo_scontato"));
-                if(resultSet.getDate("inizio_sconto")!=null)
-                    prodotto.setInizioSconto(resultSet.getDate("inizio_sconto").toLocalDate());
-                if(resultSet.getDate("fine_sconto")!=null)
-                    prodotto.setFineSconto(resultSet.getDate("fine_sconto").toLocalDate());
-                prodotto.setFoto(resultSet.getBytes("foto"));
-
-                // Aggiungere il Lotto all'ArrayList associato al Prodotto
-                prodottiMap.computeIfAbsent(prodotto, k -> new ArrayList<>()).add(lotto);
+                    // Creare oggetto Fornitura
+                    Fornitura fornitura = new Fornitura();
+                    fornitura.setId(resultSet.getInt("fornitura_id"));
+                    fornitura.setGiorno(resultSet.getDate("giorno").toLocalDate());
+                    lotto.setFornitura(fornitura);
+                    lotti.add(lotto);
+                }
+                prodottiMap.put(p, lotti);
             }
             return prodottiMap;
 

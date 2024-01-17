@@ -20,12 +20,11 @@ public class MostraMagazzino extends HttpServlet {
         val session = request.getSession();
 
         val dipendente = (Dipendente)session.getAttribute("dipendente");
-        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
+        if (dipendente == null || dipendente.getRuolo() == Dipendente.Ruolo.CASSIERE || dipendente.getRuolo() == Dipendente.Ruolo.FINANZE)
         {
             Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
             return;
         }
         session.setAttribute("magazzino", MagazzinoController.visualizzaProdottiMagazzino());
-        //TODO: pagina di dispatch
-    }
+        request.getRequestDispatcher("view/mostraProdottoLotti.jsp").forward(request, response);    }
 }
