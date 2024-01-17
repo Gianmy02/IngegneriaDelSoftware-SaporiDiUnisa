@@ -10,7 +10,11 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/script/finanze/bilancio.js"></script>
     </head>
     <body>
-        <canvas id="pie-chart"></canvas>
-        <script type="text/javascript">drawPieChart(${bilancio.spese}, ${bilancio.incasso});</script>
+        <div id="pie-chart-container">
+            <canvas id="pie-chart"></canvas>
+            <script type="text/javascript">drawPieChart(${bilancio.spese}, ${bilancio.incasso});</script>
+        </div>
+        <div id="perdite-guadagno">Perdite: ${bilancio.perdite}<br>Guadagno: ${bilancio.guadagno}</div>
+        <div id="utile">Utile: ${bilancio.calculateUtile()}</div>
     </body>
 </html>
