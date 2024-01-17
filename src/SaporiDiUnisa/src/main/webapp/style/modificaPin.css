@@ -1,0 +1,48 @@
+/* Stile base per il main container */
+.main-container {
+    max-width: 500px; /* Larghezza massima del container */
+    margin: 150px auto; /* Centra il container orizzontalmente e aggiunge margini verticali */
+    padding: 20px; /* Spazio interno */
+    border: 1px solid #ccc; /* Bordo del container */
+    border-radius: 10px; /* Angoli arrotondati */
+    background-color: #f9f9f9; /* Colore di sfondo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+}
+
+/* Stile per gli elementi interni al form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%; /* Larghezza al 100% per occupare tutto lo spazio disponibile */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #ddd; /* Bordo sottile */
+    border-radius: 4px; /* Angoli leggermente arrotondati */
+}
+
+/* Stile per il pulsante */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #07d200;
+    color: white;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #059B00;
+}
+
+/* Aggiungi ulteriori stili personalizzati qui */
+
+label {
+    font-size: 20px; /* Aumenta secondo necessità */
+}
+
+input {
+    font-size: 16px; /* Aumenta secondo necessità */
+}
