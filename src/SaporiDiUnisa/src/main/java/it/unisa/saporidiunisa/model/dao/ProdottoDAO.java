@@ -4,6 +4,7 @@ import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Database;
 import lombok.val;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,10 +17,10 @@ public class ProdottoDAO
         try (val connection = Database.getConnection())
         {
             val prodotti = new ArrayList<Prodotto>();
-            val resultSet = connection.prepareStatement("select id, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto from prodotto;").executeQuery();
+            val resultSet = connection.prepareStatement("select id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto from prodotto;").executeQuery();
 
             while (resultSet.next())
-                prodotti.add(_build(resultSet));
+                prodotti.add(buildBySQL(resultSet));
 
             return prodotti;
         }
@@ -33,12 +34,12 @@ public class ProdottoDAO
     {
         try (val con = Database.getConnection())
         {
-            val ps = con.prepareStatement("select * from prodotto where nome = ? and marchio = ?;");
+            val ps = con.prepareStatement("select id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto from prodotto where nome = ? and marchio = ?;");
             ps.setString(1, nome);
             ps.setString(2, marchio);
 
             val rs = ps.executeQuery();
-            return rs.next() ? _build(rs) : null;
+            return rs.next() ? buildBySQL(rs) : null;
         }
         catch (SQLException e)
         {
@@ -113,10 +114,10 @@ public class ProdottoDAO
     {
         try (val con = Database.getConnection())
         {
-            val ps = con.prepareStatement("select * from prodotto where id = ?;");
+            val ps = con.prepareStatement("select id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto from prodotto where id = ?;");
             ps.setInt(1, id);
             val rs = ps.executeQuery();
-            return rs.next() ? _build(rs) : null;
+            return rs.next() ? buildBySQL(rs) : null;
         }
         catch (SQLException e)
         {
@@ -124,19 +125,21 @@ public class ProdottoDAO
         }
     }
 
-    private static Prodotto _build(final ResultSet rs) throws SQLException
+    public static Prodotto buildBySQL(final ResultSet rs) throws SQLException
     {
-        val prodotto = new Prodotto();
-        prodotto.setId(rs.getInt("id"));
-        prodotto.setNome(rs.getString("nome"));
-        prodotto.setMarchio(rs.getString("marchio"));
-        prodotto.setPrezzo(rs.getFloat("prezzo"));
-        prodotto.setPrezzoScontato(rs.getFloat("prezzo_scontato"));
-        if(rs.getDate("inizio_sconto")!=null)
-            prodotto.setInizioSconto(rs.getDate("inizio_sconto").toLocalDate());
-        if(rs.getDate("fine_sconto")!=null)
-            prodotto.setFineSconto(rs.getDate("fine_sconto").toLocalDate());
-        prodotto.setFoto(rs.getBytes("foto"));
-        return prodotto;
+        try {
+            return new Prodotto(
+                rs.getInt("idProdotto"),
+                rs.getString("nome"),
+                rs.getString("marchio"),
+                rs.getFloat("prezzo"),
+                rs.getFloat("prezzo_scontato"),
+                rs.getDate("inizio_sconto")!=null ? rs.getDate("inizio_sconto").toLocalDate() : null,
+                rs.getDate("fine_sconto")!=null ? rs.getDate("fine_sconto").toLocalDate() : null,
+                rs.getBlob("foto") != null ? rs.getBlob("foto").getBinaryStream().readAllBytes() : null
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
