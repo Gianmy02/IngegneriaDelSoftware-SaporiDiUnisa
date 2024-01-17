@@ -8,11 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sapori di Unisa - Aggiunta Scaffale</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/table.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/img/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/img/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/img/favicon/favicon-16x16.png">
-        <link rel="manifest" href="${pageContext.request.contextPath}/img/favicon/site.webmanifest">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/scaffale.css">
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/script/aggiuntaScaffale.js" defer></script>
     </head>
@@ -94,9 +90,11 @@
             </table>
         </div>
 
-            <input id="confirm-button" type="submit" value="CONFERMA">
+            <input class="btn" id="confirm-button" type="submit" value="CONFERMA">
 
         </form>
+
+        <a href="${pageContext.request.contextPath}/view/select_VisualizzaScaffale_AggiungiProdottiScaffale.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
 
     </main>
     <%@ include file="/WEB-INF/include/footer.html" %>

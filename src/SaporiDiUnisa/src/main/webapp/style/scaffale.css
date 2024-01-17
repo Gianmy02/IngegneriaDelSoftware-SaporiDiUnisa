@@ -1,8 +1,67 @@
-.tabella-container {
-    display: flex;
-    justify-content: space-around;
+.container-table {
+    width: 80%;
+    margin: 100px auto 20px;
 }
 
-.tabella {
-    margin: 10px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
+
+th, td {
+    border: 1px solid black; /* Bordi neri */
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2; /* Sfondo grigio chiaro */
+    color: black;
+    font-weight: bold;
+}
+
+.btn {
+    display: block;
+    margin: 80px auto 10px;
+    width: 50%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cancel-button {
+    background-color: red;
+    color: white;
+}
+
+#cancel-button:hover {
+    background-color: #c9302c; /* Colore più scuro al passaggio del mouse */}
+
+
+#confirm-button {
+    background-color: #07d200;
+    color: white;
+}
+
+#confirm-button:hover {
+    background-color: #059B00;
+}
+
+#indietro-button {
+    margin-top: 10px;
+    margin-bottom: 100px;
+    background-color: red;
+    color: white;
+}
+
+#indietro-button:hover {
+    background-color: #c9302c; /* Colore più scuro al passaggio del mouse */
+}
+
+a {
+    color: inherit; /* Fa sì che il colore del link sia lo stesso del testo circostante */
+    text-decoration: none; /* Rimuove la sottolineatura */
+}
+

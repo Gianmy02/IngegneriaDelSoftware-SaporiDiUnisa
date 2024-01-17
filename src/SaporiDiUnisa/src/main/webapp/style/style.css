@@ -29,7 +29,7 @@ header{
 
 #button-logout button {
     padding: 10px 20px;
-    background-color: #c9302c; /* Colore rosso per il logout */
+    background-color: red; /* Colore rosso per il logout */
     color: white;
     border: none;
     border-radius: 5px;
@@ -38,7 +38,7 @@ header{
 }
 
 #button-logout button:hover {
-    background-color: #a12d24; /* Colore più scuro al passaggio del mouse */
+    background-color: #c9302c; /* Colore più scuro al passaggio del mouse */
 }
 
 /* Main */
