@@ -15,8 +15,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Salvatore Ruocco
+ * La classe <code>MagazzinoController</code> funge da tramite fra il database e le servlet per le operazioni sul magazzino
+ */
 public class MagazzinoController
 {
+    /**
+     * Il metodo <code>registraFornitura</code> registra una nuova fornitura del giorno nel db
+     * @param fornitura fornitura inserita in input
+     * @return booleano di conferma
+     */
     public boolean registraFornitura(final Fornitura fornitura)
     {
         FornituraDAO.insert(fornitura);
@@ -44,6 +53,11 @@ public class MagazzinoController
         return true;
     }
 
+    /**
+     * Il metodo <code>eliminaLotto</code> permette di eliminare un lotto per emergenze alimentari da parte di admin
+     * @param l id int del lotto
+     * @return booleano di conferma
+     */
     public static boolean eliminaLotto(int l)
     {
         Lotto lotto = LottoDAO.getLottoById(l);
@@ -67,6 +81,10 @@ public class MagazzinoController
         return false;
     }
 
+    /**
+     * Il metodo <code>visualizzaProdottiMagazzino</code> permette di avere per ogni prodotto tutti i lotti di quel prodotto
+     * @return HashMap<Prodotto, ArrayList<Lotto>>, per ogni prodotto si hanno tutti i lotti
+     */
     public static HashMap<Prodotto, ArrayList<Lotto>> visualizzaProdottiMagazzino()
     {
         return LottoDAO.getMagazzino();
@@ -82,6 +100,10 @@ public class MagazzinoController
         return 0;
     }
 
+    /**
+     * Il metodo <code>getSpeseTotali</code> calcola tutti i soldi spesi per tutti i lotti dal giorno di apertura del supermercato
+     * @return totale
+     */
     public static float getSpeseTotali()
     {
         return LottoDAO.getSpeseTotali();
@@ -96,10 +118,25 @@ public class MagazzinoController
         return ProdottoDAO.findProdottoById(id);
     }
 
+    /**
+     * Il metodo <code>checkProductExists</code> controlla se e presente già un prodotto nella base dati
+     * @param nome nome del prodotto
+     * @param marchio marchio del prodotto
+     * @return Prodotto oppure null
+     */
     public Prodotto checkProductExists(final String nome, final String marchio){
         return ProdottoDAO.selectByNameAndBrand(nome, marchio);
     }
 
+    /**
+     * Il metodo <code>lottoValidation</code> controlla se per tutti campi inseriti di un lotto non ci siano errori
+     * @param nome stringa, nome del prodotto
+     * @param marchio stringa, marchio del prodotto
+     * @param prezzo costo del lotto, float
+     * @param quantita quantita del lotto, int
+     * @param dataScadenza data di scadenza del lotto, LocalDate
+     * @return stringa di errore nel caso
+     */
     public String lottoValidation(final String nome, final String marchio, final float prezzo, final int quantita, final LocalDate dataScadenza){
         if(nome == null || nome.isBlank() || nome.length() > 255 || nome.length() < 2)
             return "Nome non valido";

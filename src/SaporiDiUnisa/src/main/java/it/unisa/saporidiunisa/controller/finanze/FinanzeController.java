@@ -11,6 +11,10 @@ import lombok.val;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * @author Antonio Facchiano, Gianmarco Riviello
+ * La classe <code>FinanzeController</code> viene utilizzata per attingere al database e avere dati o funzioni utili in merito all'ambito finanziario
+ */
 public class FinanzeController
 {
     /**
@@ -21,8 +25,6 @@ public class FinanzeController
     {
         val bilancio = new Bilancio();
 
-        // NOTA: da testare
-        // val perdite = (float)LottoDAO.getPerditeTotali().stream().mapToDouble(l -> l.getCostoProdotto() * l.getQuantitaAttuale()).sum();
         var perdite = 0.00f;
         for (val l : LottoDAO.getPerditeTotali())
             perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
@@ -35,6 +37,7 @@ public class FinanzeController
         return bilancio;
     }
 
+    /*La funzione Prenderebbe un periodo e un prodotto correlato e restituirebbe un array di interi nel quale si ha per ogni giorno, vendite e acquisti del prodotto*/
     public static ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
     {
         if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
