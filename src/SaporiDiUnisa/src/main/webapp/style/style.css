@@ -68,11 +68,5 @@ footer {
 footer p {
     text-align: center;
     margin: 5px auto;
-}
-footer span{
     font-style: italic;
-}
-
-#wrapperFooter{
-    min-height: 100%;
 }
