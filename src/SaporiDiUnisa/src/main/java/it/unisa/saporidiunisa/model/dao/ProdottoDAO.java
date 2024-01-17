@@ -50,15 +50,26 @@ public class ProdottoDAO
     {
         try (val con = Database.getConnection())
         {
-            val ps = con.prepareStatement("insert into prodotto (nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto) values (?, ?, ?, ?, ?, ?, ?);");
+            val ps = con.prepareStatement("insert into prodotto (nome, marchio, prezzo, foto) values (?, ?, ?, ?);");
             ps.setString(1, prodotto.getNome());
             ps.setString(2, prodotto.getMarchio());
             ps.setFloat(3, prodotto.getPrezzo());
-            ps.setFloat(4, prodotto.getPrezzoScontato());
-            ps.setDate(5, Date.valueOf(prodotto.getInizioSconto()));
-            ps.setDate(6, Date.valueOf(prodotto.getFineSconto()));
-            ps.setBytes(7, prodotto.getFoto());
+            ps.setBytes(4, prodotto.getFoto());
             ps.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int getLastId()
+    {
+        try (val con = Database.getConnection())
+        {
+            val ps = con.prepareStatement("select id from prodotto order by id desc limit 1");
+            val rs = ps.executeQuery();
+            return rs.next() ? rs.getInt("id") : 0;
         }
         catch (SQLException e)
         {
