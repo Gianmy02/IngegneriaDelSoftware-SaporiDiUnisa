@@ -24,7 +24,7 @@
             <div id="container-left" class="container-form">
                 <h2>Inserisci lotto</h2>
                 <!-- Questo form verrà invocato con AJAX -->
-                <form>
+                <form id="aggiungiLotto-form">
                     <div class="row">
                         <div class="col-50">
                             <label for="nome">Nome</label>
@@ -90,9 +90,12 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
                 </table>
+                <form id="registraFornitura-form" action="${pageContext.request.contextPath}/RegistraFornitura" method="get">
+                    <input type="button" id="reset-button" value="Reset">
+                    <input id="registraFornitura-ajax" type="submit" value="Registra fornitura">
+                </form>
             </div>
         </div>
     </main>
