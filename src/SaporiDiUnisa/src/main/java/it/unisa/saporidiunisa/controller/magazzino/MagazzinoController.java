@@ -146,9 +146,9 @@ public class MagazzinoController
             return "Nome non valido";
         if(marchio == null || marchio.isBlank() || marchio.length() > 255 || marchio.length() < 2)
             return "Marchio non valido";
-        if(prezzo <= 0)
+        if(prezzo <= 0 || prezzo > 100000)
             return "Prezzo non valido";
-        if(quantita <= 0)
+        if(quantita <= 0 || quantita> 100000)
             return "Quantità non valida";
         if(dataScadenza == null || dataScadenza.isBefore(LocalDate.now()))
             return "Data scadenza non valida";
