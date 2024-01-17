@@ -11,28 +11,30 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import lombok.val;
 import org.json.JSONObject;
-
-import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 /**
  * @author Salvatore Ruocco
  * Servlet, invocata tramite AJAX, che gestisce l'aggiunta di un lotto alla fornitura che si sta inserendo
  */
-// @MultipartConfig
+@MultipartConfig
 @WebServlet(name = "AggiungiLotto", value = "/AggiungiLotto")
 public class AggiungiLotto extends HttpServlet {
     final MagazzinoController magazzinoController = new MagazzinoController();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val nome = req.getParameter("nome");
-        val marchio = req.getParameter("marchio");
+        val nome = _readPart(req.getPart("nome"));
+        val marchio = _readPart(req.getPart("marchio"));
         // la verifica dei prezzi inseriti rispetto a quelli attuali solo a registrazione avvenuta
-        val prezzo = Float.parseFloat(req.getParameter("prezzo"));
-        val quantita = Integer.parseInt(req.getParameter("quantita"));
-        val dataScadenza = LocalDate.parse(req.getParameter("dataScadenza"));
+        val prezzo = Float.parseFloat(_readPart(req.getPart("prezzo")));
+        val quantita = Integer.parseInt(_readPart(req.getPart("quantita")));
+        val dataScadenza = LocalDate.parse(_readPart(req.getPart("dataScadenza")));
 
         val errorString = magazzinoController.lottoValidation(nome, marchio, prezzo, quantita, dataScadenza);
         if(errorString != null){
@@ -42,12 +44,10 @@ public class AggiungiLotto extends HttpServlet {
         }
 
         Prodotto prodotto = magazzinoController.checkProductExists(nome, marchio);
-        /*
         if(prodotto == null){
             byte[] foto = req.getPart("foto").getInputStream().readAllBytes();
             prodotto = new Prodotto(nome, marchio, prezzo, foto);
         }
-        */
 
         // tengo l'id della fornitura in sessione per evitare ripetute select dal db
         final HttpSession session = req.getSession();
@@ -68,5 +68,12 @@ public class AggiungiLotto extends HttpServlet {
         json.put("dataScadenza", dataScadenza.format(Patterns.DATE_TIME_FORMATTER));
         resp.setContentType("application/json");
         resp.getWriter().write(String.valueOf(json));
+    }
+
+    private String _readPart(Part part) throws IOException {
+        try (InputStream is = part.getInputStream();
+            val reader = new BufferedReader(new InputStreamReader(is))) {
+            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
     }
 }

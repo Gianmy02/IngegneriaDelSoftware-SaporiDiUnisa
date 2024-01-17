@@ -2,25 +2,26 @@
 
 $(document).ready(function(){
     const table_lottiInseriti = $("#lottiInseriti");
-
     $("#ajax-caller").click(function(){
-        $.post("AggiungiLotto", {
-                nome: $("#nome").val(),
-                marchio: $("#marchio").val(),
-                prezzo: $("#prezzo").val(),
-                quantita: $("#quantita").val(),
-                dataScadenza: $("#dataScadenza").val(),
-                foto: $("#foto").val(),
-            },
-            function(lotto) {
+        const formData = new FormData($('form')[0]);
+        $.ajax({
+            url: 'AggiungiLotto',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(lotto) {
                 const tr = $("<tr></tr>")
                     .append($("<td></td>").text(lotto.nome))
                     .append($("<td></td>").text(lotto.marchio))
                     .append($("<td></td>").text(lotto.prezzo))
                     .append($("<td></td>").text(lotto.quantita))
-                    .append($("<td></td>").text(lotto.dataScadenza));
+                    .append($("<td></td>").text(lotto.dataScadenza))
                 table_lottiInseriti.append(tr);
+            },
+            error: function(error) {
+                console.error(error);
             }
-        );
+        });
     });
 });

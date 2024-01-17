@@ -24,6 +24,7 @@
             <div id="container-left" class="container-form">
                 <h2>Inserisci lotto</h2>
                 <!-- Questo form verrà invocato con AJAX -->
+                <form>
                     <div class="row">
                         <div class="col-50">
                             <label for="nome">Nome</label>
@@ -65,7 +66,6 @@
                             <input type="date" name="dataScadenza" id="dataScadenza" required>
                         </div>
                     </div>
-                    <!--
                     <div class="row">
                         <div class="col-50">
                             <label for="foto">Foto</label>
@@ -74,8 +74,8 @@
                             <input type="file" name="foto" id="foto" accept="image/*">
                         </div>
                     </div>
-                    -->
-                    <input id="ajax-caller" type="submit" value="Aggiungi lotto">
+                    <input id="ajax-caller" type="button" value="Aggiungi lotto">
+                </form>
             </div>
             <div id="container-right" class="container-form">
                 <h2>Lotti inseriti</h2>
