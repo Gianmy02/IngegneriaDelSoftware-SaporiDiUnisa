@@ -44,12 +44,13 @@
             </tr>
             <%}%>
         </tbody>
+
     </table>
 <%}else{%>
 <p>Magazzino Vuoto</p>
 <%}%>
 <div id = "buttons-container">
-    <a href="${pageContext.request.contextPath}/view/select_admin.jsp"><button id="cancel-button">Indietro</button></a>
+    <button onclick="window.history.back()" id="cancel-button">Indietro</button>
 </div>
 </div>
 

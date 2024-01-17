@@ -36,7 +36,7 @@
                     <th>Giorno Fornitura</th>
                     <th>Costo</th>
                     <th>Data Scadenza</th>
-                    <th>Qnt attuale</th>
+                    <th>Quantità attuale</th>
                     <%
                         if(dipendente.getRuolo() == Dipendente.Ruolo.ADMIN)
                         {
@@ -74,6 +74,9 @@
                     }
                 %>
             </table>
+            <div id = "buttons-container">
+                <a href="${pageContext.request.contextPath}/view/mostraProdottoLotti.jsp"><button id="cancel-button">Indietro</button></a>
+            </div>
         </div>
     </form>
 </main>
