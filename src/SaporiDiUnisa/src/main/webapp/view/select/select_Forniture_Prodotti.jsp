@@ -16,14 +16,14 @@
 <%@ include file="/WEB-INF/include/header.html" %>
 <main>
     <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
-        <span class="material-symbols-outlined">add</span>
-        <p>Registra Fornitura</p>
-        <input type="hidden" name="address" value="registraFornitura">
+        <span class="material-symbols-outlined">package_2</span>
+        <p>Area Fornitura</p>
+        <input type="hidden" name="address" value="select/select_RegistraFornitura_VisualizzaForniture">
     </form>
     <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
-        <span class="material-symbols-outlined">news</span>
-        <p>Visualizza Forniture</p>
-        <input type="hidden" name="address" value="visualizzaForniture">
+        <span class="material-symbols-outlined">nutrition</span>
+        <p>Prodotti Magazzino</p>
+        <input type="hidden" name="address" value="visualizzaProdottiMagazzino">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>Sapori di Unisa - Homepage Cassiere</title>
+    <title>Sapori di Unisa - Homepage magazziniere</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/box.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -15,13 +15,15 @@
 <body>
 <%@ include file="/WEB-INF/include/header.html" %>
 <main>
-    <form action="${pageContext.request.contextPath}/MostraProdottiCassiereServlet" onclick="this.submit()">
+    <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">add</span>
-        <p>Registra Vendita</p>
+        <p>Registra Fornitura</p>
+        <input type="hidden" name="address" value="magazzino/registraFornitura">
     </form>
-    <form action="mostraStoricoVendite.jsp" onclick="this.submit()">
+    <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">news</span>
-        <p>Visualizza Storico Vendite</p>
+        <p>Visualizza Forniture</p>
+        <input type="hidden" name="address" value="magazzino/visualizzaForniture">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>

@@ -77,7 +77,7 @@
 
 </form>
 </main>
-<a href="${pageContext.request.contextPath}/view/select_VisualizzaScaffale_AggiungiProdottiScaffale.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
+<a href="${pageContext.request.contextPath}/view/select/select_VisualizzaScaffale_AggiungiProdottiScaffale.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
 <%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>

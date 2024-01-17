@@ -18,12 +18,12 @@
     <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">warehouse</span>
         <p>Area Magazzino</p>
-        <input type="hidden" name="address" value="select_Forniture_Prodotti">
+        <input type="hidden" name="address" value="select/select_Forniture_Prodotti">
     </form>
     <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">shelves</span>
         <p>Area Scaffale</p>
-        <input type="hidden" name="address" value="select_VisualizzaScaffale_AggiungiProdottiScaffale">
+        <input type="hidden" name="address" value="select/select_VisualizzaScaffale_AggiungiProdottiScaffale">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>

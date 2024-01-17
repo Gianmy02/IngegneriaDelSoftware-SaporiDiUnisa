@@ -71,7 +71,7 @@
     } %>
 
     <div id = "buttons-container">
-        <a href="${pageContext.request.contextPath}/view/select_Cassiere.jsp"><button id="cancel-button">Indietro</button></a>
+        <a href="${pageContext.request.contextPath}/view/select/select_Cassiere.jsp"><button id="cancel-button">Indietro</button></a>
     </div>
 </div>
 <%@ include file="/WEB-INF/include/footer.html" %>

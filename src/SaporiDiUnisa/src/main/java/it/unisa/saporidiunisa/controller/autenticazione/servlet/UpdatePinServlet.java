@@ -42,6 +42,6 @@ public class UpdatePinServlet extends HttpServlet
             return;
         }
 
-        request.getRequestDispatcher("view/select_admin.jsp").forward(request, response);
+        request.getRequestDispatcher("view/select/select_admin.jsp").forward(request, response);
     }
 }
