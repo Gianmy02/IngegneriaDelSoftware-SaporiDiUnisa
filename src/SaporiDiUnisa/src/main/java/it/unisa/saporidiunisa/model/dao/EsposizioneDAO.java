@@ -89,17 +89,27 @@ public class EsposizioneDAO
         }
     }
 
-    public void diminuisciEsposizione(int quantita, Esposizione es){
+    public void diminuisciEsposizione(int quantita, Esposizione es, boolean elimina){
         try (val connection = Database.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(
-                    "UPDATE esposizione SET quantita = quantita - ? WHERE esposizione.prodotto = ? AND esposizione.lotto = ?");
-            ps.setInt(1, quantita);
-            ps.setInt(2, es.getProdotto().getId());
-            ps.setInt(3, es.getLotto().getId());
-
-            if (ps.executeUpdate() != 1) {
-                throw new RuntimeException("UPDATE error.");
+            if(elimina){
+                PreparedStatement ps = connection.prepareStatement(
+                        "DELETE FROM esposizione WHERE prodotto = ? AND lotto = ?");
+                ps.setInt(1, es.getProdotto().getId());
+                ps.setInt(2, es.getLotto().getId());
+                if (ps.executeUpdate() != 1) {
+                    throw new RuntimeException("DELETE error.");
+                }
+            }else{
+                PreparedStatement ps = connection.prepareStatement(
+                        "UPDATE esposizione SET quantita = quantita - ? WHERE esposizione.prodotto = ? AND esposizione.lotto = ?");
+                ps.setInt(1, quantita);
+                ps.setInt(2, es.getProdotto().getId());
+                ps.setInt(3, es.getLotto().getId());
+                if (ps.executeUpdate() != 1) {
+                    throw new RuntimeException("UPDATE error.");
+                }
             }
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
