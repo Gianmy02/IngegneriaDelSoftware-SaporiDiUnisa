@@ -46,7 +46,7 @@ public class FinanzeController
     }
 
     /**
-     * La funzione <code>impostaSconto</code> serve ad applicare uno sconto ad un prodotto scelto
+     * La funzione <code>impostaSconto</code> serve ad applicare uno sconto a un prodotto scelto
      * @param prodotto prodotto al quale applicare lo sconto
      * @param sconto percentuale dello sconto da applicare da 1 a 100
      * @param dataInizio data di inizio dello sconto
@@ -66,6 +66,10 @@ public class FinanzeController
         return false;
     }
 
+    /**
+     * La funzione <code>visualizzaProdotti</code> restituisce tutti i prodotti presenti nel database
+     * @return ArrayList di prodotti
+     */
     public static ArrayList<Prodotto> visualizzaProdotti()
     {
         return ProdottoDAO.selectAll();

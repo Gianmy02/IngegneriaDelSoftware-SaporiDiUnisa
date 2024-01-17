@@ -2,6 +2,8 @@ package it.unisa.saporidiunisa.controller.finanze.servlet;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,31 +14,25 @@ import lombok.val;
 import java.io.IOException;
 
 @WebServlet(name = "MostraProdottoFinanzeServlet", value = "/mostra-prodotto-finanze-servlet")
-public class MostraProdottoFinanzeServlet extends HttpServlet {
+public class MostraProdottoFinanzeServlet extends HttpServlet
+{
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
 
         val session = request.getSession();
 
         val dipendente = (Dipendente)session.getAttribute("dipendente");
-        if (dipendente == null)
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
-            request.setAttribute("message", "Permessi non concessi per questa pagina");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
-            return;
-        }
-
-        if (dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
-        {
-            request.setAttribute("message", "Permessi non concessi per questa pagina");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
+            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
             return;
         }
 
         val id = request.getParameter("prodotto");
-        if(id == null){
-            request.setAttribute("message", "Errore sul prodotto richiesto");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
+        if (id == null)
+        {
+            Utils.dispatchError("Errore sul prodotto richiesto", request, response);
             return;
         }
 

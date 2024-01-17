@@ -2,6 +2,8 @@ package it.unisa.saporidiunisa.controller.finanze.servlet;
 
 import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,29 +13,22 @@ import lombok.val;
 
 import java.io.IOException;
 
-@WebServlet(name = "MostraProdottiServlet", value = "/mostra-prodotti-servlet")
-public class MostraProdottiServlet extends HttpServlet{
+@WebServlet(name = "mostraProdottiServlet", value = "/mostra-prodotti-servlet")
+public class MostraProdottiServlet extends HttpServlet
+{
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
         val session = request.getSession();
 
         val dipendente = (Dipendente)session.getAttribute("dipendente");
-        if (dipendente == null)
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
-            request.setAttribute("message", "Permessi non concessi per questa pagina");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
-            return;
-        }
-
-        if (dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
-        {
-            request.setAttribute("message", "Permessi non concessi per questa pagina");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
+            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
             return;
         }
 
         session.setAttribute("prodotti", FinanzeController.visualizzaProdotti());
         request.getRequestDispatcher("view/finanze/visualizzaProdotti.jsp").forward(request, response);
-
     }
 }
