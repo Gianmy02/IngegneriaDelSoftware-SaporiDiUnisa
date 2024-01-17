@@ -54,13 +54,13 @@ public class AggiungiVenditaServlet extends HttpServlet {
                         // Gestione dell'eccezione in caso di errore di conversione
                         System.err.println("Errore durante la conversione del prezzo a float: " + e.getMessage());
                         // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
-                        v.setCosto(0.0f);
+                        v.setCosto(0.00f);
                     }
                 } else {
                     // Gestione di altri casi in cui il valore "price" non può essere convertito a float
                     System.err.println("Errore: il valore 'price' non è di tipo numerico o stringa.");
                     // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
-                    v.setCosto(0.0f);
+                    v.setCosto(0.00f);
                 }
 
                 selezionati.add(v);

@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2; /* Sfondo grigio chiaro */
+}
+
+.content-wrapper {
+    text-align: center;
+    margin: 20px;
+}
+
+
+.product-details {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.quantity-input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.discount-info {
+    margin-top: 10px;
+}
+
+footer {
+    margin-top: 20px;
+}
+.product-details {
+    text-align: center;
+}
+.product-image {
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+}
+
+.price-input, .discount-input {
+    margin-top: 10px;
+}
+
+button {
+    background-color: #4CAF50; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    padding: 10px 15px; /* Spaziatura interna */
+    border: none; /* Nessun bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    cursor: pointer; /* Cambia il cursore al passaggio sopra il pulsante */
+}
+
+/* Stile quando il cursore è sopra il pulsante */
+button:hover {
+    background-color: #45a049; /* Colore di sfondo leggermente più scuro */
+}
+
+/* Stile quando il pulsante è attivo/cliccato */
+button:active {
+    background-color: #3e8e41; /* Colore di sfondo più scuro durante il clic */
+}

@@ -2,6 +2,7 @@
 <%@ page import="it.unisa.saporidiunisa.model.entity.Venduto" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,15 +23,22 @@
         <label>Data Fine:</label>
         <input type="date" name="fine" max="<%=LocalDate.now().minusDays(1)%>" required>
 
-        <input type="submit" value="Invia">
+        <input id="confirm-button" type="submit" value="Invia">
     </form>
     <%
         ArrayList<Venduto> venduti = (ArrayList<Venduto>) session.getAttribute("prodotti");
         if (venduti!= null && (!venduti.isEmpty()))
         {
-            if(request.getAttribute("dataInizio") != null && request.getAttribute("dataFine") !=null){%>
+            if(request.getAttribute("dataInizio") != null && request.getAttribute("dataFine") !=null){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataInizio = (LocalDate) request.getAttribute("dataInizio");
+                LocalDate dataFine = (LocalDate) request.getAttribute("dataFine");
+
+                String inizio = dataInizio.format(formatter);
+                String fine = dataFine.format(formatter);
+    %>
     <h3>Risultati:</h3>
-    <p>Data inizio inserita: <%=request.getAttribute("dataInizio")%>   Data Fine inserita: <%=request.getAttribute("dataFine")%></p>
+    <p>Data inizio inserita: <%=inizio%>   Data Fine inserita: <%=fine%></p>
     <table id = "product-table">
         <thead>
         <tr>

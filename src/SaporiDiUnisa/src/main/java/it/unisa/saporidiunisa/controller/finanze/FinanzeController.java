@@ -23,7 +23,7 @@ public class FinanzeController
 
         // NOTA: da testare
         // val perdite = (float)LottoDAO.getPerditeTotali().stream().mapToDouble(l -> l.getCostoProdotto() * l.getQuantitaAttuale()).sum();
-        var perdite = 0.0f;
+        var perdite = 0.00f;
         for (val l : LottoDAO.getPerditeTotali())
             perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
 

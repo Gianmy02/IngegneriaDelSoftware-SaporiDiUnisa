@@ -25,7 +25,7 @@ function confirmSale() {
 
     var saleDetailsString = "Dettagli della vendita:\n";
     for (var i = 0; i < dettagli.length; i++) {
-        saleDetailsString += "Prodotto : " + dettagli[i].name + ", Quantità: " + dettagli[i].quantity + ", Prezzo: " + dettagli[i].price + "\n";
+        saleDetailsString += "Prodotto : " + dettagli[i].name + ", Quantità: " + dettagli[i].quantity + ", Prezzo: " + dettagli[i].price + "&euro;\n";
     }
     var total = $(document).find("#total-amount").text();
     total = parseFloat(total);

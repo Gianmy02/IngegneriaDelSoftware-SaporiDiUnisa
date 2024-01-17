@@ -36,7 +36,6 @@ public class ImpostaScontoServlet extends HttpServlet
             return;
         }
 
-
         val dataInizioSconto = req.getParameter("dataInizioSconto");
         if (dataInizioSconto == null)
         {
@@ -44,7 +43,6 @@ public class ImpostaScontoServlet extends HttpServlet
             req.getRequestDispatcher("view/error.jsp").forward(req, resp);
             return;
         }
-
         val dataFineSconto = req.getParameter("dataFineSconto");
         if (dataFineSconto == null)
         {

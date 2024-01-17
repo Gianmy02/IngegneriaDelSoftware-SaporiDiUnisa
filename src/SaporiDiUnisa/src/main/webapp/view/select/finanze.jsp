@@ -19,7 +19,7 @@
                 <span class="material-symbols-outlined">monitoring</span>
                 <p>Area Bilancio</p>
             </form>
-            <form action="" onclick="this.submit()">
+            <form action="${pageContext.request.contextPath}/mostra-prodotti-servlet" onclick="this.submit()">
                 <span class="material-symbols-outlined">bakery_dining</span>
                 <p>Prodotti</p>
             </form>
