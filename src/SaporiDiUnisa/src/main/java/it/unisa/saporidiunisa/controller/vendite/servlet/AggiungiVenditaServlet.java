@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.entity.Venduto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -35,7 +34,7 @@ public class AggiungiVenditaServlet extends HttpServlet {
                 sb.append(line);
             }
             ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<List<Map<String, Object>>>(){});
+            List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<>() {});
             ArrayList<Venduto> selezionati = new ArrayList<>();
 
 
@@ -49,18 +48,18 @@ public class AggiungiVenditaServlet extends HttpServlet {
                     v.setCosto(((Number) saleData.get("price")).floatValue());
                 } else if (saleData.get("price") instanceof String) {
                     try {
-                        v.setCosto(Float.valueOf((String) saleData.get("price")));
+                        v.setCosto(Float.parseFloat((String) saleData.get("price")));
                     } catch (NumberFormatException e) {
                         // Gestione dell'eccezione in caso di errore di conversione
                         System.err.println("Errore durante la conversione del prezzo a float: " + e.getMessage());
                         // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
-                        v.setCosto(0.00f);
+                        v.setCosto(0);
                     }
                 } else {
                     // Gestione di altri casi in cui il valore "price" non può essere convertito a float
                     System.err.println("Errore: il valore 'price' non è di tipo numerico o stringa.");
                     // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
-                    v.setCosto(0.00f);
+                    v.setCosto(0);
                 }
 
                 selezionati.add(v);
