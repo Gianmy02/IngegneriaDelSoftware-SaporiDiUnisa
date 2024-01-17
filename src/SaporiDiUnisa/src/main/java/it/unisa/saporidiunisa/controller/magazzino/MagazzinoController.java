@@ -63,7 +63,7 @@ public class MagazzinoController
         return false;
     }
 
-    public HashMap<Prodotto, ArrayList<Lotto>> visualizzaProdottiMagazzino()
+    public static HashMap<Prodotto, ArrayList<Lotto>> visualizzaProdottiMagazzino()
     {
         return LottoDAO.getMagazzino();
     }
