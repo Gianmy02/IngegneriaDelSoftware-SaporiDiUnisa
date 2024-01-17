@@ -65,7 +65,7 @@ public class MagazzinoController
 
     public HashMap<Prodotto, ArrayList<Lotto>> visualizzaProdottiMagazzino()
     {
-        return null;
+        return LottoDAO.getMagazzino();
     }
 
     public List<Fornitura> visualizzaForniture()
