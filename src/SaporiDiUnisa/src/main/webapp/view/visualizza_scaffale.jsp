@@ -53,7 +53,7 @@
                 <td class="nomeProdotto"><%=e.getProdotto().getNome()%></td>
                 <td class="azienda"><%=e.getProdotto().getMarchio()%></td>
                 <td class="scadenza"><%=e.getLotto().getDataScadenza()%></td>
-                <td class="quantia"><%=e.getQuantita()%></td>
+                <td class="quantita"><%=e.getQuantita()%></td>
             </tr>
 
             <%

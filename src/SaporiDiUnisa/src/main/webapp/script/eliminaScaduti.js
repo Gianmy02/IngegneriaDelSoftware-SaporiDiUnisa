@@ -19,7 +19,7 @@ $(document).ready(function() {
             nomeProdotto = $(this).find(".nomeProdotto").text();
             azienda = $(this).find(".azienda").text();
             scadenza = $(this).find(".scadenza").text();
-            qntAttuale = $(this).find(".quantia").text();
+            qntAttuale = $(this).find(".quantita").text();
 
             operazioni += "Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ";\n";
 
