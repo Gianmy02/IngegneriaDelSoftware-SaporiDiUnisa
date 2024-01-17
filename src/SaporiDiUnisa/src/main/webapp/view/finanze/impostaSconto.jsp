@@ -37,6 +37,9 @@
                         <input type="date" id="dataFineSconto" name="dataFineSconto" min = "<%=LocalDate.now().plusDays(2)%>" required>
                         <button type="submit">Invia</button>
                     </form>
+                    <div id = "buttons-container">
+                        <a href="${pageContext.request.contextPath}/view/finanze/visualizzaProdotti.jsp"><button style="background-color: red" id="cancel-button">Indietro</button></a>
+                    </div>
                 </div>
             </div>
         </div>
