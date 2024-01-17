@@ -8,7 +8,6 @@ function confirmSale() {
         var price = $(element).find(".item-price").text();
         var name = $(element).find(".product-name").text();
         price = parseFloat(price);
-
         if (quantity > 0) {
             saleData.push({
                 productId: parseInt(productId), // Assicura che productId sia un numero intero
@@ -22,30 +21,34 @@ function confirmSale() {
             });
         }
     });
-
-    var saleDetailsString = "Dettagli della vendita:\n";
-    for (var i = 0; i < dettagli.length; i++) {
-        saleDetailsString += "Prodotto : " + dettagli[i].name + ", Quantità: " + dettagli[i].quantity + ", Prezzo: " + dettagli[i].price + ";\n";
+    if (saleData.length === 0) {
+        alert("Errore: Nessun prodotto con quantità maggiore di 0.");
+        return;
     }
-    var total = $(document).find("#total-amount").text();
-    total = parseFloat(total);
-    saleDetailsString +="Totale: "+total+ "\n";
+        var saleDetailsString = "Dettagli della vendita:\n";
+        for (var i = 0; i < dettagli.length; i++) {
+            saleDetailsString += "Prodotto : " + dettagli[i].name + ", Quantità: " + dettagli[i].quantity + ", Prezzo: " + dettagli[i].price + ";\n";
+        }
+        var total = $(document).find("#total-amount").text();
+        total = parseFloat(total);
+        saleDetailsString +="Totale: "+total+ "\n";
 
-    // Mostra un alert con i dettagli della vendita e richiede la conferma dell'utente
-    var confirmation = confirm(saleDetailsString);
-    if(confirmation){
-    // Invia una richiesta AJAX alla servlet per confermare la vendita
-    $.ajax({
-        method: 'POST',
-        url: 'AggiungiVenditaServlet',
-        contentType: "application/json",
-        data: JSON.stringify(saleData)
-    })
-        .done(function() {
-            alert('Vendita Salvata')
-            window.location.href = "MostraProdottiCassiereServlet";
+        // Mostra un alert con i dettagli della vendita e richiede la conferma dell'utente
+        var confirmation = confirm(saleDetailsString);
+        if(confirmation){
+        // Invia una richiesta AJAX alla servlet per confermare la vendita
+        $.ajax({
+            method: 'POST',
+            url: 'AggiungiVenditaServlet',
+            contentType: "application/json",
+            data: JSON.stringify(saleData)
         })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-        });
-    }
+            .done(function() {
+                alert('Vendita Salvata')
+                window.location.href = "MostraProdottiCassiereServlet";
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+            });
+        }
+
 }
