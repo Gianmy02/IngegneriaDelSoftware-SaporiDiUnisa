@@ -28,4 +28,11 @@ public class Prodotto
             return false;
         return this.fineSconto.isAfter(LocalDate.now());
     }
+
+    @Override
+    public String toString() {
+        return "Nome prodotto: " + nome +
+                ", marchio: " + marchio +
+                ", prezzo prodotto: " + prezzo;
+    }
 }

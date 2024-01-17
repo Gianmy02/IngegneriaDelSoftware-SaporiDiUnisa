@@ -24,4 +24,13 @@ public class Lotto
     public float getCostoProdotto(){
         return this.costo/this.quantita;
     }
+
+    @Override
+    public String toString() {
+        return "Id lotto:" + id +
+                ", costo totale: " + costo +
+                ", dataScadenza: " + dataScadenza +
+                ", quantita: " + quantita +
+                ", " + prodotto.toString();
+    }
 }
