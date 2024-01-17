@@ -2,8 +2,9 @@ package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-// import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,36 +19,29 @@ public class UpdatePinServlet extends HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        val session = request.getSession();
-        val dipendente = (Dipendente)session.getAttribute("dipendente");
+        val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
 
-
-        if (dipendente != null && dipendente.getRuolo() == Dipendente.Ruolo.ADMIN)
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.ADMIN)
         {
-            val pin = request.getParameter("newPin");
-            val ruolo = Dipendente.Ruolo.valueOf(request.getParameter("ruolo"));
-            val matcherPin = Patterns.LOGIN_PIN.matcher(pin);
-
-            if (!matcherPin.matches())
-            {
-                request.setAttribute("message", "Il formato del nuovo pin non rispetta quello richiesto");
-                request.getRequestDispatcher("view/error.jsp").forward(request, response);
-                return;
-            }
-
-            if (AutenticazioneController.modificaPin(pin, ruolo))
-            {
-                request.getRequestDispatcher("view/select_admin.jsp").forward(request, response);
-            }
-            else
-            {
-                request.setAttribute("message", "Modifica non avvenuta correttamente");
-                request.getRequestDispatcher("view/error.jsp").forward(request, response);
-            }
-        }else{
-            request.setAttribute("message", "Permessi non concessi per questa pagina");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
+            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
+            return;
         }
 
+        val pin = request.getParameter("newPin");
+        val ruolo = Dipendente.Ruolo.valueOf(request.getParameter("ruolo"));
+
+        if (!Patterns.LOGIN_PIN.matcher(pin).matches())
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("nuovo pin"), request, response);
+            return;
+        }
+
+        if (!AutenticazioneController.modificaPin(pin, ruolo))
+        {
+            Utils.dispatchError("Non è stato possibile completare l'operazione.", request, response);
+            return;
+        }
+
+        request.getRequestDispatcher("view/select_admin.jsp").forward(request, response);
     }
 }
