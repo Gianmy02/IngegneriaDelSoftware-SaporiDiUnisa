@@ -39,7 +39,7 @@ public class DipendenteDAO
         {
             var preparedStatement = connection.prepareStatement("select pin from dipendente where pin = ? and ruolo = ?;");
             preparedStatement.setString(1, pin);
-            preparedStatement.setInt(2, ruolo.ordinal());
+            preparedStatement.setString(2, String.valueOf(ruolo));
             val resultSet = preparedStatement.executeQuery();
 
             // Controllo che il nuovo pin non sia uguale a quello in uso
@@ -47,7 +47,7 @@ public class DipendenteDAO
             {
                 preparedStatement = connection.prepareStatement("update dipendente set pin = ? where ruolo = ?;");
                 preparedStatement.setString(1, pin);
-                preparedStatement.setInt(2, ruolo.ordinal());
+                preparedStatement.setString(2, String.valueOf(ruolo));
 
                 if (preparedStatement.executeUpdate() != 1)
                 {

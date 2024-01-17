@@ -37,7 +37,7 @@ public class UpdatePinServlet extends HttpServlet
 
             if (AutenticazioneController.modificaPin(pin, ruolo))
             {
-                System.out.println("Andato a buon fine");
+                request.getRequestDispatcher("view/select_admin.jsp").forward(request, response);
             }
             else
             {
