@@ -12,7 +12,13 @@
         <link rel="manifest" href="img/favicon/site.webmanifest">
     </head>
     <body>
-        <%@ include file="WEB-INF/include/header.html" %>
+    <header>
+        <div id="header-container">
+            <div id="header-logo">
+                <img src="img/icon/icon_2.png" alt="Sapori di Unisa">
+            </div>
+        </div>
+    </header>
         <main>
             <form name="login" method="post" action="${pageContext.request.contextPath}/login-servlet">
                 <label for="pin">Login</label><br>

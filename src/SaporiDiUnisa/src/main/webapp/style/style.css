@@ -10,9 +10,35 @@ header{
     z-index: 0;
 }
 
+#header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
 #header-logo > img {
     height: 120px;
     margin-top: -18px;
+}
+
+
+#button-logout {
+    margin-right: 20px; /* Aggiungi margine a destra se necessario */
+}
+
+#button-logout button {
+    padding: 10px 20px;
+    background-color: #c9302c; /* Colore rosso per il logout */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+    font-size: 16px;
+}
+
+#button-logout button:hover {
+    background-color: #a12d24; /* Colore più scuro al passaggio del mouse */
 }
 
 /* Main */
