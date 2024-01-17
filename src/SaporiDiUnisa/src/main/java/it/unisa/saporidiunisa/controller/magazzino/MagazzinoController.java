@@ -90,6 +90,10 @@ public class MagazzinoController
         return LottoDAO.getMagazzino();
     }
 
+    /**
+     * Il metodo <code>visualizzaForniture</code> fa visualizzare tutte le forniture avvenute dall'apertura a oggi
+     * @return lista di forniture
+     */
     public List<Fornitura> visualizzaForniture()
     {
         return null;
