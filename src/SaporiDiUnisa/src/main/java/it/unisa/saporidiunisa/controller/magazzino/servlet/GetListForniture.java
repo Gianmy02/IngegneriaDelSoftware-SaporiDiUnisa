@@ -1,7 +1,11 @@
 package it.unisa.saporidiunisa.controller.magazzino.servlet;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +20,13 @@ public class GetListForniture extends HttpServlet {
     final MagazzinoController magazzinoController = new MagazzinoController();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        val dipendente = (Dipendente)req.getSession().getAttribute("dipendente");
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
+        {
+            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
+            return;
+        }
         val forniture = magazzinoController.visualizzaForniture();
 
         val jsonArray = new JSONArray();
