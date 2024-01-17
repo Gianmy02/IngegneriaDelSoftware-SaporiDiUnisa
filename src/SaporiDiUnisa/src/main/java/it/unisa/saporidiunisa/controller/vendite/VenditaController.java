@@ -39,13 +39,13 @@ public class VenditaController
                 {
                     guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * es.getQuantita();
                     quantitaCount = quantitaCount - es.getQuantita();
-                    gdao.diminuisciEsposizione(es.getQuantita(), es);
+                    gdao.diminuisciEsposizione(es.getQuantita(), es, true);
                 }
                 //se e minore o ugualela quantita esposta di quel lotto va bene e quindi sarà l'ultima
                 else
                 {
                     guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * v.getQuantita();
-                    gdao.diminuisciEsposizione(v.getQuantita(), es);
+                    gdao.diminuisciEsposizione(quantitaCount, es, false);
                     break;
                 }
             }
