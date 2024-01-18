@@ -184,44 +184,40 @@ public class LottoDAO
     public static Lotto getLottoById(int id){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
-                    "SELECT lotto.id, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, fornitura.id AS fornitura_id, fornitura.giorno AS data_fornitura, prodotto.id AS prodotto_id, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto FROM lotto JOIN fornitura ON lotto.fornitura = fornitura.id JOIN prodotto ON lotto.prodotto = prodotto.id WHERE lotto.id = ?");
+            "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno AS data_fornitura, p.id AS idProdotto, p.nome, p.marchio, p.prezzo, p.prezzo_scontato, p.inizio_sconto, p.fine_sconto, p.foto " +
+                "FROM lotto l JOIN fornitura f ON l.fornitura = f.id JOIN prodotto p ON l.prodotto = p.id " +
+                "WHERE l.id = ?"
+            );
             ps.setInt(1, id);
-            ResultSet resultSet = ps.executeQuery();
-            if (resultSet.next()) {
-                // Creare un oggetto Lotto con i dati ottenuti dalla query
-                Lotto lotto = new Lotto();
-                lotto.setId(resultSet.getInt("id"));
-                lotto.setCosto(resultSet.getFloat("costo"));
-                lotto.setDataScadenza(resultSet.getDate("data_scadenza").toLocalDate());
-                lotto.setQuantita(resultSet.getInt("quantita"));
-                lotto.setQuantitaAttuale(resultSet.getInt("quantita_attuale"));
+            val rs = ps.executeQuery();
+            if(rs.next()) {
+                // Creare oggetto Lotto con i dati ottenuti dalla query
+                val lotto = new Lotto(
+                    rs.getInt("id"),
+                    rs.getFloat("costo"),
+                    rs.getDate("data_scadenza").toLocalDate(),
+                    rs.getInt("quantita"),
+                    rs.getInt("quantita_attuale"),
+                    null,
+                    null
+                );
 
-                // Creare un oggetto Fornitura
-                Fornitura fornitura = new Fornitura();
-                fornitura.setId(resultSet.getInt("fornitura_id"));
-                fornitura.setGiorno(resultSet.getDate("data_fornitura").toLocalDate());
+                // Creare oggetto Fornitura
+                val fornitura = new Fornitura(
+                    rs.getInt("fornitura_id"),
+                    rs.getDate("data_fornitura").toLocalDate(),
+                    null
+                );
                 lotto.setFornitura(fornitura);
 
                 // Creare un oggetto Prodotto
-                Prodotto prodotto = new Prodotto();
-                prodotto.setId(resultSet.getInt("prodotto_id"));
-                prodotto.setNome(resultSet.getString("nome"));
-                prodotto.setMarchio(resultSet.getString("marchio"));
-                prodotto.setPrezzo(resultSet.getFloat("prezzo"));
-                prodotto.setPrezzoScontato(resultSet.getFloat("prezzo_scontato"));
-                if(resultSet.getDate("inizio_sconto")!=null)
-                    prodotto.setInizioSconto(resultSet.getDate("inizio_sconto").toLocalDate());
-                if(resultSet.getDate("fine_sconto")!=null)
-                    prodotto.setFineSconto(resultSet.getDate("fine_sconto").toLocalDate());
-                prodotto.setFoto(resultSet.getBytes("foto"));
+                val prodotto = ProdottoDAO.buildBySQL(rs);
                 lotto.setProdotto(prodotto);
 
                 return lotto;
             }
             return null;
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
