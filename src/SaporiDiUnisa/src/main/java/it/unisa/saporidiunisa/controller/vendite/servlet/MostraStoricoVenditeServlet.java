@@ -51,7 +51,7 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
             session.setAttribute("prodotti", v);
             req.setAttribute("dataInizio", inizioDate);
             req.setAttribute("dataFine", fineDate);
-            req.getRequestDispatcher("view/mostraStoricoVendite.jsp").forward(req, resp);
+            req.getRequestDispatcher("view/cassiere/mostraStoricoVendite.jsp").forward(req, resp);
         }else{
                 req.setAttribute("message", "Permessi non concessi per questa pagina");
                 req.getRequestDispatcher("view/error.jsp").forward(req, resp);

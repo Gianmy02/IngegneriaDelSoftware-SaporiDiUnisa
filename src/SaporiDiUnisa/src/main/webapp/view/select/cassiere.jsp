@@ -19,7 +19,7 @@
         <span class="material-symbols-outlined">add</span>
         <p>Registra Vendita</p>
     </form>
-    <form action="../mostraStoricoVendite.jsp" onclick="this.submit()">
+    <form action="../cassiere/mostraStoricoVendite.jsp" onclick="this.submit()">
         <span class="material-symbols-outlined">news</span>
         <p>Visualizza Storico Vendite</p>
     </form>

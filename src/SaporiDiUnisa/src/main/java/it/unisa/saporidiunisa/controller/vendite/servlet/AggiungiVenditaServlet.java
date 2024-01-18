@@ -66,7 +66,7 @@ public class AggiungiVenditaServlet extends HttpServlet {
             }
             VenditaController.addGiornoVendite();
             if(VenditaController.venditaProdotti(selezionati)){
-                req.getRequestDispatcher("view/vendita.jsp").forward(req, resp);
+                req.getRequestDispatcher("view/cassiere/vendita.jsp").forward(req, resp);
             }else {
                 req.setAttribute("message", "Vendita non riuscita");
                 req.getRequestDispatcher("view/error.jsp").forward(req, resp);

@@ -30,6 +30,6 @@ public class MostraProdottiCassiereServlet extends HttpServlet {
             return;
         }
 
-        req.getRequestDispatcher("view/vendita.jsp").forward(req, resp);
+        req.getRequestDispatcher("view/cassiere/vendita.jsp").forward(req, resp);
     }
 }
