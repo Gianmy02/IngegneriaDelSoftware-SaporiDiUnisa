@@ -56,6 +56,6 @@ public class VisualizzaScaffale extends HttpServlet {
             return;
         }
 
-        req.getRequestDispatcher("view/" + address + ".jsp").forward(req, resp);
+        req.getRequestDispatcher("view/scaffale/" + address + ".jsp").forward(req, resp);
     }
 }

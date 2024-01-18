@@ -37,7 +37,7 @@ public class EliminaScaduti extends HttpServlet {
         req.setAttribute("lottiScaffale", lottiScaffale);
         req.setAttribute("lottiScaffaleScaduti", lottiScaffaleScaduti);
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("view/visualizza_scaffale.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("view/scaffale/visualizza_scaffale.jsp");
         dispatcher.forward(req, resp);
     }
 
