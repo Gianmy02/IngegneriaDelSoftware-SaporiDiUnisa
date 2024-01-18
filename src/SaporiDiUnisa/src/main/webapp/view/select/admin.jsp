@@ -18,7 +18,7 @@
     <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">shelves</span>
         <p>Gestione Pin</p>
-        <input type="hidden" name="address" value="modificaPin">
+        <input type="hidden" name="address" value="autenticazione/modificaPin">
     </form>
     <form action="${pageContext.request.contextPath}/MostraMagazzino" onclick="this.submit()">
         <span class="material-symbols-outlined">list_alt_add</span>
