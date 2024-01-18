@@ -49,10 +49,11 @@
 
             <tr class = "vendita-item" id="<%=e.getProdotto().getId()%>">
                 <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
-                <td class ="product-name"><%=e.getProdotto().getNome()%></td>
+                <td class="product-name"><%=e.getProdotto().getNome()%></td>
                 <td><%=e.getProdotto().getMarchio()%></td>
                 <td>
-                    <select class = "item-quantity" onchange="calculateTotal()">
+                    <label for="item-quantity"></label>
+                    <select id="item-quantity" class="item-quantity" onchange="calculateTotal()">
                         <!-- Utilizza una select per la quantità -->
                         <%
                             int quantita = e.getQuantita();
@@ -65,7 +66,6 @@
                         <option value=<%=i%>><%=i%></option>
                         <%}%>
                     </select>
-
                 </td>
                 <td><p class = "item-price"><%=e.getProdotto().getPrezzo()%> &euro;</p></td>
             </tr>
@@ -76,7 +76,7 @@
         <h2>Totale: <span id="total-amount">0</span> &euro;</h2>
     </div>
     <div id = "buttons-container">
-        <a href="${pageContext.request.contextPath}/view/select/select_Cassiere.jsp"><button id="cancel-button">Annulla</button></a>
+        <a href="${pageContext.request.contextPath}/view/select/cassiere.jsp"><button id="cancel-button">Annulla</button></a>
         <button id="confirm-button" onclick="confirmSale()">Conferma</button>
     </div>
     <%@ include file="/WEB-INF/include/footer.html" %>

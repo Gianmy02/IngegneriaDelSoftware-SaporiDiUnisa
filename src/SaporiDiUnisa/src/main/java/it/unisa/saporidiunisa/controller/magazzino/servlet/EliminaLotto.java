@@ -37,7 +37,7 @@ public class EliminaLotto extends HttpServlet {
             return;
         }
 
-        request.getRequestDispatcher("view/select/select_admin.jsp").forward(request, response);
+        request.getRequestDispatcher("view/select/admin.jsp").forward(request, response);
     }
 
 }

@@ -17,11 +17,11 @@
     <h2>Ricerca Prodotti</h2>
 
     <form action="${pageContext.request.contextPath}/MostraStoricoVenditeServlet" method="post">
-        <label>Data Inizio:</label>
-        <input type="date" name="inizio" max="<%=LocalDate.now().minusDays(1)%>" required>
+        <label for="inizio">Data Inizio:</label>
+        <input type="date" id="inizio" name="inizio" max="<%=LocalDate.now().minusDays(1)%>" required>
 
-        <label>Data Fine:</label>
-        <input type="date" name="fine" max="<%=LocalDate.now().minusDays(1)%>" required>
+        <label for="fine">Data Fine:</label>
+        <input type="date" id="fine" name="fine" max="<%=LocalDate.now().minusDays(1)%>" required>
 
         <input id="confirm-button" type="submit" value="Invia">
     </form>
@@ -71,7 +71,7 @@
     } %>
 
     <div id = "buttons-container">
-        <a href="${pageContext.request.contextPath}/view/select/select_Cassiere.jsp"><button id="cancel-button">Indietro</button></a>
+        <a href="${pageContext.request.contextPath}/view/select/cassiere.jsp"><button id="cancel-button">Indietro</button></a>
     </div>
 </div>
 <%@ include file="/WEB-INF/include/footer.html" %>
