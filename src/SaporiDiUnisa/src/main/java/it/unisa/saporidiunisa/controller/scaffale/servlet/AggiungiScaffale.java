@@ -76,7 +76,7 @@ public class AggiungiScaffale extends HttpServlet {
         req.setAttribute("lottiMagazzino", lottiMagazzino);
         req.setAttribute("lottiScaffale", lottiScaffale);
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("view/aggiunta_scaffale.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("view/scaffale/aggiunta_scaffale.jsp");
         dispatcher.forward(req, resp);
     }
 
