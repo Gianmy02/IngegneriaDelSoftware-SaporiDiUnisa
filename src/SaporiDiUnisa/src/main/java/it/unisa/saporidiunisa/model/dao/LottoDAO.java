@@ -232,7 +232,16 @@ public class LottoDAO
             val prodottiMap = new HashMap<Prodotto, ArrayList<Lotto>>();
             while(rs.next()){
                 val prodotto = ProdottoDAO.buildBySQL(rs);
-                prodottiMap.putIfAbsent(prodotto, new ArrayList<>());
+
+                boolean isExists = false;
+                for(val p : prodottiMap.keySet()) {
+                    if (p.getId() == prodotto.getId()) {
+                        isExists = true;    // Il prodotto è già presente nella mappa
+                        break;
+                    }
+                }
+                if(!isExists)
+                    prodottiMap.put(prodotto, new ArrayList<>());
 
                 val lotto = new Lotto(
                     rs.getInt("id"),
@@ -252,12 +261,17 @@ public class LottoDAO
                 );
                 lotto.setFornitura(fornitura);
 
-                prodottiMap.get(prodotto).add(lotto);
+                for(val p : prodottiMap.keySet()) {
+                    if (p.getId() == prodotto.getId()) {
+                        prodottiMap.get(p).add(lotto);
+                        break;
+                    }
+                }
             }
 
             return prodottiMap;
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
