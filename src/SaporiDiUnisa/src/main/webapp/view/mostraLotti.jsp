@@ -24,9 +24,9 @@
         Dipendente dipendente = (Dipendente)session.getAttribute("dipendente");
     %>
 
-    <form id="formRimozione" action="${pageContext.request.contextPath}/EliminaLotto" method="post">
 
         <div class="container-table">
+            <form id="formRimozione" action="${pageContext.request.contextPath}/EliminaLotto" method="post">
             <table>
                 <tr>
                     <th>Lotti di <%=prodotto.getNome()%></th>
@@ -74,11 +74,11 @@
                     }
                 %>
             </table>
+    </form>
             <div id = "buttons-container">
                 <a href="${pageContext.request.contextPath}/view/mostraProdottoLotti.jsp"><button id="cancel-button">Indietro</button></a>
             </div>
         </div>
-    </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>
 </body>
