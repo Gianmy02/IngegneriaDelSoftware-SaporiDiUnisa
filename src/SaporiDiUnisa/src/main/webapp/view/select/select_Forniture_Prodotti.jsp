@@ -23,7 +23,7 @@
     <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
         <span class="material-symbols-outlined">nutrition</span>
         <p>Prodotti Magazzino</p>
-        <input type="hidden" name="address" value="visualizzaProdottiMagazzino">
+        <input type="hidden" name="address" value="select/visualizzaProdottiMagazzino">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>
