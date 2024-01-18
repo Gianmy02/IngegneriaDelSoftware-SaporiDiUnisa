@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <jsp:useBean id="bilancio" scope="request" type="it.unisa.saporidiunisa.model.entity.Bilancio"/>
 <!doctype html>
-<html>
+<html lang="it">
 <head>
     <title>Sapori di Unisa - Bilancio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">

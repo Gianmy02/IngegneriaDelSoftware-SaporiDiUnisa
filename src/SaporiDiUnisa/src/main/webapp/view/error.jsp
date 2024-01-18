@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
-<html>
+<html lang="it">
     <head>
         <title>Sapori di Unisa - Errore</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/error.css">

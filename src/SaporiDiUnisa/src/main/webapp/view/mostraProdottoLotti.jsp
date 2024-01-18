@@ -3,8 +3,9 @@
 <%@ page import="it.unisa.saporidiunisa.model.entity.Prodotto" %>
 <%@ page import="it.unisa.saporidiunisa.model.entity.Lotto" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!doctype html>
+<html lang="it">
 <head>
     <title>Sapori Di Unisa - Magazzino</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
@@ -13,7 +14,7 @@
 <body>
 <%@ include file="/WEB-INF/include/header.html" %>
 <%      HashMap<Prodotto, ArrayList<Lotto>> magazzino = (HashMap<Prodotto, ArrayList<Lotto>>) session.getAttribute("magazzino");
-        if(!magazzino.isEmpty() && magazzino!=null){%>
+        if(magazzino!=null && !magazzino.isEmpty()){%>
 <h2>Magazzino Prodotti</h2>
 <div class = "container-table">
     <table id = "product-table">

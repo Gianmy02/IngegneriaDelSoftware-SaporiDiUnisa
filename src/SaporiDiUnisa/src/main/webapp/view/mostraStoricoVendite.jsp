@@ -3,8 +3,8 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html lang="it">
 <head>
     <title>Sapori Di Unisa - Mostra Storico Vendita</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">

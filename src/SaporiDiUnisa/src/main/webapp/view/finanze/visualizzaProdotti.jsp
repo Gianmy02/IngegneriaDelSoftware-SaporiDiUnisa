@@ -1,8 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="it.unisa.saporidiunisa.model.entity.Prodotto" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!doctype html>
+<html lang="it">
 <head>
     <title>Sapori Di Unisa - Mostra Prodotti</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
@@ -16,7 +17,7 @@
 
     <%
         ArrayList<Prodotto> prodotti = (ArrayList<Prodotto>) session.getAttribute("prodotti");
-        if (prodotti!= null && (!prodotti.isEmpty()))
+        if (prodotti!= null && !prodotti.isEmpty())
         {
             %>
     <h3>Risultati:</h3>
