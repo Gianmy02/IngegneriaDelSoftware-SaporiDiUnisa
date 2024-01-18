@@ -20,10 +20,9 @@
         <p>Area Fornitura</p>
         <input type="hidden" name="address" value="select/select_RegistraFornitura_VisualizzaForniture">
     </form>
-    <form action="${pageContext.request.contextPath}/GoToServlet" method="post" onclick="this.submit()">
+    <form action="${pageContext.request.contextPath}/MostraMagazzino" onclick="this.submit()">
         <span class="material-symbols-outlined">nutrition</span>
         <p>Prodotti Magazzino</p>
-        <input type="hidden" name="address" value="select/visualizzaProdottiMagazzino">
     </form>
 </main>
 <%@ include file="/WEB-INF/include/footer.html" %>

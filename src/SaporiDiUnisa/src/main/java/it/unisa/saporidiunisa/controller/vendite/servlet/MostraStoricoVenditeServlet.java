@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.val;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import lombok.val;
+
 
 @WebServlet(name = "MostraStoricoVenditeServlet", value = "/MostraStoricoVenditeServlet")
 public class MostraStoricoVenditeServlet extends HttpServlet {
@@ -21,18 +23,16 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Dipendente d = (Dipendente) session.getAttribute("dipendente");
-        if(d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
+        if (d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
             val inizio = req.getParameter("inizio");
-            if (inizio == null)
-            {
+            if (inizio == null) {
                 req.setAttribute("message", "Data Inizio non inserita");
                 req.getRequestDispatcher("view/error.jsp").forward(req, resp);
                 return;
             }
 
             val fine = req.getParameter("fine");
-            if (fine == null)
-            {
+            if (fine == null) {
                 req.setAttribute("message", "Data Fine Sconto non inserita");
                 req.getRequestDispatcher("view/error.jsp").forward(req, resp);
                 return;
@@ -40,8 +40,7 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
 
             val inizioDate = LocalDate.parse(inizio);
             val fineDate = LocalDate.parse(fine);
-            if (inizioDate.isAfter(fineDate))
-            {
+            if (inizioDate.isAfter(fineDate)) {
                 req.setAttribute("message", "Le 2 date non sono giuste");
                 req.getRequestDispatcher("view/error.jsp").forward(req, resp);
                 return;
@@ -52,9 +51,9 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
             req.setAttribute("dataInizio", inizioDate);
             req.setAttribute("dataFine", fineDate);
             req.getRequestDispatcher("view/cassiere/mostraStoricoVendite.jsp").forward(req, resp);
-        }else{
-                req.setAttribute("message", "Permessi non concessi per questa pagina");
-                req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("message", "Permessi non concessi per questa pagina");
+            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
         }
     }
 }
