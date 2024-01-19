@@ -6,18 +6,15 @@ import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.form.LottoForm;
 import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import lombok.val;
 import org.json.JSONObject;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.util.stream.Collectors;
 
 /**
  * @author Salvatore Ruocco
@@ -29,19 +26,18 @@ public class AggiungiLotto extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val nome = _readPart(req.getPart("nome"));
-        val marchio = _readPart(req.getPart("marchio"));
+        val nome = Utils.readPart(req.getPart("nome"));
+        val marchio = Utils.readPart(req.getPart("marchio"));
         // la verifica dei prezzi inseriti rispetto a quelli attuali solo a registrazione avvenuta
-        val prezzo = Float.parseFloat(_readPart(req.getPart("prezzo")));
-        val quantita = Integer.parseInt(_readPart(req.getPart("quantita")));
-        val dataScadenza = LocalDate.parse(_readPart(req.getPart("dataScadenza")));
+        val prezzo = Float.parseFloat(Utils.readPart(req.getPart("prezzo")));
+        val quantita = Integer.parseInt(Utils.readPart(req.getPart("quantita")));
+        val dataScadenza = LocalDate.parse(Utils.readPart(req.getPart("dataScadenza")));
 
         val lottoForm = new LottoForm(nome, marchio, prezzo, quantita, dataScadenza);
         val errorString = lottoForm.validate();
         if(errorString != null){
             // TODO: ritornare errori con ajax
-            req.setAttribute("error", errorString);
-            req.getRequestDispatcher("/view/registraFornitura.jsp").forward(req, resp);
+
             return;
         }
 
@@ -49,10 +45,9 @@ public class AggiungiLotto extends HttpServlet {
         // se il prodotto è nuovo, controllo che sia stata caricata una foto
         if(prodotto == null){
             val filePart = req.getPart("foto");
-            if(filePart == null || filePart.getSize() <= 0 || !_isImage(filePart)){
+            if(filePart == null || filePart.getSize() <= 0 || !Utils.isImage(filePart)){
                 // TODO: ritornare errori con ajax
-                req.setAttribute("error", "Il file caricato non è supportato");
-                req.getRequestDispatcher("/view/registraFornitura.jsp").forward(req, resp);
+
                 return;
             }
             final byte[] foto = filePart.getInputStream().readAllBytes();
@@ -81,35 +76,5 @@ public class AggiungiLotto extends HttpServlet {
         json.put("dataScadenza", dataScadenza.format(Patterns.DATE_TIME_FORMATTER));
         resp.setContentType("application/json");
         resp.getWriter().write(String.valueOf(json));
-    }
-
-    // metodo per leggere campi provenienti un oggetto JavaScript FormData
-    private String _readPart(final Part part) {
-        try (InputStream is = part.getInputStream();
-            val reader = new BufferedReader(new InputStreamReader(is))) {
-            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private boolean _isImage(final Part part) {
-        val contentDisposition = part.getHeader("content-disposition");
-        val tokens = contentDisposition.split(";");
-
-        for (val token : tokens) {
-            if (token.trim().startsWith("filename")) {
-                val fileName = token.substring(token.indexOf('=') + 1).trim().replace("\"", "");
-                int lastDotIndex = fileName.lastIndexOf('.');
-                if (lastDotIndex > 0 && lastDotIndex < fileName.length() - 1) {
-                    val extension = fileName.substring(lastDotIndex + 1);
-                    return switch (extension) {
-                        case "jpg", "jpeg", "png" -> true;
-                        default -> false;
-                    };
-                }
-            }
-        }
-        return false;
     }
 }

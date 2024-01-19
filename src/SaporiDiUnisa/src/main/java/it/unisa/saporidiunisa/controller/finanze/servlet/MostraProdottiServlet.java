@@ -1,6 +1,5 @@
 package it.unisa.saporidiunisa.controller.finanze.servlet;
 
-import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Errors;
