@@ -1,7 +1,5 @@
 package it.unisa.saporidiunisa.model.entity;
 
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +14,15 @@ public class Venduto
     private float guadagno;
     private float costo;
     private LocalDate giorno;
+
+    public boolean validate(int quantitaEsposta){
+        if(this.prodotto!=null && this.prodotto.getId()!=0) {
+            if(this.quantita>0 && this.quantita<100000){
+                if(quantitaEsposta - this.quantita>=0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
