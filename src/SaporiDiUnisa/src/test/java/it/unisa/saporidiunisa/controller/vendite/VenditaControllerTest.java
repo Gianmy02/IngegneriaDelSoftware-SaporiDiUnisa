@@ -43,14 +43,14 @@ class VenditaControllerTest {
         venduto1.setProdotto(p1);
 
         venduti.add(venduto1);
-/*
+
         // Caso 2: Quantità, costo e guadagno negativi
         Venduto venduto2 = new Venduto();
         // Imposta le proprietà del prodotto venduto
         // ...
         venduto2.setGiorno(LocalDate.now());
         venduto2.setCosto(-5);  // Imposta il costo a un valore negativo
-        venduto2.setQuantita(-3);  // Imposta la quantità a un valore negativo
+        venduto2.setQuantita(5);  // Imposta la quantità a un valore negativo
         venduto2.setGuadagno(-57);  // Imposta il guadagno a un valore negativo
         // Imposta un prodotto valido
         Prodotto p2 = new Prodotto();
@@ -63,7 +63,25 @@ class VenditaControllerTest {
         venduto2.setProdotto(p2);
 
         venduti.add(venduto2);
-*/
+
+        Venduto venduto3 = new Venduto();
+        // Imposta le proprietà del prodotto venduto
+        // ...
+        venduto3.setGiorno(LocalDate.now());
+        venduto3.setCosto(-5);  // Imposta il costo a un valore negativo
+        venduto3.setQuantita(5);  // Imposta la quantità a un valore negativo
+        venduto3.setGuadagno(-57);  // Imposta il guadagno a un valore negativo
+        // Imposta un prodotto valido
+        Prodotto p3 = new Prodotto();
+        p3.setId(2);
+        p3.setMarchio("Oreo");
+        p3.setPrezzo(15);
+        p3.setInizioSconto(LocalDate.now().minusDays(5));
+        p3.setFineSconto(LocalDate.now());
+        p3.setNome("biscotti al cioccolato");
+        venduto3.setProdotto(p2);
+
+        venduti.add(venduto3);
         // Chiamata al metodo da testare
         boolean result = VenditaController.venditaProdotti(venduti);
 

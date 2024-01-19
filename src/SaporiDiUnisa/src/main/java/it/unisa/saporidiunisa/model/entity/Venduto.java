@@ -19,7 +19,8 @@ public class Venduto
         if(this.prodotto!=null && this.prodotto.getId()!=0) {
             if(this.quantita>0 && this.quantita<100000){
                 if(quantitaEsposta - this.quantita>=0){
-                    return true;
+                    if(this.costo>=0 && this.costo<100000)
+                     return true;
                 }
             }
         }

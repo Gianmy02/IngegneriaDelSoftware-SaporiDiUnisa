@@ -61,7 +61,11 @@ public class AggiungiVenditaServlet extends HttpServlet {
                     // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
                     v.setCosto(0);
                 }
-
+                if(!VenditaController.checkVenduto(v)){
+                    req.setAttribute("message", "Vendita non riuscita");
+                    req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+                    return;
+                }
                 selezionati.add(v);
             }
             VenditaController.addGiornoVendite();

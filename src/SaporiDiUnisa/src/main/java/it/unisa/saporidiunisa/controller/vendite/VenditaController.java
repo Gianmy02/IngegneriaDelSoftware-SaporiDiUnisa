@@ -19,6 +19,10 @@ public class VenditaController {
      * @return booleano di conferma
      */
     public static boolean venditaProdotti(ArrayList<Venduto> venduti) {
+        for(Venduto v : venduti){
+            if(!VenditaController.checkVenduto(v))
+                return false;
+        }
         VendutoDAO vdao = new VendutoDAO();
         EsposizioneDAO gdao = new EsposizioneDAO();
         boolean b = false;
@@ -110,4 +114,9 @@ public class VenditaController {
         if (vdao.searchGiornoLavorativo())
             vdao.doSaveGiornoLavorativo();
     }
+
+    public static boolean checkVenduto(Venduto v){
+        return v.validate(EsposizioneDAO.getEspostiByProdotto(v.getProdotto()));
+    }
+
 }

@@ -268,4 +268,18 @@ public class EsposizioneDAO
         }
     }
 
+    public static int getEspostiByProdotto(Prodotto p){
+        try (val connection = Database.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "SELECT SUM(e.quantita) AS quantita_totale FROM esposizione e JOIN lotto l ON e.lotto = l.id JOIN prodotto p ON e.prodotto = p.id WHERE l.data_scadenza >= CURRENT_DATE() AND e.prodotto = ? GROUP BY e.prodotto, p.nome, p.marchio, prezzo HAVING quantita_totale > 0;");
+            ps.setInt(1, p.getId());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                return rs.getInt(1);
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
