@@ -1,14 +1,11 @@
 package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
-import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.form.LottoForm;
-import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Patterns;
-import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,12 +29,6 @@ public class AggiungiLotto extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val dipendente = (Dipendente)req.getSession().getAttribute("dipendente");
-        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE) {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
-            return;
-        }
-
         val nome = _readPart(req.getPart("nome"));
         val marchio = _readPart(req.getPart("marchio"));
         // la verifica dei prezzi inseriti rispetto a quelli attuali solo a registrazione avvenuta

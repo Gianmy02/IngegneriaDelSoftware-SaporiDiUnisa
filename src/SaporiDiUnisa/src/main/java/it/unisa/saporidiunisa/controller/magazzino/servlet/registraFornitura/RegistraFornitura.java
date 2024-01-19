@@ -17,13 +17,11 @@ import java.io.IOException;
 
 @WebServlet(name = "RegistraFornitura", value = "/RegistraFornitura")
 public class RegistraFornitura extends HttpServlet {
-    final MagazzinoController magazzinoController = new MagazzinoController();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // prendo i dati dalla sessione
         final HttpSession session = req.getSession();
-        val dipendente = (Dipendente)req.getSession().getAttribute("dipendente");
+        val dipendente = (Dipendente) session.getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
         {
             Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
@@ -31,7 +29,7 @@ public class RegistraFornitura extends HttpServlet {
         }
         val fornitura = (Fornitura) session.getAttribute("fornitura");
 
-        if(magazzinoController.registraFornitura(fornitura))
+        if(MagazzinoController.registraFornitura(fornitura))
             req.setAttribute("success", "Fornitura registrata con successo");
         else
             req.setAttribute("error", "Errore durante la registrazione della fornitura");

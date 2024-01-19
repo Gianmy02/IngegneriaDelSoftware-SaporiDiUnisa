@@ -23,8 +23,7 @@ public class GetListForniture extends HttpServlet {
         val dipendente = (Dipendente)req.getSession().getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
-            return;
+            // TODO: ritornare errori con ajax
         }
         val forniture = MagazzinoController.visualizzaForniture();
 
