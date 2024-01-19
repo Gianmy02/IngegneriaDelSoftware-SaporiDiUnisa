@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.controller.magazzino.servlet;
+package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;

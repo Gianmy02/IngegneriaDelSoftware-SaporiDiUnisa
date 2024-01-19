@@ -1,4 +1,4 @@
-package it.unisa.saporidiunisa.controller.magazzino.servlet;
+package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -17,7 +17,6 @@ import java.io.IOException;
 
 @WebServlet(name = "GetListForniture", value = "/GetListForniture")
 public class GetListForniture extends HttpServlet {
-    final MagazzinoController magazzinoController = new MagazzinoController();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -27,7 +26,7 @@ public class GetListForniture extends HttpServlet {
             Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
             return;
         }
-        val forniture = magazzinoController.visualizzaForniture();
+        val forniture = MagazzinoController.visualizzaForniture();
 
         val jsonArray = new JSONArray();
         for(val f : forniture){
