@@ -13,6 +13,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/img/favicon/favicon-16x16.png">
     <link rel="manifest" href="${pageContext.request.contextPath}/img/favicon/site.webmanifest">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="${pageContext.request.contextPath}/script/magazzino/onSelectProduct.js" defer></script>
+    <script src="${pageContext.request.contextPath}/script/magazzino/aggiungiLotto.js" defer></script>
     <script src="${pageContext.request.contextPath}/script/magazzino/registraFornitura.js" defer></script>
     <title>Sapori di Unisa - Registra Fornitura</title>
 </head>
@@ -31,7 +33,9 @@
                         </div>
                         <div class="col-50">
                             <!-- Il campo "nome" diventerà una lista dove saranno elencati tutti i prodotti del supermercato -->
-                            <input type="text" name="nome" id="nome" required>
+                            <input type="text" id="nome" name="nome" list="productsList" required>
+                            <datalist id="productsList">
+                            </datalist>
                         </div>
                     </div>
                     <div class="row">
@@ -68,12 +72,15 @@
                     </div>
                     <div class="row">
                         <div class="col-50">
-                            <label for="foto">Foto</label>
+                            <label for="foto" id="label-foto">Foto</label>
                         </div>
                         <div class="col-50">
-                            <input type="file" name="foto" id="foto" accept="image/*">
+                            <input type="file" name="foto" id="foto" accept=".png, .jpg, .jpeg">
                         </div>
                     </div>
+                    <c:if test="${not empty requestScope.error}">
+                        <p style="color: red">${requestScope.error}</p>
+                    </c:if>
                     <input id="ajax-caller" type="button" value="Aggiungi lotto">
                 </form>
             </div>
@@ -87,6 +94,7 @@
                         <th>Prezzo cad.</th>
                         <th>Quantità</th>
                         <th>Data scadenza</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
