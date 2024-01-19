@@ -1,6 +1,7 @@
 package it.unisa.saporidiunisa.controller.finanze.servlet;
 
 import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Utils;
@@ -28,7 +29,7 @@ public class MostraProdottiServlet extends HttpServlet
             return;
         }
 
-        session.setAttribute("prodotti", FinanzeController.visualizzaProdotti());
+        session.setAttribute("prodotti", MagazzinoController.getAllProducts());
         request.getRequestDispatcher("view/finanze/visualizzaProdotti.jsp").forward(request, response);
     }
 }

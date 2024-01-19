@@ -81,7 +81,7 @@ public class ImpostaScontoServlet extends HttpServlet
             return;
         }
 
-        session.setAttribute("prodotti", FinanzeController.visualizzaProdotti());
+        session.setAttribute("prodotti", MagazzinoController.getAllProducts());
         request.getRequestDispatcher("view/finanze/visualizzaProdotti.jsp").forward(request, response);
     }
 }

@@ -68,13 +68,4 @@ public class FinanzeController
 
         return false;
     }
-
-    /**
-     * La funzione <code>visualizzaProdotti</code> restituisce tutti i prodotti presenti nel database
-     * @return ArrayList di prodotti
-     */
-    public static ArrayList<Prodotto> visualizzaProdotti()
-    {
-        return ProdottoDAO.selectAll();
-    }
 }
