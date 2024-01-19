@@ -26,7 +26,7 @@ public class AggiungiVenditaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Dipendente d = (Dipendente) session.getAttribute("dipendente");
-        if(d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE){
+        if (d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
             BufferedReader reader = req.getReader();
             StringBuilder sb = new StringBuilder();
             String line;
@@ -65,14 +65,13 @@ public class AggiungiVenditaServlet extends HttpServlet {
                 selezionati.add(v);
             }
             VenditaController.addGiornoVendite();
-            if(VenditaController.venditaProdotti(selezionati)){
+            if (VenditaController.venditaProdotti(selezionati)) {
                 req.getRequestDispatcher("view/cassiere/vendita.jsp").forward(req, resp);
-            }else {
+            } else {
                 req.setAttribute("message", "Vendita non riuscita");
                 req.getRequestDispatcher("view/error.jsp").forward(req, resp);
             }
-        }
-        else{
+        } else {
             req.setAttribute("message", "Permessi non concessi per questa pagina");
             req.getRequestDispatcher("view/error.jsp").forward(req, resp);
         }

@@ -19,12 +19,11 @@ public class MostraProdottiCassiereServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Dipendente d = (Dipendente) session.getAttribute("dipendente");
-        if(d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE){
+        if (d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
             VenditaController vc = new VenditaController();
             ArrayList<Esposizione> esposti = vc.visualizzaProdottiEsposti();
             session.setAttribute("prodottiEsposti", esposti);
-        }
-        else{
+        } else {
             req.setAttribute("message", "Permessi non concessi per questa pagina");
             req.getRequestDispatcher("view/error.jsp").forward(req, resp);
             return;
