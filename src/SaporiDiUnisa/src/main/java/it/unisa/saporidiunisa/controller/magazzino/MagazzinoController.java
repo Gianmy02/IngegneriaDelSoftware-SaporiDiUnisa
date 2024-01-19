@@ -21,17 +21,8 @@ public class MagazzinoController {
 
     /**
      * Il metodo <code>aggiungiLotto</code> aggiunge un nuovo lotto alla fornitura che si sta inserendo
-     * @param nome nome del prodotto
-     * @param marchio marchio del prodotto
-     * @param prezzo costo del lotto
-     * @param quantita quantita del lotto
-     * @param dataScadenza data di scadenza del lotto
-     * @return eventuali errori di validazione
-     */
-    public static String aggiungiLotto(final String nome, final String marchio, final float prezzo, final int quantita, final LocalDate dataScadenza) {
-        val lottoForm = new LottoForm(nome, marchio, prezzo, quantita, dataScadenza);
-        val errors = lottoForm.validate();
-
+     * */
+    public static String aggiungiLotto(final LottoForm lottoForm) {
         return null;
     }
 

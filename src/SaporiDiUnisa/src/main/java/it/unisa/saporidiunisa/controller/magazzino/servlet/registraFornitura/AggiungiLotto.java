@@ -26,20 +26,24 @@ public class AggiungiLotto extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val nome = Utils.readPart(req.getPart("nome"));
-        val marchio = Utils.readPart(req.getPart("marchio"));
-        // la verifica dei prezzi inseriti rispetto a quelli attuali solo a registrazione avvenuta
-        val prezzo = Float.parseFloat(Utils.readPart(req.getPart("prezzo")));
-        val quantita = Integer.parseInt(Utils.readPart(req.getPart("quantita")));
-        val dataScadenza = LocalDate.parse(Utils.readPart(req.getPart("dataScadenza")));
+        val nome_str = Utils.readPart(req.getPart("nome"));
+        val marchio_str = Utils.readPart(req.getPart("marchio"));
+        val prezzo_str = Utils.readPart(req.getPart("prezzo"));
+        val quantita_str = Utils.readPart(req.getPart("quantita"));
+        val dataScadenza_str = Utils.readPart(req.getPart("dataScadenza"));
 
-        val lottoForm = new LottoForm(nome, marchio, prezzo, quantita, dataScadenza);
-        val errorString = lottoForm.validate();
+        val lottoForm = new LottoForm();
+        val errorString = lottoForm.validate(nome_str, marchio_str, prezzo_str, quantita_str, dataScadenza_str);
+
         if(errorString != null){
             // TODO: ritornare errori con ajax
-
             return;
         }
+        val nome = lottoForm.getNome();
+        val marchio = lottoForm.getMarchio();
+        val prezzo = lottoForm.getPrezzo();
+        val quantita = lottoForm.getQuantita();
+        val dataScadenza = lottoForm.getDataScadenza();
 
         var prodotto = MagazzinoController.checkProductExists(nome, marchio);
         // se il prodotto è nuovo, controllo che sia stata caricata una foto
@@ -69,6 +73,7 @@ public class AggiungiLotto extends HttpServlet {
 
         // ritorno il lotto appena inserito in formato json
         val json = new JSONObject();
+        json.put("keyId", lotto.getId());
         json.put("nome", nome);
         json.put("marchio", marchio);
         json.put("prezzo", prezzo);
