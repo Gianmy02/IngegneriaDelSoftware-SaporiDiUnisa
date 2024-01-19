@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class LottoDAO
 {
@@ -184,9 +185,9 @@ public class LottoDAO
     public static Lotto getLottoById(int id){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
-                    "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno AS data_fornitura, p.id AS idProdotto, p.nome, p.marchio, p.prezzo, p.prezzo_scontato, p.inizio_sconto, p.fine_sconto, p.foto " +
-                            "FROM lotto l JOIN fornitura f ON l.fornitura = f.id JOIN prodotto p ON l.prodotto = p.id " +
-                            "WHERE l.id = ?"
+            "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno AS data_fornitura, p.id AS idProdotto, p.nome, p.marchio, p.prezzo, p.prezzo_scontato, p.inizio_sconto, p.fine_sconto, p.foto " +
+                "FROM lotto l JOIN fornitura f ON l.fornitura = f.id JOIN prodotto p ON l.prodotto = p.id " +
+                "WHERE l.id = ?"
             );
             ps.setInt(1, id);
             val rs = ps.executeQuery();
@@ -196,20 +197,20 @@ public class LottoDAO
 
                 // Creare oggetto Lotto con i dati ottenuti dalla query
                 val lotto = new Lotto(
-                        rs.getInt("id"),
-                        rs.getFloat("costo"),
-                        rs.getDate("data_scadenza").toLocalDate(),
-                        rs.getInt("quantita"),
-                        rs.getInt("quantita_attuale"),
-                        null,
-                        prodotto
+                    rs.getInt("id"),
+                    rs.getFloat("costo"),
+                    rs.getDate("data_scadenza").toLocalDate(),
+                    rs.getInt("quantita"),
+                    rs.getInt("quantita_attuale"),
+                    null,
+                    prodotto
                 );
 
                 // Creare oggetto Fornitura
                 val fornitura = new Fornitura(
-                        rs.getInt("fornitura_id"),
-                        rs.getDate("data_fornitura").toLocalDate(),
-                        null
+                    rs.getInt("fornitura_id"),
+                    rs.getDate("data_fornitura").toLocalDate(),
+                    null
                 );
                 lotto.setFornitura(fornitura);
 
@@ -224,26 +225,21 @@ public class LottoDAO
     public static HashMap<Prodotto, ArrayList<Lotto>> getMagazzino(){
         try (val connection = Database.getConnection()) {
             val ps = connection.prepareStatement(
-                    "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno, p.id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
-                            "FROM lotto l, fornitura f, prodotto p " +
-                            "WHERE l.fornitura = f.id AND l.prodotto = p.id AND data_scadenza >= CURDATE() AND quantita_attuale > 0;"
+            "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno, p.id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
+                "FROM lotto l, fornitura f, prodotto p " +
+                "WHERE l.fornitura = f.id AND l.prodotto = p.id " +
+                "GROUP BY p.nome;"
             );
             val rs = ps.executeQuery();
             val prodottiMap = new HashMap<Prodotto, ArrayList<Lotto>>();
             while(rs.next()){
                 val prodotto = ProdottoDAO.buildBySQL(rs);
 
-                boolean isExists = false;
-                for(val p : prodottiMap.keySet()) {
-                    if (p.getId() == prodotto.getId()) {
-                        isExists = true;    // Il prodotto è già presente nella mappa
-                        break;
-                    }
-                }
-                if(!isExists)
+                if(_productIsInHashMap(prodottiMap, prodotto) == null)
                     prodottiMap.put(prodotto, new ArrayList<>());
 
-                val lotto = new Lotto(
+                if(_dateIsEqualsOrAfterNow(rs.getDate("data_scadenza").toLocalDate()) && rs.getInt("quantita_attuale") > 0) {
+                    val lotto = new Lotto(
                         rs.getInt("id"),
                         rs.getFloat("costo"),
                         rs.getDate("data_scadenza").toLocalDate(),
@@ -251,21 +247,16 @@ public class LottoDAO
                         rs.getInt("quantita_attuale"),
                         null,
                         prodotto
-                );
+                    );
 
-
-                val fornitura = new Fornitura(
+                    val fornitura = new Fornitura(
                         rs.getInt("fornitura_id"),
                         rs.getDate("giorno").toLocalDate(),
                         null
-                );
-                lotto.setFornitura(fornitura);
+                    );
+                    lotto.setFornitura(fornitura);
 
-                for(val p : prodottiMap.keySet()) {
-                    if (p.getId() == prodotto.getId()) {
-                        prodottiMap.get(p).add(lotto);
-                        break;
-                    }
+                    Objects.requireNonNull(_productIsInHashMap(prodottiMap, prodotto)).add(lotto);
                 }
             }
 
@@ -273,5 +264,16 @@ public class LottoDAO
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static ArrayList<Lotto> _productIsInHashMap(final HashMap<Prodotto, ArrayList<Lotto>> hashMap, final Prodotto prodotto){
+        for (val p : hashMap.keySet())
+            if (p.getId() == prodotto.getId())
+                return hashMap.get(p);
+        return null;
+    }
+
+    private static boolean _dateIsEqualsOrAfterNow(final LocalDate date){
+        return date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now());
     }
 }
