@@ -30,7 +30,6 @@ $(document).ready(function(){
             const split = val_nome.split(" - ");
             input_nome.val(split[0]);
             input_marchio.val(split[1]);
-
             _hideFoto()
         }
         else
@@ -57,11 +56,13 @@ $(document).ready(function(){
 
     function _hideFoto(){
         input_foto.hide();
+        input_foto.attr("required", false);
         label_foto.hide();
     }
 
     function _showFoto(){
         input_foto.show();
+        input_foto.attr("required", true);
         label_foto.show();
     }
 });

@@ -75,7 +75,7 @@
                             <label for="foto" id="label-foto">Foto</label>
                         </div>
                         <div class="col-50">
-                            <input type="file" name="foto" id="foto" accept=".png, .jpg, .jpeg">
+                            <input type="file" name="foto" id="foto" accept=".png, .jpg, .jpeg" required>
                         </div>
                     </div>
                     <c:if test="${not empty requestScope.error}">
