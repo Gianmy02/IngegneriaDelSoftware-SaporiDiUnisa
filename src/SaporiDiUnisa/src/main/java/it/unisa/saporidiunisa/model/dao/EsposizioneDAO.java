@@ -55,7 +55,7 @@ public class EsposizioneDAO
         }
     }
 
-    public ArrayList<Esposizione> getLottibyProdottoWithoutScaduti(Prodotto p){
+    public static ArrayList<Esposizione> getLottibyProdottoWithoutScaduti(Prodotto p){
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
@@ -89,7 +89,7 @@ public class EsposizioneDAO
         }
     }
 
-    public void diminuisciEsposizione(int quantita, Esposizione es, boolean elimina){
+    public static void diminuisciEsposizione(int quantita, Esposizione es, boolean elimina){
         try (val connection = Database.getConnection()) {
             if(elimina){
                 PreparedStatement ps = connection.prepareStatement(
@@ -151,7 +151,7 @@ public class EsposizioneDAO
         }
     }
 
-    public ArrayList<Esposizione> visualizzaProdottiEspostiCassiere(){
+    public static ArrayList<Esposizione> visualizzaProdottiEspostiCassiere(){
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =

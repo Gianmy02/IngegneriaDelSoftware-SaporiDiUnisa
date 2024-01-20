@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class VendutoDAO {
 
-    public ArrayList<Venduto> getVendutiGiornalieri() {
+    public static ArrayList<Venduto> getVendutiGiornalieri() {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps =
                     connection.prepareStatement("SELECT * FROM prodotto, venduto WHERE venduto.prodotto = prodotto.id AND venduto.giorno = CURDATE()");
@@ -43,7 +43,7 @@ public class VendutoDAO {
         }
     }
 
-    public Venduto getVendutiGiornalieroByProdotto(Prodotto p) {
+    public static Venduto getVendutiGiornalieroByProdotto(Prodotto p) {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps =
                     connection.prepareStatement("SELECT * FROM venduto WHERE venduto.prodotto = ? AND venduto.giorno = CURDATE()");
@@ -64,7 +64,7 @@ public class VendutoDAO {
         }
     }
 
-    public boolean doSaveVendita(Venduto v) {
+    public static boolean doSaveVendita(Venduto v) {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO venduto (costo, quantita, guadagno, prodotto, giorno) VALUES(?,?,?,?,CURDATE())");
@@ -83,7 +83,7 @@ public class VendutoDAO {
         }
     }
 
-    public void doSaveGiornoLavorativo() {
+    public static void doSaveGiornoLavorativo() {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO vendita (giorno) VALUES(CURDATE())");
@@ -95,7 +95,7 @@ public class VendutoDAO {
         }
     }
 
-    public boolean searchGiornoLavorativo() {
+    public static boolean searchGiornoLavorativo() {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
                     "SELECT * FROM vendita WHERE giorno = CURDATE()");
@@ -109,7 +109,7 @@ public class VendutoDAO {
         }
     }
 
-    public boolean doUpdateVendita(Venduto v) {
+    public static boolean doUpdateVendita(Venduto v) {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
                     "UPDATE venduto SET guadagno = guadagno + ?, quantita = quantita + ? WHERE venduto.prodotto = ? AND venduto.giorno = CURDATE()");
@@ -128,7 +128,7 @@ public class VendutoDAO {
 
 
     /*la funzione prende la somma dal db nei giorni richiesti di tutti i prodotti*/
-    public ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine) {
+    public static ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine) {
         try (val connection = Database.getConnection()) {
             PreparedStatement ps =
                     connection.prepareStatement("SELECT p.id AS id_prodotto, p.nome AS nome_prodotto, p.marchio, p.foto, SUM(v.quantita) AS totale_quantita_venduta, SUM(v.guadagno) AS totale_guadagno, SUM(v.costo * v.quantita) AS costo_totale FROM prodotto p JOIN venduto v ON p.id = v.prodotto WHERE v.giorno BETWEEN ? AND ? GROUP BY p.id, p.nome, p.marchio, p.foto;");
