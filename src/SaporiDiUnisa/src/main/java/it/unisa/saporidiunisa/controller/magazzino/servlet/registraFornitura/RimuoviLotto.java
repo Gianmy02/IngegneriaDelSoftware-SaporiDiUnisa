@@ -14,26 +14,24 @@ import java.io.IOException;
 /**
  * Servlet, invocata tramite AJAX, che gestisce la rimozione di un lotto dalla fornitura che si sta inserendo
  */
-@WebServlet(name = "RimuoviLottoAjax", value = "/RimuoviLottoAjax")
-public class RimuoviLottoAjax extends HttpServlet {
+@WebServlet(name = "RimuoviLotto", value = "/RimuoviLotto")
+public class RimuoviLotto extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val keyLotto = Integer.parseInt(req.getParameter("key"));
+        val keyId = Integer.parseInt(req.getParameter("keyId"));
 
         final HttpSession session = req.getSession();
         val fornitura = (Fornitura) session.getAttribute("fornitura");
 
         val lotti = fornitura.getLotti();
         for(val l : lotti){
-            if(l.getId() == keyLotto){
+            if(l.getId() == keyId){
                 lotti.remove(l);
+                // Aggiorno la fornitura in sessione
+                fornitura.setLotti(lotti);
+                session.setAttribute("fornitura", fornitura);
                 break;
             }
         }
-
-        fornitura.setLotti(lotti);
-        session.setAttribute("fornitura", fornitura);
-
-        resp.sendRedirect("/view/registraFornitura.jsp");
     }
 }
