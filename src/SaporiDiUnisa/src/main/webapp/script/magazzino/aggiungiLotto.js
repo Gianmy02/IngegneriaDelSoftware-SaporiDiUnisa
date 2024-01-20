@@ -13,10 +13,10 @@ $(document).ready(function(){
             processData: false,
             success: function(json) {
                 if(json.errors != null){
-                    paragraph_errors.attr("display", "block");
+                    paragraph_errors.css("display", "block");
                     paragraph_errors.text(json.errors);                }
                 else {
-                    paragraph_errors.attr("display", "none");
+                    paragraph_errors.css("display", "none");
                     paragraph_errors.text("");
 
                     const tr = $("<tr></tr>")

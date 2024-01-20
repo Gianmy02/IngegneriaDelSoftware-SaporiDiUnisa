@@ -16,3 +16,8 @@ h1#title{
 #container-right{
     width: 60%;
 }
+
+#errors{
+    color: red;
+    display: none;
+}

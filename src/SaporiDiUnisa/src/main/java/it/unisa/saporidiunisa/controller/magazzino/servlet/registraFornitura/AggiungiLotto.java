@@ -5,6 +5,7 @@ import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.form.LottoForm;
+import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Patterns;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
@@ -14,7 +15,6 @@ import jakarta.servlet.http.*;
 import lombok.val;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.time.LocalDate;
 
 /**
  * @author Salvatore Ruocco
@@ -34,11 +34,15 @@ public class AggiungiLotto extends HttpServlet {
 
         val lottoForm = new LottoForm();
         val errorString = lottoForm.validate(nome_str, marchio_str, prezzo_str, quantita_str, dataScadenza_str);
-
-        if(errorString != null){
+        if(!errorString.isEmpty()){
             // TODO: ritornare errori con ajax
+            val json = new JSONObject();
+            json.put("errors", errorString);
+            resp.setContentType("application/json");
+            resp.getWriter().write(String.valueOf(json));
             return;
         }
+
         val nome = lottoForm.getNome();
         val marchio = lottoForm.getMarchio();
         val prezzo = lottoForm.getPrezzo();
@@ -51,7 +55,10 @@ public class AggiungiLotto extends HttpServlet {
             val filePart = req.getPart("foto");
             if(filePart == null || filePart.getSize() <= 0 || !Utils.isImage(filePart)){
                 // TODO: ritornare errori con ajax
-
+                val json = new JSONObject();
+                json.put("errors", String.format(Errors.INVALID_FIELD, "foto"));
+                resp.setContentType("application/json");
+                resp.getWriter().write(String.valueOf(json));
                 return;
             }
             final byte[] foto = filePart.getInputStream().readAllBytes();
