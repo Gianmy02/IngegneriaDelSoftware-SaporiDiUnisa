@@ -6,4 +6,5 @@ public class Errors
     public static final String INVALID_FIELD = "Il campo '%s' è invalido.";
     public static final String INVALID_FORMAT = "Il campo '%s' non rispetta il formato richiesto.";
     public static final String NOT_FOUND = "Risorsa '%s' non trovata.";
+    public static final String GENERIC = "L'operazione non è andata a buon fine.";
 }

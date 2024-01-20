@@ -24,9 +24,7 @@ public class Prodotto
 
     public boolean isSconto()
     {
-        if(fineSconto == null)
-            return false;
-        return this.fineSconto.isAfter(LocalDate.now());
+        return this.fineSconto != null && this.fineSconto.isAfter(LocalDate.now());
     }
 
     @Override
