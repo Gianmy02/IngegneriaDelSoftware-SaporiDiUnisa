@@ -49,6 +49,19 @@ public class Utils
         }
     }
 
+    // Converte una stringa a oggetto Float
+    public static Float parseAsFloat(String str)
+    {
+        try
+        {
+            return Float.parseFloat(str);
+        }
+        catch (NumberFormatException e)
+        {
+            return null;
+        }
+    }
+
     // Converte un oggetto Part in una stringa
     public static String readPart(final Part part)
     {
