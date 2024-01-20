@@ -1,5 +1,6 @@
 package it.unisa.saporidiunisa.model.form;
 
+import it.unisa.saporidiunisa.utils.Utils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.val;
@@ -36,19 +37,16 @@ public class LottoForm {
         else if(marchio.length() < 2 || marchio.length() > 255)
             s.append("Il marchio deve essere compreso tra 2 e 255 caratteri\n");
 
-        float _prezzo = 0;
+        Float _prezzo = 0f;
         if(prezzo.isEmpty() || prezzo.isBlank()) {
             s.append("Il prezzo non può essere vuoto\n");
         }
         else{
-            boolean flag = false;
-            try {
-                _prezzo = Float.parseFloat(prezzo);
-            } catch (NumberFormatException e) {
+            _prezzo = Utils.parseAsFloat(prezzo);
+            if(_prezzo == null){
                 s.append("Il prezzo deve essere un numero\n");
-                flag = true;
             }
-            if(!flag) {
+            else {
                 if(_prezzo <= 0)
                     s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
                 else if(_prezzo >= 100000.00)
@@ -56,19 +54,16 @@ public class LottoForm {
             }
         }
 
-        int _quantita = 0;
+        Integer _quantita = 0;
         if(quantita.isEmpty() || quantita.isBlank()) {
             s.append("La quantità non può essere vuota\n");
         }
         else{
-            boolean flag = false;
-            try {
-                _quantita = Integer.parseInt(quantita);
-            } catch (NumberFormatException e) {
+            _quantita = Utils.parseAsInteger(quantita);
+            if(_quantita == null) {
                 s.append("La quantità deve essere un numero\n");
-                flag = true;
             }
-            if(!flag) {
+            else {
                 if(_quantita <= 0)
                     s.append("La quantità deve essere maggiore di 0\n");
                 else if(_quantita >= 1000000)
@@ -81,17 +76,11 @@ public class LottoForm {
             s.append("La data di scadenza non può essere vuota\n");
         }
         else{
-            boolean flag = false;
-            try {
-                _dataScadenza = LocalDate.parse(dataScadenza);
-            } catch (Exception e) {
-                s.append("La data di scadenza non valida\n");
-                flag = true;
-            }
-            if(!flag){
-                if(_dataScadenza.isBefore(LocalDate.now()) || _dataScadenza.isEqual(LocalDate.now()))
+            _dataScadenza = Utils.parseAsLocalDate(dataScadenza);
+            if(_dataScadenza == null)
+                s.append("La data di scadenza non è valida\n");
+            else if(_dataScadenza.isBefore(LocalDate.now()) || _dataScadenza.isEqual(LocalDate.now()))
                     s.append("La data di scadenza deve essere anteriore a quella odierno\n");
-            }
         }
 
         // Se non ci sono errori di validazione, costruisco l'oggetto
