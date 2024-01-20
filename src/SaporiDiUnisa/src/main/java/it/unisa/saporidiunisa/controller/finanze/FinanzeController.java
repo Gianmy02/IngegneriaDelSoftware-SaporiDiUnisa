@@ -43,6 +43,7 @@ public class FinanzeController
         if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
         {
             // TODO: da implementare
+            return new ArrayList<>();
         }
 
         return null;
