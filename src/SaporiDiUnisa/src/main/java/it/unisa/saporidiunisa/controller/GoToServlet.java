@@ -9,6 +9,7 @@ import lombok.val;
 
 import java.io.IOException;
 
+@Deprecated(since = "Introduce una vulnerabilità che permetterebbe ad un utente malintenzionato di accedere arbitrariamente a qualsiasi JSP", forRemoval = true)
 @WebServlet(value = "/GoToServlet")
 public class GoToServlet extends HttpServlet {
     @Override
