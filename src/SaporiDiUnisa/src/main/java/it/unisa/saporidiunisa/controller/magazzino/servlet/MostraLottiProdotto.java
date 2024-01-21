@@ -62,7 +62,7 @@ public class MostraLottiProdotto extends HttpServlet {
         else
         {
             req.setAttribute("message", "Prodotto non trovato");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
         }
 
 

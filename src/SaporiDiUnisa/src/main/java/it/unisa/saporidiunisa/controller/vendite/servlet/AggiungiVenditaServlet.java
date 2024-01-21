@@ -77,11 +77,11 @@ public class AggiungiVenditaServlet extends HttpServlet {
                 resp.getWriter().write(String.valueOf(json));
                 /*
                 req.setAttribute("message", "Vendita non riuscita");
-                req.getRequestDispatcher("view/error.jsp").forward(req, resp);*/
+                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);*/
             }
         } else {
             req.setAttribute("message", "Permessi non concessi per questa pagina");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
         }
 
     }

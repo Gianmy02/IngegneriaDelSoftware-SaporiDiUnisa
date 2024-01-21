@@ -27,14 +27,14 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
             val inizio = req.getParameter("inizio");
             if (inizio == null) {
                 req.setAttribute("message", "Data Inizio non inserita");
-                req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
                 return;
             }
 
             val fine = req.getParameter("fine");
             if (fine == null) {
                 req.setAttribute("message", "Data Fine Sconto non inserita");
-                req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
                 return;
             }
 
@@ -42,7 +42,7 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
             val fineDate = LocalDate.parse(fine);
             if (inizioDate.isAfter(fineDate)) {
                 req.setAttribute("message", "Le 2 date non sono giuste");
-                req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
                 return;
             }
 
@@ -53,7 +53,7 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
             req.getRequestDispatcher("view/cassiere/mostraStoricoVendite.jsp").forward(req, resp);
         } else {
             req.setAttribute("message", "Permessi non concessi per questa pagina");
-            req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
         }
     }
 }

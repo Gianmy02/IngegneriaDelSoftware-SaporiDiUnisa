@@ -22,7 +22,7 @@ public class Utils
     public static void dispatchError(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         request.setAttribute("message", message);
-        request.getRequestDispatcher("view/error.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);
     }
 
     // Converte una stringa a oggetto LocalDate
