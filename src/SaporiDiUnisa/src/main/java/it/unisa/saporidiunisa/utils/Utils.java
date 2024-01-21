@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import lombok.val;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,8 +75,8 @@ public class Utils
         }
     }
 
-    // Controlla se l'oggetto Part è un'immagine valida
-    public static boolean isImage(final Part part)
+    // Controlla se un oggetto Part è un'immagine con estensione jpg, jpeg o png
+    public static boolean checkImageExtension(final Part part)
     {
         val contentDisposition = part.getHeader("content-disposition");
         val tokens = contentDisposition.split(";");
@@ -93,5 +95,17 @@ public class Utils
             }
         }
         return false;
+    }
+
+    // Controlla se un oggetto Part è un'immagine con dimensioni 1:1
+    public static boolean checkImageDimension(final Part part)
+    {
+        BufferedImage image = null;
+        try (InputStream fileContent = part.getInputStream()) {
+            image = ImageIO.read(fileContent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return image != null && image.getWidth() == image.getHeight();
     }
 }

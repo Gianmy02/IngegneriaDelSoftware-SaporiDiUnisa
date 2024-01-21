@@ -5,7 +5,6 @@ import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.model.form.LottoForm;
-import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Patterns;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
@@ -35,7 +34,6 @@ public class AggiungiLotto extends HttpServlet {
         val lottoForm = new LottoForm();
         val errorString = lottoForm.validate(nome_str, marchio_str, prezzo_str, quantita_str, dataScadenza_str);
         if(!errorString.isEmpty()){
-            // TODO: ritornare errori con ajax
             val json = new JSONObject();
             json.put("errors", errorString);
             resp.setContentType("application/json");
@@ -52,16 +50,16 @@ public class AggiungiLotto extends HttpServlet {
         var prodotto = MagazzinoController.checkProductExists(nome, marchio);
         // se il prodotto è nuovo, controllo che sia stata caricata una foto
         if(prodotto == null){
-            val filePart = req.getPart("foto");
-            if(filePart == null || filePart.getSize() <= 0 || !Utils.isImage(filePart)){
-                // TODO: ritornare errori con ajax
+            val errorPhotoString = lottoForm.validatePhoto(req.getPart("foto"));
+            if(errorPhotoString != null) {
                 val json = new JSONObject();
-                json.put("errors", String.format(Errors.INVALID_FIELD, "foto"));
+                json.put("errors", errorPhotoString);
                 resp.setContentType("application/json");
                 resp.getWriter().write(String.valueOf(json));
                 return;
             }
-            final byte[] foto = filePart.getInputStream().readAllBytes();
+            // se non ci sono errori
+            final byte[] foto = lottoForm.getFoto();
             prodotto = new Prodotto(0, nome, marchio, prezzo, prezzo, null, null, foto);
         }
 
@@ -71,9 +69,11 @@ public class AggiungiLotto extends HttpServlet {
         if(fornitura == null)
             fornitura = new Fornitura();
 
-        /* il lotto ha come id non quello che sarà presente una volta salvato sul database
-           ma uno che indica l'i-esimo lotto della fornitura in sessione
-           id = fornitura.getLotti().size() */
+        /*
+        il lotto ha come id non quello che sarà presente una volta salvato sul database
+        ma uno che indica l'i-esimo lotto della fornitura in sessione
+        id = fornitura.getLotti().size()
+        */
         val lotto = new Lotto(fornitura.getLotti().size(), prezzo * quantita, dataScadenza, quantita, quantita, fornitura, prodotto);
         fornitura.getLotti().add(lotto);
         session.setAttribute("fornitura", fornitura);
