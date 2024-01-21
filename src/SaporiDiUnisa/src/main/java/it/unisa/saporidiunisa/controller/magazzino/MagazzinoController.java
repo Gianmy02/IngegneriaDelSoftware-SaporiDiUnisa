@@ -32,6 +32,9 @@ public class MagazzinoController {
      * @return booleano di conferma
      */
     public static boolean registraFornitura(final Fornitura fornitura) {
+        if(fornitura == null || fornitura.getLotti().isEmpty())
+            return false;
+
         FornituraDAO.insert(fornitura);
         val idFornitura = FornituraDAO.getLastId();
 
@@ -39,18 +42,21 @@ public class MagazzinoController {
         for(var l : lotti){
             l.getFornitura().setId(idFornitura);
 
+            // Prezzo cad. inserito nel form
+            float prezzoInserito = l.getCosto() / l.getQuantita();
+
             val prodotto = l.getProdotto();
             if(ProdottoDAO.selectByNameAndBrand(prodotto.getNome(), prodotto.getMarchio()) == null){  // prodotto nuovo
+                // Imposto il prezzo del prodotto al doppio di quello inserito
+                prodotto.setPrezzo(prezzoInserito * 2);
                 ProdottoDAO.insert(prodotto);
                 prodotto.setId(ProdottoDAO.getLastId());
             }
             else{
                 // controllo se il prezzo inserito è almeno il doppio di quello attuale
                 float prezzoAttuale = prodotto.getPrezzo();
-                float prezzoInserito = l.getCosto() / l.getQuantita();
-                if((prezzoInserito * 2) > prezzoAttuale){
+                if((prezzoInserito * 2) > prezzoAttuale)
                     ProdottoDAO.updatePrice(prezzoInserito * 2, prodotto.getId());
-                }
             }
             LottoDAO.insert(l);
         }
