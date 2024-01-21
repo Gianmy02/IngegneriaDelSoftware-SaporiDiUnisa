@@ -6,12 +6,15 @@ import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
+import it.unisa.saporidiunisa.utils.Errors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.val;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,19 +64,20 @@ public class AggiungiVenditaServlet extends HttpServlet {
                     // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
                     v.setCosto(0);
                 }
-                if(!VenditaController.checkVenduto(v)){
-                    req.setAttribute("message", "Vendita non riuscita");
-                    req.getRequestDispatcher("view/error.jsp").forward(req, resp);
-                    return;
-                }
                 selezionati.add(v);
             }
             VenditaController.addGiornoVendite();
             if (VenditaController.venditaProdotti(selezionati)) {
                 req.getRequestDispatcher("view/cassiere/vendita.jsp").forward(req, resp);
             } else {
+                val json = new JSONObject();
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                json.put("errors", String.format(Errors.GENERIC, "venduto"));
+                resp.setContentType("application/json");
+                resp.getWriter().write(String.valueOf(json));
+                /*
                 req.setAttribute("message", "Vendita non riuscita");
-                req.getRequestDispatcher("view/error.jsp").forward(req, resp);
+                req.getRequestDispatcher("view/error.jsp").forward(req, resp);*/
             }
         } else {
             req.setAttribute("message", "Permessi non concessi per questa pagina");

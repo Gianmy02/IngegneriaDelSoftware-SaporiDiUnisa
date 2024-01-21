@@ -48,6 +48,12 @@ function confirmSale() {
                 window.location.href = "MostraProdottiCassiereServlet";
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
+                var errorObj = JSON.parse(jqXHR.responseText);
+                var errorMessage = errorObj.errors;
+                console.log("Messaggio di errore:", errorMessage);
+
+                // Esempio: mostra un messaggio di errore
+                alert("Errore: " + errorMessage);
             });
         }
 
