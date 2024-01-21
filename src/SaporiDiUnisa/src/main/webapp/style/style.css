@@ -14,12 +14,12 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    height: 80px;
 }
 
 #header-logo > img {
-    height: 120px;
-    margin-top: -18px;
+    height: 80px;
+    padding: 5px;
 }
 
 
