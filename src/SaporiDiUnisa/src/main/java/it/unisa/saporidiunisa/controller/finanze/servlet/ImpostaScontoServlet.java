@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @WebServlet(name = "impostaScontoServlet", value = "/imposta-sconto-servlet")
 public class ImpostaScontoServlet extends HttpServlet
@@ -26,6 +27,27 @@ public class ImpostaScontoServlet extends HttpServlet
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
             Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
+            return;
+        }
+
+        val prodottoId = request.getParameter("prodotto");
+        if (prodottoId == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("prodotto"), request, response);
+            return;
+        }
+
+        val id = Utils.parseAsInteger(prodottoId);
+        if (id == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("id"), request, response);
+            return;
+        }
+
+        val prodotto = MagazzinoController.getProdottoById(id);
+        if (prodotto == null)
+        {
+            Utils.dispatchError(Errors.NOT_FOUND.formatted("prodotto"), request, response);
             return;
         }
 
@@ -57,7 +79,13 @@ public class ImpostaScontoServlet extends HttpServlet
             return;
         }
 
-        if (!dataFineScontoDate.isAfter(dataInizioScontoDate))
+        if (dataInizioScontoDate.isBefore(LocalDate.now()))
+        {
+            Utils.dispatchError("La data di inizio è nel passato.", request, response);
+            return;
+        }
+
+        if (dataFineScontoDate.isBefore(dataInizioScontoDate))
         {
             Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), request, response);
             return;
@@ -71,30 +99,21 @@ public class ImpostaScontoServlet extends HttpServlet
         }
 
         val scontoInteger = Utils.parseAsInteger(sconto);
-        if (scontoInteger == null || (scontoInteger < 1 || scontoInteger > 100))
+        if (scontoInteger == null)
         {
             Utils.dispatchError(Errors.INVALID_FORMAT.formatted("sconto"), request, response);
             return;
         }
 
-        val prodottoId = request.getParameter("prodotto");
-        if (prodottoId == null)
+        if (scontoInteger < 1)
         {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("prodotto"), request, response);
+            Utils.dispatchError("Lo sconto è al di sotto del minimo consentito.", request, response);
             return;
         }
 
-        val id = Utils.parseAsInteger(prodottoId);
-        if (id == null)
+        if (scontoInteger > 100)
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("id"), request, response);
-            return;
-        }
-
-        val prodotto = MagazzinoController.getProdottoById(id);
-        if (prodotto == null)
-        {
-            Utils.dispatchError(Errors.NOT_FOUND.formatted("prodotto"), request, response);
+            Utils.dispatchError("Lo sconto è al di sopra del massimo consentito.", request, response);
             return;
         }
 
