@@ -1,6 +1,7 @@
 package it.unisa.saporidiunisa.model.form;
 
 import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.http.Part;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.val;
@@ -15,14 +16,7 @@ public class LottoForm {
     public float prezzo;
     public int quantita;
     public LocalDate dataScadenza;
-
-    private void _privateConstructor(final String nome, final String marchio, final float prezzo, final int quantita, final LocalDate dataScadenza) {
-        this.nome = nome;
-        this.marchio = marchio;
-        this.prezzo = prezzo;
-        this.quantita = quantita;
-        this.dataScadenza = dataScadenza;
-    }
+    public byte[] foto;
 
     public String validate(final String nome, final String marchio, final String prezzo, final String quantita, final String dataScadenza) {
         val s = new StringBuilder();
@@ -80,13 +74,33 @@ public class LottoForm {
             if(_dataScadenza == null)
                 s.append("La data di scadenza non è valida\n");
             else if(_dataScadenza.isBefore(LocalDate.now()) || _dataScadenza.isEqual(LocalDate.now()))
-                    s.append("La data di scadenza deve essere anteriore a quella odierno\n");
+                s.append("La data di scadenza deve essere anteriore a quella odierno\n");
         }
 
         // Se non ci sono errori di validazione, costruisco l'oggetto
-        if(s.isEmpty())
-            this._privateConstructor(nome, marchio, _prezzo, _quantita, _dataScadenza);
+        if(s.isEmpty()){
+            this.nome = nome;
+            this.marchio = marchio;
+            this.prezzo = _prezzo;
+            this.quantita = _quantita;
+            this.dataScadenza = _dataScadenza;
+        }
 
         return s.toString();
+    }
+
+    public String validatePhoto(final Part foto){
+        if(foto == null || foto.getSize() <= 0)
+            return "La foto non può essere vuota\n";
+        else if(foto.getSize() > 1024 * 1024 * 2)
+            return "La foto deve essere minore di 2MB\n";
+        else if(!Utils.checkImageExtension(foto))
+            return "La foto deve essere un'immagine con estensione: jpg, jpeg o png\n";
+        else if(!Utils.checkImageDimension(foto))
+            return "La foto deve avere dimensioni 1:1\n";
+        else{
+            this.foto = Utils.readPart(foto).getBytes();
+            return null;
+        }
     }
 }
