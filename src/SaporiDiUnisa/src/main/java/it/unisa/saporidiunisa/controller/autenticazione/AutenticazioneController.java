@@ -11,7 +11,7 @@ public class AutenticazioneController
 {
     /**
      * Effettua il login dei dipendenti verificando i propri pìn
-     * @param pin
+     * @param pin pin del dipendente
      * @return Dipendente loggato oppure null nel caso non esista nel db
      */
     public static Dipendente login(String pin)

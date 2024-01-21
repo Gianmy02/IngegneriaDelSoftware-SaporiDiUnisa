@@ -10,14 +10,56 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
 
 public class Utils
 {
+    // Reindirizza l'utente alla pagina di errore contenente un messaggio esplicativo
     public static void dispatchError(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         request.setAttribute("message", message);
         request.getRequestDispatcher("view/error.jsp").forward(request, response);
+    }
+
+    // Converte una stringa a oggetto LocalDate
+    public static LocalDate parseAsLocalDate(String str)
+    {
+        try
+        {
+            return LocalDate.parse(str);
+        }
+        catch (DateTimeParseException e)
+        {
+            return null;
+        }
+    }
+
+    // Converte una stringa a oggetto Integer
+    public static Integer parseAsInteger(String str)
+    {
+        try
+        {
+            return Integer.parseInt(str);
+        }
+        catch (NumberFormatException e)
+        {
+            return null;
+        }
+    }
+
+    // Converte una stringa a oggetto Float
+    public static Float parseAsFloat(String str)
+    {
+        try
+        {
+            return Float.parseFloat(str);
+        }
+        catch (NumberFormatException e)
+        {
+            return null;
+        }
     }
 
     // Converte un oggetto Part in una stringa

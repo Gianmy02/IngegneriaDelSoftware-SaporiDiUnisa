@@ -25,17 +25,14 @@
         <div id="displayFlex-div">
             <div id="container-left" class="container-form">
                 <h2>Inserisci lotto</h2>
-                <!-- Questo form verrà invocato con AJAX -->
                 <form id="aggiungiLotto-form">
                     <div class="row">
                         <div class="col-50">
                             <label for="nome">Nome</label>
                         </div>
                         <div class="col-50">
-                            <!-- Il campo "nome" diventerà una lista dove saranno elencati tutti i prodotti del supermercato -->
                             <input type="text" id="nome" name="nome" list="productsList" required>
-                            <datalist id="productsList">
-                            </datalist>
+                            <datalist id="productsList"></datalist>
                         </div>
                     </div>
                     <div class="row">
@@ -43,7 +40,8 @@
                             <label for="marchio">Marchio</label>
                         </div>
                         <div class="col-50">
-                            <input type="text" name="marchio" id="marchio" required>
+                            <input type="text" name="marchio" id="marchio" list="marchioList" required>
+                            <datalist id="marchioList"></datalist>
                         </div>
                     </div>
                     <div class="row">
@@ -51,7 +49,7 @@
                             <label for="prezzo">Prezzo cad.</label>
                         </div>
                         <div class="col-50">
-                            <input type="number" name="prezzo" id="prezzo" min="0" value="0" step="0.01" required>
+                            <input type="number" name="prezzo" id="prezzo" min="0" value="0" step="0.10" required>
                         </div>
                     </div>
                     <div class="row">
@@ -78,9 +76,7 @@
                             <input type="file" name="foto" id="foto" accept=".png, .jpg, .jpeg" required>
                         </div>
                     </div>
-                    <c:if test="${not empty requestScope.error}">
-                        <p style="color: red">${requestScope.error}</p>
-                    </c:if>
+                    <p id="errors"></p>
                     <input id="ajax-caller" type="button" value="Aggiungi lotto">
                 </form>
             </div>

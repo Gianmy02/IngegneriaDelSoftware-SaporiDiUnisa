@@ -23,14 +23,12 @@ public class VenditaController {
             if(!VenditaController.checkVenduto(v))
                 return false;
         }
-        VendutoDAO vdao = new VendutoDAO();
-        EsposizioneDAO gdao = new EsposizioneDAO();
         boolean b = false;
         /*itero sulla lista di prodotti che si vogliono acquistare*/
         for (Venduto v : venduti) {
             float guadagno = 0;
             //prendo tutti i prodotti in esposizione del prodotto specificato
-            ArrayList<Esposizione> e = gdao.getLottibyProdottoWithoutScaduti(v.getProdotto());
+            ArrayList<Esposizione> e = EsposizioneDAO.getLottibyProdottoWithoutScaduti(v.getProdotto());
             int quantitaCount = v.getQuantita();
             //itero per la quantita di prodotti da comprare
             for (Esposizione es : e) {
@@ -38,23 +36,23 @@ public class VenditaController {
                 if (quantitaCount > es.getQuantita()) {
                     guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * es.getQuantita();
                     quantitaCount = quantitaCount - es.getQuantita();
-                    gdao.diminuisciEsposizione(es.getQuantita(), es, true);
+                    EsposizioneDAO.diminuisciEsposizione(es.getQuantita(), es, true);
                 }
                 //se e minore o ugualela quantita esposta di quel lotto va bene e quindi sarà l'ultima
                 else {
                     guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * v.getQuantita();
-                    gdao.diminuisciEsposizione(quantitaCount, es, false);
+                    EsposizioneDAO.diminuisciEsposizione(quantitaCount, es, false);
                     break;
                 }
             }
             v.setGuadagno(guadagno);
                 /*salva nel db i nuovi venduti del prodotto,
             vedo se al giorno d'oggi ci sono state altre vendite del prodotto*/
-            Venduto attuale = vdao.getVendutiGiornalieroByProdotto(v.getProdotto());
+            Venduto attuale = VendutoDAO.getVendutiGiornalieroByProdotto(v.getProdotto());
             if (attuale != null) {
-                b = vdao.doUpdateVendita(v);
+                b = VendutoDAO.doUpdateVendita(v);
             } else {
-                b = vdao.doSaveVendita(v);
+                b = VendutoDAO.doSaveVendita(v);
             }
         }
         return b;
@@ -68,8 +66,7 @@ public class VenditaController {
      * @return ArrayList di venduti
      */
     public static ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine) {
-        VendutoDAO vdao = new VendutoDAO();
-        return vdao.getStorico(dataInizio, dataFine);
+        return VendutoDAO.getStorico(dataInizio, dataFine);
     }
 
     /**
@@ -78,8 +75,7 @@ public class VenditaController {
      * @return prodotti esposti
      */
     public ArrayList<Esposizione> visualizzaProdottiEsposti() {
-        EsposizioneDAO edao = new EsposizioneDAO();
-        return edao.visualizzaProdottiEspostiCassiere();
+        return EsposizioneDAO.visualizzaProdottiEspostiCassiere();
     }
 
 
@@ -110,9 +106,8 @@ public class VenditaController {
      * nel caso non fosse così vorrebbe dire che si sta per effettuare la prima vendita della giornata.
      */
     public static void addGiornoVendite() {
-        VendutoDAO vdao = new VendutoDAO();
-        if (vdao.searchGiornoLavorativo())
-            vdao.doSaveGiornoLavorativo();
+        if (VendutoDAO.searchGiornoLavorativo())
+            VendutoDAO.doSaveGiornoLavorativo();
     }
 
     public static boolean checkVenduto(Venduto v){

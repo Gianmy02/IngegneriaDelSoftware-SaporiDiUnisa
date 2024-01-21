@@ -5,7 +5,6 @@ import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Utils;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 @WebServlet(name = "impostaScontoServlet", value = "/imposta-sconto-servlet")
 public class ImpostaScontoServlet extends HttpServlet
@@ -45,29 +43,54 @@ public class ImpostaScontoServlet extends HttpServlet
             return;
         }
 
-        val dataInizioScontoDate = LocalDate.parse(dataInizioSconto);
-        val dataFineScontoDate = LocalDate.parse(dataFineSconto);
-        if (!dataFineScontoDate.isAfter(dataInizioScontoDate))
+        val dataInizioScontoDate = Utils.parseAsLocalDate(dataInizioSconto);
+        if (dataInizioScontoDate == null)
         {
-            Utils.dispatchError("Le 2 date non coincidono", request, response);
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data inizio"), request, response);
             return;
         }
 
-        val sconto = Integer.parseInt(request.getParameter("sconto"));
-        if (sconto < 1 || sconto > 100)
+        val dataFineScontoDate = Utils.parseAsLocalDate(dataFineSconto);
+        if (dataFineScontoDate == null)
         {
-            Utils.dispatchError("Sconto impostato con una percentuale non corretta", request, response);
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data fine"), request, response);
+            return;
+        }
+
+        if (!dataFineScontoDate.isAfter(dataInizioScontoDate))
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), request, response);
+            return;
+        }
+
+        val sconto = request.getParameter("sconto");
+        if (sconto == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("sconto"), request, response);
+            return;
+        }
+
+        val scontoInteger = Utils.parseAsInteger(sconto);
+        if (scontoInteger == null || (scontoInteger < 1 || scontoInteger > 100))
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("sconto"), request, response);
             return;
         }
 
         val prodottoId = request.getParameter("prodotto");
         if (prodottoId == null)
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("prodotto"), request, response);
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("prodotto"), request, response);
             return;
         }
 
-        val id = Integer.parseInt(prodottoId);
+        val id = Utils.parseAsInteger(prodottoId);
+        if (id == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("id"), request, response);
+            return;
+        }
+
         val prodotto = MagazzinoController.getProdottoById(id);
         if (prodotto == null)
         {
@@ -75,9 +98,9 @@ public class ImpostaScontoServlet extends HttpServlet
             return;
         }
 
-        if (!FinanzeController.impostaSconto(prodotto, sconto, dataInizioScontoDate, dataFineScontoDate))
+        if (!FinanzeController.impostaSconto(prodotto, scontoInteger, dataInizioScontoDate, dataFineScontoDate))
         {
-            Utils.dispatchError("Errore nell'impostazione dello sconto", request, response);
+            Utils.dispatchError(Errors.GENERIC, request, response);
             return;
         }
 
