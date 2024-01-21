@@ -16,12 +16,39 @@ import static org.mockito.Mockito.*;
 
 class ImpostaScontoServletTest
 {
-    final ImpostaScontoServlet servlet = new ImpostaScontoServlet();
+    ImpostaScontoServlet servlet;
     HttpServletRequest request;
     HttpServletResponse response;
 
+    @BeforeEach
+    void beforeEach() throws ServletException, IOException
+    {
+        servlet = new ImpostaScontoServlet();
+        request = mock(HttpServletRequest.class);
+        response = mock(HttpServletResponse.class);
+
+        val session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+
+        val dipendente = new Dipendente();
+        dipendente.setRuolo(Dipendente.Ruolo.FINANZE);
+        when(session.getAttribute("dipendente")).thenReturn(dipendente);
+
+        val requestDispatcher = mock(RequestDispatcher.class);
+        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        doNothing().when(requestDispatcher).forward(any(), any());
+    }
+
+    void populateRequest(String prodotto, String dataInizioSconto, String dataFineSconto, String sconto)
+    {
+        when(request.getParameter("prodotto")).thenReturn(prodotto);
+        when(request.getParameter("dataInizioSconto")).thenReturn(dataInizioSconto);
+        when(request.getParameter("dataFineSconto")).thenReturn(dataFineSconto);
+        when(request.getParameter("sconto")).thenReturn(sconto);
+    }
+
     @Nested
-    class Fail
+    class Invalid
     {
         @AfterEach
         void afterEach() throws ServletException, IOException
@@ -29,7 +56,7 @@ class ImpostaScontoServletTest
             servlet.doPost(request, response);
 
             val captor = ArgumentCaptor.forClass(String.class);
-            verify(request).setAttribute(eq("message"), captor.capture());
+            verify(request, times(1)).setAttribute(eq("message"), captor.capture());
 
             System.out.println(captor.getValue());
         }
@@ -99,7 +126,7 @@ class ImpostaScontoServletTest
     }
 
     @Nested
-    class Pass
+    class Valid
     {
         @AfterEach
         void afterEach() throws ServletException, IOException
@@ -115,31 +142,5 @@ class ImpostaScontoServletTest
         {
             populateRequest("1", "2025-01-01", "2025-01-02", "1");
         }
-    }
-
-    @BeforeEach
-    void beforeEach()
-    {
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-
-        val session = mock(HttpSession.class);
-        when(request.getSession()).thenReturn(session);
-
-        val dipendente = new Dipendente();
-        dipendente.setRuolo(Dipendente.Ruolo.FINANZE);
-        when(session.getAttribute("dipendente")).thenReturn(dipendente);
-
-        val requestDispatcher = mock(RequestDispatcher.class);
-        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        //doNothing().when(requestDispatcher).forward(any(), any());
-    }
-
-    void populateRequest(String prodotto, String dataInizioSconto, String dataFineSconto, String sconto)
-    {
-        when(request.getParameter("prodotto")).thenReturn(prodotto);
-        when(request.getParameter("dataInizioSconto")).thenReturn(dataInizioSconto);
-        when(request.getParameter("dataFineSconto")).thenReturn(dataFineSconto);
-        when(request.getParameter("sconto")).thenReturn(sconto);
     }
 }
