@@ -25,6 +25,13 @@ public class Utils
         request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);
     }
 
+    // Reindirizza l'utente alla pagina di successo contenente un messaggio esplicativo
+    public static void dispatchSuccess(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("WEB-INF/success.jsp").forward(request, response);
+    }
+
     // Converte una stringa a oggetto LocalDate
     public static LocalDate parseAsLocalDate(String str)
     {

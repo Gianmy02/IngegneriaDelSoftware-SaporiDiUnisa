@@ -1,0 +1,16 @@
+.success-message{
+    color: #008000;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.success-symbol {
+    margin-bottom: 20px;
+    text-align: center;
+    color: green;
+}
+
+.success-symbol > span{
+    font-size: 150px;
+}

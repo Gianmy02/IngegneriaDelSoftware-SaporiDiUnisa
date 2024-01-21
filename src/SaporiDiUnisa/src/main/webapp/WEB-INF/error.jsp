@@ -3,6 +3,7 @@
 <html lang="it">
     <head>
         <title>Sapori di Unisa - Errore</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/resultPage.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/error.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
         <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/img/favicon/apple-touch-icon.png">
