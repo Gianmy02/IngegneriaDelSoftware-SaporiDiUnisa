@@ -7,12 +7,14 @@ import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
 import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jdk.jshell.execution.Util;
 import lombok.val;
 import org.json.JSONObject;
 
@@ -39,30 +41,53 @@ public class AggiungiVenditaServlet extends HttpServlet {
             ObjectMapper mapper = new ObjectMapper();
             List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<>() {});
             ArrayList<Venduto> selezionati = new ArrayList<>();
-
-
             for (Map<String, Object> saleData : saleDataList) {
                 int productId = (int) saleData.get("productId"); // Modifica il tipo a int
                 Venduto v = new Venduto();
+                val p = MagazzinoController.getProdottoById(productId);
+                if(p==null){
+                    //Utils.dispatchError(Errors.INVALID_FIELD.formatted("id prodotto"), req, resp);
+                    //return;
+                }
                 v.setProdotto(MagazzinoController.getProdottoById(productId));
                 v.setGiorno(LocalDate.now());
-                v.setQuantita((int) saleData.get("quantity"));
+                int quantita = (int) saleData.get("quantity");
+                /*if(quantita<0)
+                {
+                }
+
+                if(quantita>=100000){
+
+                }*/
+                v.setQuantita(quantita);
                 if (saleData.get("price") instanceof Number) {
+                    if(((Number) saleData.get("price")).floatValue() <0){
+                    }
+
+                    if(((Number) saleData.get("price")).floatValue() >=100000){
+
+                    }
                     v.setCosto(((Number) saleData.get("price")).floatValue());
                 } else if (saleData.get("price") instanceof String) {
                     try {
+                        if(Float.parseFloat((String) saleData.get("price")) <0){
+
+                        }
+
+                        if(Float.parseFloat((String) saleData.get("price")) >=100000){
+
+                        }
                         v.setCosto(Float.parseFloat((String) saleData.get("price")));
+
                     } catch (NumberFormatException e) {
                         // Gestione dell'eccezione in caso di errore di conversione
                         System.err.println("Errore durante la conversione del prezzo a float: " + e.getMessage());
                         // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
-                        v.setCosto(0);
                     }
                 } else {
                     // Gestione di altri casi in cui il valore "price" non può essere convertito a float
                     System.err.println("Errore: il valore 'price' non è di tipo numerico o stringa.");
                     // Assegna un valore di default o gestisci l'errore a seconda delle tue esigenze
-                    v.setCosto(0);
                 }
                 selezionati.add(v);
             }

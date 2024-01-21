@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
 public class Venduto
 {
     private Prodotto prodotto;

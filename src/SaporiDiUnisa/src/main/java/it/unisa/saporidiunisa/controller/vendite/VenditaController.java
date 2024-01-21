@@ -19,10 +19,6 @@ public class VenditaController {
      * @return booleano di conferma
      */
     public static boolean venditaProdotti(ArrayList<Venduto> venduti) {
-        for(Venduto v : venduti){
-            if(!VenditaController.checkVenduto(v))
-                return false;
-        }
         boolean b = false;
         /*itero sulla lista di prodotti che si vogliono acquistare*/
         for (Venduto v : venduti) {
