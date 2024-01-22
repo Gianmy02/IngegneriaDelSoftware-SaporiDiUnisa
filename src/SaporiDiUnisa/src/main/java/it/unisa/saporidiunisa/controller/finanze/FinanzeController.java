@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class FinanzeController
 {
     /**
-     * La funzione <code>visualizzaBilancio</code> restituisce il bilancio aggiornato al modello della chiamata
+     * La funzione <code>visualizzaBilancio</code> restituisce il bilancio Totale aggiornato al modello della chiamata
      * @return Bilancio calcolato
      */
     public static Bilancio visualizzaBilancio()
@@ -33,6 +33,21 @@ public class FinanzeController
         bilancio.setGuadagno(VenditaController.getGuadagniTotali());
         bilancio.setIncasso(VenditaController.getIncassiTotali());
         bilancio.setSpese(MagazzinoController.getSpeseTotali());
+        return bilancio;
+    }
+
+    public static Bilancio visualizzaBilancioParziale(LocalDate inizio, LocalDate fine)
+    {
+        val bilancio = new Bilancio();
+
+        var perdite = 0.00f;
+        for (val l : LottoDAO.getPerdite(inizio, fine))
+            perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
+
+        bilancio.setPerdite(perdite);
+        bilancio.setIncasso(VenditaController.getIncassi(inizio, fine));
+        bilancio.setGuadagno(VenditaController.getGuadagni(inizio, fine));
+        bilancio.setSpese(MagazzinoController.getSpese(inizio, fine));
 
         return bilancio;
     }

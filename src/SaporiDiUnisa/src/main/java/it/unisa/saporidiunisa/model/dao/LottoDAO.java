@@ -65,6 +65,23 @@ public class LottoDAO
         }
     }
 
+    public static float getSpese(LocalDate inizio, LocalDate fine)
+    {
+        try (val connection = Database.getConnection())
+        {
+            val ps = connection.prepareStatement("SELECT sum(l.costo) FROM lotto l JOIN fornitura f ON l.fornitura = f.id WHERE f.giorno BETWEEN ? AND ?;");
+            ps.setString(1, String.valueOf(inizio));
+            ps.setString(2, String.valueOf(fine));
+            val rs = ps.executeQuery();
+
+            return rs.next() ? rs.getFloat(1) : 0;
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Restituisce tutti i lotti scaduti con solo gli attributi che servono
      */
@@ -73,7 +90,42 @@ public class LottoDAO
         try (val connection = Database.getConnection())
         {
             val lotti = new ArrayList<Lotto>();
-            val ps = connection.prepareStatement("SELECT id, costo, quantita, quantita_attuale FROM lotto WHERE data_scadenza<=CURDATE() AND quantita_attuale>0;");
+            val ps = connection.prepareStatement("SELECT id, costo, quantita, quantita_attuale FROM lotto WHERE data_scadenza<CURDATE() AND quantita_attuale>0;");
+            val rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                val l = new Lotto();
+                l.setId(rs.getInt(1));
+                l.setCosto(rs.getFloat(2));
+                l.setQuantita(rs.getInt(3));
+                l.setQuantitaAttuale(rs.getInt(4));
+                lotti.add(l);
+            }
+
+            return lotti;
+
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * restituisce Tutte le perdite date dai lotti scaduti in quel periodo
+     * @param inizio data di inizio periodo
+     * @param fine data di fine periodot
+     * @return ArrayList di lotti scaduti in quei giorni
+     */
+    public static ArrayList<Lotto> getPerdite(LocalDate inizio, LocalDate fine)
+    {
+        try (val connection = Database.getConnection())
+        {
+            val lotti = new ArrayList<Lotto>();
+            val ps = connection.prepareStatement("SELECT id, costo, quantita, quantita_attuale FROM lotto WHERE data_scadenza BETWEEN ? AND ? AND quantita_attuale>0;");
+            ps.setString(1, String.valueOf(inizio));
+            ps.setString(2, String.valueOf(fine));
             val rs = ps.executeQuery();
 
             while (rs.next())

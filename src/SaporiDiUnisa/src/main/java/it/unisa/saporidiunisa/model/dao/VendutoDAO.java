@@ -178,4 +178,28 @@ public class VendutoDAO {
         }
     }
 
+    public static float getIncassi(LocalDate inizio, LocalDate fine) {
+        try (val connection = Database.getConnection()) {
+            val ps = connection.prepareStatement("SELECT SUM(costo * quantita) AS somma_costi_per_quantita FROM venduto WHERE giorno BETWEEN ? AND ?;");
+            ps.setString(1, String.valueOf(inizio));
+            ps.setString(2, String.valueOf(fine));
+            val rs = ps.executeQuery();
+
+            return rs.next() ? rs.getFloat(1) : 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static float getGuadagni(LocalDate inizio, LocalDate fine) {
+        try (val connection = Database.getConnection()) {
+            val ps = connection.prepareStatement("SELECT SUM(guadagno) FROM venduto WHERE giorno BETWEEN ? AND ?;");
+            ps.setString(1, String.valueOf(inizio));
+            ps.setString(2, String.valueOf(fine));
+            val rs = ps.executeQuery();
+            return rs.next() ? rs.getFloat(1) : 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

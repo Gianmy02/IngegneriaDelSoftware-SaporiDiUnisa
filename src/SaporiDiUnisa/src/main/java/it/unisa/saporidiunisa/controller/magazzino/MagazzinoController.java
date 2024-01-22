@@ -105,7 +105,7 @@ public class MagazzinoController {
     }
 
     public static float getSpese(LocalDate dataInizio, LocalDate dataFine) {
-        return 0;
+        return LottoDAO.getSpese(dataInizio, dataFine);
     }
 
     /**

@@ -55,10 +55,10 @@ public class VenditaController {
     }
 
     /**
-     * Il metodo <code>visualizzaStoricoVendite</code> restituisce la somma delle attivita di vendita di tutti i Prodotti in un determinato periodo scelto
+     * Il metodo <code>visualizzaStoricoVendite</code> restituisce la somma delle attività di vendita di tutti i Prodotti in un determinato periodo scelto
      *
      * @param dataInizio data che delimita l'inizio del periodo
-     * @param dataFine   data che delimita la fine del periodo
+     * @param dataFine data che delimita la fine del periodo
      * @return ArrayList di venduti
      */
     public static ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine) {
@@ -75,8 +75,12 @@ public class VenditaController {
     }
 
 
-    public float getIncassi(LocalDate dataInizio, LocalDate dataFine) {
-        return 0;
+    public static float getIncassi(LocalDate dataInizio, LocalDate dataFine) {
+        return VendutoDAO.getIncassi(dataInizio, dataFine);
+    }
+
+    public static float getGuadagni(LocalDate dataInizio, LocalDate dataFine) {
+        return VendutoDAO.getGuadagni(dataInizio, dataFine);
     }
 
     /**

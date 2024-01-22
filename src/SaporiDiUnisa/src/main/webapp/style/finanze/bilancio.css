@@ -38,3 +38,23 @@ body {
 #utile.negative {
     color: red;
 }
+
+#cancel-button {
+    background-color: red; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    padding: 10px 20px; /* Spaziatura interna */
+    font-size: 16px; /* Dimensione del testo */
+    border: none; /* Nessun bordo */
+    border-radius: 5px; /* Bordi arrotondati */
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+}
+
+#bilancio-totale-buton {
+    background-color: #4CAF50; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    padding: 10px 20px; /* Spaziatura interna */
+    font-size: 16px; /* Dimensione del testo */
+    border: none; /* Nessun bordo */
+    border-radius: 5px; /* Bordi arrotondati */
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+}
