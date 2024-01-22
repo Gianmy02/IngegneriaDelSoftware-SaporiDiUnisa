@@ -2,9 +2,7 @@ package it.unisa.saporidiunisa.controller.magazzino.servlet;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.utils.Errors;
 import it.unisa.saporidiunisa.utils.Patterns;
-import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

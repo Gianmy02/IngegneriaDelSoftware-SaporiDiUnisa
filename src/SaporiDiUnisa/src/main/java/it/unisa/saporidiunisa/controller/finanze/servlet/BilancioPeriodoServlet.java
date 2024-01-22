@@ -2,7 +2,7 @@ package it.unisa.saporidiunisa.controller.finanze.servlet;
 
 import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,41 +23,41 @@ public class BilancioPeriodoServlet extends HttpServlet
         val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
+            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);
             return;
         }
 
         val inizio = request.getParameter("inizio");
         if (inizio == null)
         {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data inizio"), request, response);
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("data inizio"), request, response);
             return;
         }
 
         val fine = request.getParameter("fine");
         if (fine == null)
         {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data fine"), request, response);
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("data fine"), request, response);
             return;
         }
 
         val inizioDate = Utils.parseAsLocalDate(inizio);
         if (inizioDate == null)
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data inizio"), request, response);
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("data inizio"), request, response);
             return;
         }
 
         val fineDate = Utils.parseAsLocalDate(fine);
         if (fineDate == null)
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data fine"), request, response);
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("data fine"), request, response);
             return;
         }
 
         if (inizioDate.isAfter(fineDate))
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), request, response);
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("intervallo di date"), request, response);
             return;
         }
 

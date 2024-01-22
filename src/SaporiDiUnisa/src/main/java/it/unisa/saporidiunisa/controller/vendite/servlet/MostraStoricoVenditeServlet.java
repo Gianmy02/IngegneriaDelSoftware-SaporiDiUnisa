@@ -3,7 +3,7 @@ package it.unisa.saporidiunisa.controller.vendite.servlet;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,30 +28,30 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
         if (d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
             val inizio = req.getParameter("inizio");
             if (inizio == null) {
-                Utils.dispatchError(Errors.INVALID_FIELD.formatted("data inizio"), req, resp);
+                Utils.dispatchError(Messages.INVALID_FIELD.formatted("data inizio"), req, resp);
                 return;
             }
 
             val fine = req.getParameter("fine");
             if (fine == null) {
-                Utils.dispatchError(Errors.INVALID_FIELD.formatted("data fine"), req, resp);
+                Utils.dispatchError(Messages.INVALID_FIELD.formatted("data fine"), req, resp);
                 return;
             }
 
             val inizioDate = Utils.parseAsLocalDate(inizio);
             if(inizioDate == null){
-                Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data inizio"), req, resp);
+                Utils.dispatchError(Messages.INVALID_FORMAT.formatted("data inizio"), req, resp);
                 return;
             }
 
             val fineDate = Utils.parseAsLocalDate(fine);
             if(fineDate == null){
-                Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data fine"), req, resp);
+                Utils.dispatchError(Messages.INVALID_FORMAT.formatted("data fine"), req, resp);
                 return;
             }
 
             if (inizioDate.isAfter(fineDate)) {
-                Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), req, resp);
+                Utils.dispatchError(Messages.INVALID_FORMAT.formatted("intervallo di date"), req, resp);
                 return;
             }
 

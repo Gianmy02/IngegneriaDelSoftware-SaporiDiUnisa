@@ -1,7 +1,7 @@
 package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Patterns;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
@@ -24,21 +24,21 @@ public class LoginServlet extends HttpServlet
         val pin = request.getParameter("pin");
         if (pin == null)
         {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("pin"), request, response);
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("pin"), request, response);
             return;
         }
 
         val matcherPin = Patterns.LOGIN_PIN.matcher(pin);
         if (!matcherPin.matches())
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("pin"), request, response);
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("pin"), request, response);
             return;
         }
 
         val dipendente = AutenticazioneController.login(pin);
         if (dipendente == null)
         {
-            Utils.dispatchError(Errors.NOT_FOUND.formatted("dipendente"), request, response);
+            Utils.dispatchError(Messages.NOT_FOUND.formatted("dipendente"), request, response);
             return;
         }
 

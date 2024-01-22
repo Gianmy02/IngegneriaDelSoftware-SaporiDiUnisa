@@ -4,9 +4,8 @@ import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.model.entity.Lotto;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,14 +26,14 @@ public class VisualizzaScaffale extends HttpServlet {
         val dipendente = (Dipendente)session.getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
+            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);
             return;
         }
 
         String address = req.getParameter("address");
         if (address == null)
         {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("indirizzo"), req, resp);
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("indirizzo"), req, resp);
             return;
         }
 
@@ -52,7 +51,7 @@ public class VisualizzaScaffale extends HttpServlet {
         }
         else
         {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("indirizzo"), req, resp);
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("indirizzo"), req, resp);
             return;
         }
 

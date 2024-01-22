@@ -2,7 +2,7 @@ package it.unisa.saporidiunisa.controller.autenticazione.servlet;
 
 import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Patterns;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ public class UpdatePinServlet extends HttpServlet
 
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.ADMIN)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
+            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);
             return;
         }
 
@@ -32,7 +32,7 @@ public class UpdatePinServlet extends HttpServlet
 
         if (!Patterns.LOGIN_PIN.matcher(pin).matches())
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("nuovo pin"), request, response);
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("nuovo pin"), request, response);
             return;
         }
 

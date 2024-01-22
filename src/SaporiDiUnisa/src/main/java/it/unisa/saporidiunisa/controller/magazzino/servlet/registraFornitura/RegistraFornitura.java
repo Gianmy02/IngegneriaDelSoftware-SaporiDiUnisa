@@ -3,7 +3,7 @@ package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ public class RegistraFornitura extends HttpServlet {
 
         val dipendente = (Dipendente) session.getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE){
-            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
+            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);
             return;
         }
 
@@ -34,7 +34,7 @@ public class RegistraFornitura extends HttpServlet {
         if(MagazzinoController.registraFornitura(fornitura))
             Utils.dispatchSuccess("Fornitura registrata con successo", req, resp);
         else
-            Utils.dispatchError(Errors.GENERIC, req, resp);
+            Utils.dispatchError(Messages.FAIL, req, resp);
 
     }
 }

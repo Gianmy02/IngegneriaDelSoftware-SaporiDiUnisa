@@ -3,7 +3,7 @@ package it.unisa.saporidiunisa.controller.magazzino.servlet;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,7 +27,7 @@ public class MostraLottiProdotto extends HttpServlet {
         val dipendente = (Dipendente)session.getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() == Dipendente.Ruolo.CASSIERE || dipendente.getRuolo() == Dipendente.Ruolo.FINANZE)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
+            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);
             return;
         }
 
@@ -38,7 +38,7 @@ public class MostraLottiProdotto extends HttpServlet {
         }
         catch (NumberFormatException ex)
         {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("prodotto"), req, resp);
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("prodotto"), req, resp);
             return;
         }
 

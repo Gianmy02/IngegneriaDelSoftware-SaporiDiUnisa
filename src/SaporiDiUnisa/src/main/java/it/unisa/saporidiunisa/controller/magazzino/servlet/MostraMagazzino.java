@@ -2,7 +2,7 @@ package it.unisa.saporidiunisa.controller.magazzino.servlet;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,7 +22,7 @@ public class MostraMagazzino extends HttpServlet {
         val dipendente = (Dipendente)session.getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() == Dipendente.Ruolo.CASSIERE || dipendente.getRuolo() == Dipendente.Ruolo.FINANZE)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
+            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);
             return;
         }
         session.setAttribute("magazzino", MagazzinoController.visualizzaProdottiMagazzino());

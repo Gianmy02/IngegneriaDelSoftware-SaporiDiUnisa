@@ -7,15 +7,13 @@ import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
-import it.unisa.saporidiunisa.utils.Errors;
-import it.unisa.saporidiunisa.utils.Utils;
+import it.unisa.saporidiunisa.utils.Messages;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jdk.jshell.execution.Util;
 import lombok.val;
 import org.json.JSONObject;
 
@@ -102,7 +100,7 @@ public class AggiungiVenditaServlet extends HttpServlet {
             } else {
                 val json = new JSONObject();
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                json.put("errors", String.format(Errors.GENERIC, "venduto"));
+                json.put("errors", Messages.FAIL);
                 resp.setContentType("application/json");
                 resp.getWriter().write(String.valueOf(json));
                 /*
