@@ -1,6 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
 <jsp:useBean id="bilancio" scope="request" type="it.unisa.saporidiunisa.model.entity.Bilancio"/>
 <!doctype html>
 <html lang="it">

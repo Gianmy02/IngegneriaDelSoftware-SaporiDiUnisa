@@ -14,60 +14,68 @@ import lombok.val;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet(name = "BilancioPeriodoServlet", value = "/bilancio-periodo-servlet")
+@WebServlet(name = "bilancioPeriodoServlet", value = "/bilancio-periodo-servlet")
 public class BilancioPeriodoServlet extends HttpServlet
 {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        val dipendente = (Dipendente)req.getSession().getAttribute("dipendente");
+        val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)
         {
-            Utils.dispatchError(Errors.NO_PERMISSIONS, req, resp);
+            Utils.dispatchError(Errors.NO_PERMISSIONS, request, response);
             return;
         }
 
-        val inizio = req.getParameter("inizio");
-        if (inizio == null) {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data inizio"), req, resp);
+        val inizio = request.getParameter("inizio");
+        if (inizio == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data inizio"), request, response);
             return;
         }
 
-        val fine = req.getParameter("fine");
-        if (fine == null) {
-            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data fine"), req, resp);
+        val fine = request.getParameter("fine");
+        if (fine == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FIELD.formatted("data fine"), request, response);
             return;
         }
 
         val inizioDate = Utils.parseAsLocalDate(inizio);
-        if(inizioDate == null){
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data inizio"), req, resp);
+        if (inizioDate == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data inizio"), request, response);
             return;
         }
 
         val fineDate = Utils.parseAsLocalDate(fine);
-        if(fineDate == null){
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data fine"), req, resp);
+        if (fineDate == null)
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data fine"), request, response);
             return;
         }
 
-        if (inizioDate.isAfter(fineDate)) {
-            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), req, resp);
+        if (inizioDate.isAfter(fineDate))
+        {
+            Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), request, response);
             return;
         }
 
-        if(inizioDate.isAfter(LocalDate.now().minusDays(1))){
-            Utils.dispatchError("La data di inizio non può essere dopo quella di ieri", req, resp);
+        if (inizioDate.isAfter(LocalDate.now().minusDays(1)))
+        {
+            Utils.dispatchError("La data di inizio non può essere dopo quella di ieri", request, response);
             return;
         }
 
-        if(fineDate.isAfter(LocalDate.now().minusDays(1))){
-            Utils.dispatchError("La data di fine non può essere dopo quella di ieri", req, resp);
+        if (fineDate.isAfter(LocalDate.now().minusDays(1)))
+        {
+            Utils.dispatchError("La data di fine non può essere dopo quella di ieri", request, response);
             return;
         }
-        req.setAttribute("dataInizio", inizioDate);
-        req.setAttribute("dataFine", fineDate);
-        req.setAttribute("bilancio", FinanzeController.visualizzaBilancioParziale(inizioDate, fineDate));
-        req.getRequestDispatcher("/view/finanze/bilancio.jsp").forward(req, resp);
+
+        request.setAttribute("dataInizio", inizioDate);
+        request.setAttribute("dataFine", fineDate);
+        request.setAttribute("bilancio", FinanzeController.visualizzaBilancioParziale(inizioDate, fineDate));
+        request.getRequestDispatcher("/view/finanze/bilancio.jsp").forward(request, response);
     }
 }
