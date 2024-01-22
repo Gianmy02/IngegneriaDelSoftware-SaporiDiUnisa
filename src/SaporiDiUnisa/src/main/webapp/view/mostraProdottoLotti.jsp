@@ -39,10 +39,14 @@
                 <td><%=prodotto.getMarchio()%></td>
                 <td><%=magazzino.get(prodotto).size()%></td>
                 <td><%=prodotto.getPrezzo()%> &euro;</td>
+                <% if(!magazzino.get(prodotto).isEmpty()){ %>
                 <td><form action="${pageContext.request.contextPath}/MostraLottiProdotto" method="post" onclick="this.submit()">
                     <p id="confirm-button">Visualizza Lotti</p>
                     <input type="hidden" name="prodotto" value="<%=prodotto.getId()%>">
                 </form></td>
+                <%}else {%>
+                <td></td>
+                <%}%>
             </tr>
             <%}%>
         </tbody>
