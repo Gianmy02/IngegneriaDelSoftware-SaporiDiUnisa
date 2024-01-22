@@ -3,6 +3,7 @@ package it.unisa.saporidiunisa.controller.vendite.servlet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
@@ -52,13 +53,17 @@ public class AggiungiVenditaServlet extends HttpServlet {
                 v.setProdotto(MagazzinoController.getProdottoById(productId));
                 v.setGiorno(LocalDate.now());
                 int quantita = (int) saleData.get("quantity");
-                /*if(quantita<0)
+                if(quantita<0)
                 {
                 }
 
                 if(quantita>=100000){
 
-                }*/
+                }
+
+                if(ScaffaleController.getEspostiByProdotto(p) - quantita <0){
+
+                }
                 v.setQuantita(quantita);
                 if (saleData.get("price") instanceof Number) {
                     if(((Number) saleData.get("price")).floatValue() <0){

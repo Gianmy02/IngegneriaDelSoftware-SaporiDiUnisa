@@ -4,6 +4,7 @@ import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
 import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
 
 import java.util.ArrayList;
 
@@ -81,5 +82,9 @@ public class ScaffaleController
     public static void diminuisciLotto(int id, int qnt)
     {
         LottoDAO.diminuisciLotto(id, qnt);
+    }
+
+    public static int getEspostiByProdotto(Prodotto p){
+        return EsposizioneDAO.getEspostiByProdotto(p);
     }
 }

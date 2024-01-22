@@ -3,6 +3,7 @@
 <%@ page import="it.unisa.saporidiunisa.model.entity.Prodotto" %>
 <%@ page import="it.unisa.saporidiunisa.model.entity.Lotto" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="it.unisa.saporidiunisa.model.entity.Dipendente" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
 <html lang="it">
@@ -51,7 +52,15 @@
 <p>Magazzino Vuoto</p>
 <%}%>
 <div id = "buttons-container">
-    <button onclick="window.history.back()" id="cancel-button">Indietro</button>
+    <% Dipendente d = (Dipendente) session.getAttribute("dipendente");
+        String address;
+    if(d.getRuolo() == Dipendente.Ruolo.ADMIN){
+        address = "view/select/admin.jsp";
+    }else{
+        address = "view/select/select_Forniture_Prodotti.jsp";
+    }%>
+    <a href="${pageContext.request.contextPath}/<%=address%>"><button id="cancel-button">Indietro</button></a>
+
 </div>
 </div>
 

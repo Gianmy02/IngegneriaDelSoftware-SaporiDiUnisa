@@ -3,6 +3,8 @@ package it.unisa.saporidiunisa.controller.vendite.servlet;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
+import it.unisa.saporidiunisa.utils.Errors;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,25 +28,43 @@ public class MostraStoricoVenditeServlet extends HttpServlet {
         if (d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
             val inizio = req.getParameter("inizio");
             if (inizio == null) {
-                req.setAttribute("message", "Data Inizio non inserita");
-                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
+                Utils.dispatchError(Errors.INVALID_FIELD.formatted("data inizio"), req, resp);
                 return;
             }
 
             val fine = req.getParameter("fine");
             if (fine == null) {
-                req.setAttribute("message", "Data Fine Sconto non inserita");
-                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
+                Utils.dispatchError(Errors.INVALID_FIELD.formatted("data fine"), req, resp);
                 return;
             }
 
-            val inizioDate = LocalDate.parse(inizio);
-            val fineDate = LocalDate.parse(fine);
-            if (inizioDate.isAfter(fineDate)) {
-                req.setAttribute("message", "Le 2 date non sono giuste");
-                req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
+            val inizioDate = Utils.parseAsLocalDate(inizio);
+            if(inizioDate == null){
+                Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data inizio"), req, resp);
                 return;
             }
+
+            val fineDate = Utils.parseAsLocalDate(fine);
+            if(fineDate == null){
+                Utils.dispatchError(Errors.INVALID_FORMAT.formatted("data fine"), req, resp);
+                return;
+            }
+
+            if (inizioDate.isAfter(fineDate)) {
+                Utils.dispatchError(Errors.INVALID_FORMAT.formatted("intervallo di date"), req, resp);
+                return;
+            }
+
+            if(inizioDate.isAfter(LocalDate.now().minusDays(1))){
+                Utils.dispatchError("La data di inizio non può essere dopo quella di ieri", req, resp);
+                return;
+            }
+
+            if(fineDate.isAfter(LocalDate.now().minusDays(1))){
+                Utils.dispatchError("La data di fine non può essere dopo quella di ieri", req, resp);
+                return;
+            }
+
 
             ArrayList<Venduto> v = VenditaController.visualizzaStoricoVendite(inizioDate, fineDate);
             session.setAttribute("prodotti", v);
