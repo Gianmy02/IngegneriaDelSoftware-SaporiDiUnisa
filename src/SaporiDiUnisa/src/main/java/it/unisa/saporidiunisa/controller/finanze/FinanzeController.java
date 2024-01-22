@@ -25,14 +25,11 @@ public class FinanzeController
     {
         val bilancio = new Bilancio();
 
-        var perdite = 0.00f;
-        for (val l : LottoDAO.getPerditeTotali())
-            perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
-
-        bilancio.setPerdite(perdite);
+        bilancio.setPerdite((float)LottoDAO.getPerditeTotali().stream().mapToDouble(l -> l.getCostoProdotto() * l.getQuantitaAttuale()).sum());
         bilancio.setGuadagno(VenditaController.getGuadagniTotali());
         bilancio.setIncasso(VenditaController.getIncassiTotali());
         bilancio.setSpese(MagazzinoController.getSpeseTotali());
+
         return bilancio;
     }
 
@@ -40,11 +37,7 @@ public class FinanzeController
     {
         val bilancio = new Bilancio();
 
-        var perdite = 0.00f;
-        for (val l : LottoDAO.getPerdite(inizio, fine))
-            perdite += l.getCostoProdotto() * l.getQuantitaAttuale();
-
-        bilancio.setPerdite(perdite);
+        bilancio.setPerdite((float)LottoDAO.getPerdite(inizio, fine).stream().mapToDouble(l -> l.getCostoProdotto() * l.getQuantitaAttuale()).sum());
         bilancio.setIncasso(VenditaController.getIncassi(inizio, fine));
         bilancio.setGuadagno(VenditaController.getGuadagni(inizio, fine));
         bilancio.setSpese(MagazzinoController.getSpese(inizio, fine));
