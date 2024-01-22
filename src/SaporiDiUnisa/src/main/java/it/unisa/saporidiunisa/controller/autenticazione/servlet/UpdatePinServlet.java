@@ -41,7 +41,7 @@ public class UpdatePinServlet extends HttpServlet
             Utils.dispatchError("Non è stato possibile completare l'operazione.", request, response);
             return;
         }
+        Utils.dispatchSuccess("Pin modificato con successo", request, response);
 
-        request.getRequestDispatcher("view/select/admin.jsp").forward(request, response);
     }
 }

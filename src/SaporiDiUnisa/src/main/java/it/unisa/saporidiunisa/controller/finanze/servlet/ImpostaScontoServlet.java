@@ -120,10 +120,11 @@ public class ImpostaScontoServlet extends HttpServlet
         if (!FinanzeController.impostaSconto(prodotto, scontoInteger, dataInizioScontoDate, dataFineScontoDate))
         {
             Utils.dispatchError(Messages.FAIL, request, response);
-            return;
+        }else{
+            session.setAttribute("prodotti", MagazzinoController.getAllProducts());
+            Utils.dispatchSuccess("Sconto applicato con successo", request, response);
         }
 
-        session.setAttribute("prodotti", MagazzinoController.getAllProducts());
-        request.getRequestDispatcher("view/finanze/visualizzaProdotti.jsp").forward(request, response);
+
     }
 }

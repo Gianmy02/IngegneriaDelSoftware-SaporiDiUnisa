@@ -38,46 +38,46 @@ public class AggiungiVenditaServlet extends HttpServlet {
                 sb.append(line);
             }
             ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<>() {});
+            List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<>() {
+            });
             ArrayList<Venduto> selezionati = new ArrayList<>();
             for (Map<String, Object> saleData : saleDataList) {
                 int productId = (int) saleData.get("productId"); // Modifica il tipo a int
                 Venduto v = new Venduto();
                 val p = MagazzinoController.getProdottoById(productId);
-                if(p==null){
+                if (p == null) {
                     //Utils.dispatchError(Errors.INVALID_FIELD.formatted("id prodotto"), req, resp);
                     //return;
                 }
                 v.setProdotto(MagazzinoController.getProdottoById(productId));
                 v.setGiorno(LocalDate.now());
                 int quantita = (int) saleData.get("quantity");
-                if(quantita<0)
-                {
+                if (quantita < 0) {
                 }
 
-                if(quantita>=100000){
+                if (quantita >= 100000) {
 
                 }
 
-                if(ScaffaleController.getEspostiByProdotto(p) - quantita <0){
+                if (ScaffaleController.getEspostiByProdotto(p) - quantita < 0) {
 
                 }
                 v.setQuantita(quantita);
                 if (saleData.get("price") instanceof Number) {
-                    if(((Number) saleData.get("price")).floatValue() <0){
+                    if (((Number) saleData.get("price")).floatValue() < 0) {
                     }
 
-                    if(((Number) saleData.get("price")).floatValue() >=100000){
+                    if (((Number) saleData.get("price")).floatValue() >= 100000) {
 
                     }
                     v.setCosto(((Number) saleData.get("price")).floatValue());
                 } else if (saleData.get("price") instanceof String) {
                     try {
-                        if(Float.parseFloat((String) saleData.get("price")) <0){
+                        if (Float.parseFloat((String) saleData.get("price")) < 0) {
 
                         }
 
-                        if(Float.parseFloat((String) saleData.get("price")) >=100000){
+                        if (Float.parseFloat((String) saleData.get("price")) >= 100000) {
 
                         }
                         v.setCosto(Float.parseFloat((String) saleData.get("price")));
