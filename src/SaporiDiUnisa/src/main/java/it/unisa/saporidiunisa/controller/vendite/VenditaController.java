@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class VenditaController {
     /**
      * Il metodo conferma le vendite richieste di tutti i prodotti
+     *
      * @param venduti sono tutti i prodotti venduti in un determinato momento a un cliente ipotetico
      * @return booleano di conferma
      */
@@ -58,7 +59,7 @@ public class VenditaController {
      * Il metodo <code>visualizzaStoricoVendite</code> restituisce la somma delle attività di vendita di tutti i Prodotti in un determinato periodo scelto
      *
      * @param dataInizio data che delimita l'inizio del periodo
-     * @param dataFine data che delimita la fine del periodo
+     * @param dataFine   data che delimita la fine del periodo
      * @return ArrayList di venduti
      */
     public static ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine) {
@@ -74,11 +75,24 @@ public class VenditaController {
         return EsposizioneDAO.visualizzaProdottiEspostiCassiere();
     }
 
-
+    /**
+     * Il metodo <code>getIncassi</code> serve per avere la somma degli incassi conseguiti nel periodo prescelto
+     *
+     * @param dataInizio data per la delimitazione del periodo iniziale
+     * @param dataFine   data per la delimitazione del periodo finale
+     * @return incassi, float
+     */
     public static float getIncassi(LocalDate dataInizio, LocalDate dataFine) {
         return VendutoDAO.getIncassi(dataInizio, dataFine);
     }
 
+    /**
+     * Il metodo <code>getGuadagni</code> serve per avere la somma dei guadagni conseguiti nel periodo prescelto
+     *
+     * @param dataInizio data per la delimitazione del periodo iniziale
+     * @param dataFine   data per la delimitazione del periodo finale
+     * @return guadagni, float
+     */
     public static float getGuadagni(LocalDate dataInizio, LocalDate dataFine) {
         return VendutoDAO.getGuadagni(dataInizio, dataFine);
     }
@@ -110,7 +124,7 @@ public class VenditaController {
             VendutoDAO.doSaveGiornoLavorativo();
     }
 
-    public static boolean checkVenduto(Venduto v){
+    public static boolean checkVenduto(Venduto v) {
         return v.validate(EsposizioneDAO.getEspostiByProdotto(v.getProdotto()));
     }
 

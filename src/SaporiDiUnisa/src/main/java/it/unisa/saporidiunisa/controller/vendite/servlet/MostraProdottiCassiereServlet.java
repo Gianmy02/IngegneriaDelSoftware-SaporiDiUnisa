@@ -3,6 +3,8 @@ package it.unisa.saporidiunisa.controller.vendite.servlet;
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,16 +21,13 @@ public class MostraProdottiCassiereServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Dipendente d = (Dipendente) session.getAttribute("dipendente");
-        if (d != null && d.getRuolo() == Dipendente.Ruolo.CASSIERE) {
-            VenditaController vc = new VenditaController();
-            ArrayList<Esposizione> esposti = vc.visualizzaProdottiEsposti();
-            session.setAttribute("prodottiEsposti", esposti);
-        } else {
-            req.setAttribute("message", "Permessi non concessi per questa pagina");
-            req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
+        if (d == null || d.getRuolo() != Dipendente.Ruolo.CASSIERE) {
+            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);
             return;
         }
-
+        VenditaController vc = new VenditaController();
+        ArrayList<Esposizione> esposti = vc.visualizzaProdottiEsposti();
+        session.setAttribute("prodottiEsposti", esposti);
         req.getRequestDispatcher("view/cassiere/vendita.jsp").forward(req, resp);
     }
 }
