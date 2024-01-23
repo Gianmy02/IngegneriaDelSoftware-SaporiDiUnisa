@@ -48,8 +48,9 @@ function confirmSale() {
                 window.location.href = "MostraProdottiCassiereServlet";
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 var errorObj = JSON.parse(jqXHR.responseText);
-                var errorMessage = errorObj.errors;
+                var errorMessage = errorObj.message;
                 console.log("Messaggio di errore:", errorMessage);
 
                 // Esempio: mostra un messaggio di errore

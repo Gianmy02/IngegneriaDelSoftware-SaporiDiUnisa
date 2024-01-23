@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class VenditaControllerTest {
+class AggiungiVenditaTest {
 
     private VenditaController venditaController;
 

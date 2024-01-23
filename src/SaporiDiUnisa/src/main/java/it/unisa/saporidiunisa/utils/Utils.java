@@ -31,12 +31,11 @@ public class Utils
         request.getRequestDispatcher("WEB-INF/success.jsp").forward(request, response);
     }
 
-    // Invia un oggetto JSON contenente un messaggio esplicativo
+    // Invia un oggetto JSON contenente un messaggio esplicativo di errore
     public static void sendMessage(String message, HttpServletResponse response) throws IOException
     {
         val json = new JSONObject();
         json.put("message", message);
-
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json");
         response.getWriter().write(json.toString());
