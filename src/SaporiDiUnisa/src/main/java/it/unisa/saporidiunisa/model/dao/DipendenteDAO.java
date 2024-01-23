@@ -37,12 +37,11 @@ public class DipendenteDAO
     {
         try (val connection = Database.getConnection())
         {
-            var preparedStatement = connection.prepareStatement("select pin from dipendente where pin = ? and ruolo = ?;");
+            var preparedStatement = connection.prepareStatement("select pin from dipendente where pin = ?;");
             preparedStatement.setString(1, pin);
-            preparedStatement.setString(2, String.valueOf(ruolo));
             val resultSet = preparedStatement.executeQuery();
 
-            // Controllo che il nuovo pin non sia uguale a quello in uso
+            // Controllo che il nuovo pin non sia uguale a quelli in uso
             if (!resultSet.next())
             {
                 preparedStatement = connection.prepareStatement("update dipendente set pin = ? where ruolo = ?;");

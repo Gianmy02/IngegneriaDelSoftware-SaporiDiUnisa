@@ -38,7 +38,7 @@ public class UpdatePinServlet extends HttpServlet
 
         if (!AutenticazioneController.modificaPin(pin, ruolo))
         {
-            Utils.dispatchError("Non è stato possibile completare l'operazione.", request, response);
+            Utils.dispatchError("Non è stato possibile completare l'operazione per pin uguale ad altri ruoli oppure allo stesso.", request, response);
             return;
         }
         Utils.dispatchSuccess("Pin modificato con successo", request, response);
