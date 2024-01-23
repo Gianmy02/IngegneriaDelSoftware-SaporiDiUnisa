@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import lombok.val;
+import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -30,6 +31,17 @@ public class Utils
     {
         request.setAttribute("message", message);
         request.getRequestDispatcher("WEB-INF/success.jsp").forward(request, response);
+    }
+
+    // Invia un oggetto JSON contenente un messaggio esplicativo
+    public static void sendMessage(String message, HttpServletResponse response) throws IOException
+    {
+        val json = new JSONObject();
+        json.put("message", message);
+
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setContentType("application/json");
+        response.getWriter().write(json.toString());
     }
 
     // Converte una stringa a oggetto LocalDate
