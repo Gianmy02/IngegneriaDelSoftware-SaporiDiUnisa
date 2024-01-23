@@ -113,9 +113,9 @@ public class LottoDAO
     }
 
     /**
-     * restituisce Tutte le perdite date dai lotti scaduti in quel periodo
+     * Restituisce tutte le perdite date dai lotti scaduti in quel periodo
      * @param inizio data di inizio periodo
-     * @param fine data di fine periodot
+     * @param fine data di fine periodo
      * @return ArrayList di lotti scaduti in quei giorni
      */
     public static ArrayList<Lotto> getPerdite(LocalDate inizio, LocalDate fine)
@@ -278,9 +278,10 @@ public class LottoDAO
         try (val connection = Database.getConnection()) {
             val ps = connection.prepareStatement(
             "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno, p.id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
-                "FROM lotto l, fornitura f, prodotto p " +
-                "WHERE l.fornitura = f.id AND l.prodotto = p.id " +
-                "GROUP BY p.id;"
+                "FROM prodotto p " +
+                "LEFT JOIN lotto l ON p.id = l.prodotto " +
+                "LEFT JOIN fornitura f ON l.fornitura = f.id " +
+                "WHERE l.data_scadenza >= CURDATE();"
             );
             val rs = ps.executeQuery();
             val prodottiMap = new HashMap<Prodotto, ArrayList<Lotto>>();
@@ -290,7 +291,7 @@ public class LottoDAO
                 if(_productIsInHashMap(prodottiMap, prodotto) == null)
                     prodottiMap.put(prodotto, new ArrayList<>());
 
-                if(_dateIsEqualsOrAfterNow(rs.getDate("data_scadenza").toLocalDate()) && rs.getInt("quantita_attuale") > 0) {
+                if(rs.getInt("quantita_attuale") > 0) {
                     val lotto = new Lotto(
                         rs.getInt("id"),
                         rs.getFloat("costo"),
@@ -323,9 +324,5 @@ public class LottoDAO
             if (p.getId() == prodotto.getId())
                 return hashMap.get(p);
         return null;
-    }
-
-    private static boolean _dateIsEqualsOrAfterNow(final LocalDate date){
-        return date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now());
     }
 }
