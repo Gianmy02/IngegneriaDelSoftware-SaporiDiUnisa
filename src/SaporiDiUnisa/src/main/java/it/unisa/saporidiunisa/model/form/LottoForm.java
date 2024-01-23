@@ -96,7 +96,7 @@ public class LottoForm {
             return "La foto deve essere minore di 2MB\n";
         else if(!Utils.checkImageExtension(foto))
             return "La foto deve essere un'immagine con estensione: jpg, jpeg o png\n";
-        else if(!Utils.checkImageDimension(foto))
+        else if(!Utils.assureSquareImage(foto))
             return "La foto deve avere dimensioni 1:1\n";
         else{
             this.foto = Utils.readPart(foto).getBytes();

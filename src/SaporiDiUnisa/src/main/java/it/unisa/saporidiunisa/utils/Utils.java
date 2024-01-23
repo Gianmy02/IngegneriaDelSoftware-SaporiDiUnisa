@@ -8,10 +8,8 @@ import lombok.val;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -86,10 +84,13 @@ public class Utils
     // Converte un oggetto Part in una stringa
     public static String readPart(final Part part)
     {
-        try (InputStream is = part.getInputStream();
-             val reader = new BufferedReader(new InputStreamReader(is))) {
+        try (val is = part.getInputStream();
+             val reader = new BufferedReader(new InputStreamReader(is)))
+        {
             return reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -100,31 +101,38 @@ public class Utils
         val contentDisposition = part.getHeader("content-disposition");
         val tokens = contentDisposition.split(";");
 
-        for (val token : tokens) {
-            if (token.trim().startsWith("filename")) {
+        for (val token : tokens)
+        {
+            if (token.trim().startsWith("filename"))
+            {
                 val fileName = token.substring(token.indexOf('=') + 1).trim().replace("\"", "");
                 int lastDotIndex = fileName.lastIndexOf('.');
-                if (lastDotIndex > 0 && lastDotIndex < fileName.length() - 1) {
+                if (lastDotIndex > 0 && lastDotIndex < fileName.length() - 1)
+                {
                     val extension = fileName.substring(lastDotIndex + 1);
-                    return switch (extension) {
+                    return switch (extension)
+                    {
                         case "jpg", "jpeg", "png" -> true;
                         default -> false;
                     };
                 }
             }
         }
+
         return false;
     }
 
     // Controlla se un oggetto Part è un'immagine con dimensioni 1:1
-    public static boolean checkImageDimension(final Part part)
+    public static boolean assureSquareImage(final Part part)
     {
-        BufferedImage image = null;
-        try (InputStream fileContent = part.getInputStream()) {
-            image = ImageIO.read(fileContent);
-        } catch (IOException e) {
+        try (val fileContent = part.getInputStream())
+        {
+            val image = ImageIO.read(fileContent);
+            return image != null && image.getWidth() == image.getHeight();
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
-        return image != null && image.getWidth() == image.getHeight();
     }
 }
