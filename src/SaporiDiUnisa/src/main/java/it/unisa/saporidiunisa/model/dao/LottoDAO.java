@@ -280,7 +280,7 @@ public class LottoDAO
             "SELECT l.id, l.costo, l.data_scadenza, l.quantita, l.quantita_attuale, f.id AS fornitura_id, f.giorno, p.id as idProdotto, nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto " +
                 "FROM lotto l, fornitura f, prodotto p " +
                 "WHERE l.fornitura = f.id AND l.prodotto = p.id " +
-                "GROUP BY p.nome;"
+                "GROUP BY p.id;"
             );
             val rs = ps.executeQuery();
             val prodottiMap = new HashMap<Prodotto, ArrayList<Lotto>>();
