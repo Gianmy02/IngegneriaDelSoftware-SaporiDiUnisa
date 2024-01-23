@@ -7,6 +7,7 @@ $(document).ready(function() {
         event.preventDefault();
 
         var qnt;
+        var idLotto;
         var nomeProdotto;
         var azienda;
         var scadenza;
@@ -27,12 +28,13 @@ $(document).ready(function() {
             }
 
             if (qnt > 0) {
+                idLotto = $(this).find(".idLottoS").text();
                 nomeProdotto = $(this).find(".nomeProdottoS").text();
                 azienda = $(this).find(".nomeAziendaS").text();
                 scadenza = $(this).find(".dataScadenzaS").text();
                 qntAttuale = $(this).find(".qntAttualeS").text();
 
-                operazioniS += "Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n";
+                operazioniS += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n";
             }
 
         });
@@ -48,12 +50,13 @@ $(document).ready(function() {
             }
 
             if (qnt > 0) {
+                idLotto = $(this).find(".idLottoM").text();
                 nomeProdotto = $(this).find(".nomeProdottoM").text();
                 azienda = $(this).find(".nomeAziendaM").text();
                 scadenza = $(this).find(".dataScadenzaM").text();
                 qntAttuale = $(this).find(".qntAttualeM").text();
 
-                operazioniM += "Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Magazzino: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n";
+                operazioniM += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Magazzino: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n";
             }
 
         });

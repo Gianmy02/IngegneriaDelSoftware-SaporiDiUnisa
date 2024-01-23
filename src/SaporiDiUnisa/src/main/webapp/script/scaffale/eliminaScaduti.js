@@ -6,6 +6,7 @@ $(document).ready(function() {
     $("#cancel-button").click(function(event) {
         event.preventDefault();
 
+        var idLotto;
         var nomeProdotto;
         var azienda;
         var scadenza;
@@ -15,12 +16,13 @@ $(document).ready(function() {
 
         $(".rigaScaduto").each(function() {
 
+            idLotto = $(this).find(".idLotto").text();
             nomeProdotto = $(this).find(".nomeProdotto").text();
             azienda = $(this).find(".azienda").text();
             scadenza = $(this).find(".scadenza").text();
             qntAttuale = $(this).find(".quantita").text();
 
-            operazioni += "Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ";\n";
+            operazioni += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ";\n";
 
         });
 

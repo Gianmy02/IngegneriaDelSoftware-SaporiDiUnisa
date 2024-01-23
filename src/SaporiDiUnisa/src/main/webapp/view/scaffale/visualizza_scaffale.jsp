@@ -29,6 +29,7 @@
                 <th>Prodotti Scaffale</th>
             </tr>
             <tr>
+                <th>ID Lotto</th>
                 <th>Nome</th>
                 <th>Azienda</th>
                 <th>Data Scadenza</th>
@@ -46,6 +47,7 @@
             %>
 
             <tr class="rigaScaduto" style="background-color: red">
+                <td class="idLotto"><%=e.getLotto().getId()%></td>
                 <td class="nomeProdotto"><%=e.getProdotto().getNome()%></td>
                 <td class="azienda"><%=e.getProdotto().getMarchio()%></td>
                 <td class="scadenza"><%=e.getLotto().getDataScadenza()%></td>
@@ -59,6 +61,7 @@
             %>
 
             <tr>
+                <td><%=e.getLotto().getId()%></td>
                 <td><%=e.getProdotto().getNome()%></td>
                 <td><%=e.getProdotto().getMarchio()%></td>
                 <td><%=e.getLotto().getDataScadenza()%></td>
