@@ -4,7 +4,6 @@ import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
-import it.unisa.saporidiunisa.model.form.LottoForm;
 import it.unisa.saporidiunisa.utils.Patterns;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
@@ -14,6 +13,7 @@ import jakarta.servlet.http.*;
 import lombok.val;
 import org.json.JSONObject;
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * @author Salvatore Ruocco
@@ -25,14 +25,13 @@ public class AggiungiLotto extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        val nome_str = Utils.readPart(req.getPart("nome"));
-        val marchio_str = Utils.readPart(req.getPart("marchio"));
+        val nome = Utils.readPart(req.getPart("nome"));
+        val marchio = Utils.readPart(req.getPart("marchio"));
         val prezzo_str = Utils.readPart(req.getPart("prezzo"));
         val quantita_str = Utils.readPart(req.getPart("quantita"));
         val dataScadenza_str = Utils.readPart(req.getPart("dataScadenza"));
 
-        val lottoForm = new LottoForm();
-        val errorString = lottoForm.validate(nome_str, marchio_str, prezzo_str, quantita_str, dataScadenza_str);
+        val errorString = _validateLotto(nome, marchio, prezzo_str, quantita_str, dataScadenza_str);
         if(!errorString.isEmpty()){
             val json = new JSONObject();
             json.put("errors", errorString);
@@ -41,16 +40,15 @@ public class AggiungiLotto extends HttpServlet {
             return;
         }
 
-        val nome = lottoForm.getNome();
-        val marchio = lottoForm.getMarchio();
-        val prezzo = lottoForm.getPrezzo();
-        val quantita = lottoForm.getQuantita();
-        val dataScadenza = lottoForm.getDataScadenza();
+        val prezzo = Utils.parseAsFloat(prezzo_str);
+        val quantita = Utils.parseAsInteger(quantita_str);
+        val dataScadenza = Utils.parseAsLocalDate(dataScadenza_str);
 
         var prodotto = MagazzinoController.checkProductExists(nome, marchio);
         // se il prodotto è nuovo, controllo che sia stata caricata una foto
         if(prodotto == null){
-            val errorPhotoString = lottoForm.validatePhoto(req.getPart("foto"));
+            val fotoPart = req.getPart("foto");
+            val errorPhotoString = _validatePhoto(fotoPart);
             if(errorPhotoString != null) {
                 val json = new JSONObject();
                 json.put("errors", errorPhotoString);
@@ -59,8 +57,8 @@ public class AggiungiLotto extends HttpServlet {
                 return;
             }
             // se non ci sono errori
-            final byte[] foto = lottoForm.getFoto();
-            prodotto = new Prodotto(0, nome, marchio, prezzo, prezzo, null, null, foto);
+            final byte[] foto = Utils.readPart(fotoPart).getBytes();
+            prodotto = new Prodotto(0, nome, marchio, prezzo, 0, null, null, foto);
         }
 
         // tengo l'id della fornitura in sessione per evitare ripetute select dal db
@@ -88,5 +86,80 @@ public class AggiungiLotto extends HttpServlet {
         json.put("dataScadenza", dataScadenza.format(Patterns.DATE_TIME_FORMATTER));
         resp.setContentType("application/json");
         resp.getWriter().write(String.valueOf(json));
+    }
+
+    private String _validateLotto(final String nome, final String marchio, final String prezzo, final String quantita, final String dataScadenza) {
+        val s = new StringBuilder();
+
+        if(nome.isEmpty() || nome.isBlank())
+            s.append("Il nome non può essere vuoto\n");
+        else if(nome.length() < 2 || nome.length() > 255)
+            s.append("Il nome deve essere compreso tra 2 e 255 caratteri\n");
+
+        if(marchio.isEmpty() || marchio.isBlank())
+            s.append("Il marchio non può essere vuoto\n");
+        else if(marchio.length() < 2 || marchio.length() > 255)
+            s.append("Il marchio deve essere compreso tra 2 e 255 caratteri\n");
+
+        Float _prezzo;
+        if(prezzo.isEmpty() || prezzo.isBlank()) {
+            s.append("Il prezzo non può essere vuoto\n");
+        }
+        else{
+            _prezzo = Utils.parseAsFloat(prezzo);
+            if(_prezzo == null){
+                s.append("Il prezzo deve essere un numero\n");
+            }
+            else {
+                if(_prezzo <= 0)
+                    s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
+                else if(_prezzo >= 100000.00)
+                    s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
+            }
+        }
+
+        Integer _quantita;
+        if(quantita.isEmpty() || quantita.isBlank()) {
+            s.append("La quantità non può essere vuota\n");
+        }
+        else{
+            _quantita = Utils.parseAsInteger(quantita);
+            if(_quantita == null) {
+                s.append("La quantità deve essere un numero\n");
+            }
+            else {
+                if(_quantita <= 0)
+                    s.append("La quantità deve essere maggiore di 0\n");
+                else if(_quantita >= 1000000)
+                    s.append("La quantità deve essere minore di 1000000\n");
+            }
+        }
+
+        LocalDate _dataScadenza;
+        if(dataScadenza.isEmpty() || dataScadenza.isBlank()) {
+            s.append("La data di scadenza non può essere vuota\n");
+        }
+        else{
+            _dataScadenza = Utils.parseAsLocalDate(dataScadenza);
+            if(_dataScadenza == null)
+                s.append("La data di scadenza non è valida\n");
+            else if(_dataScadenza.isBefore(LocalDate.now()) || _dataScadenza.isEqual(LocalDate.now()))
+                s.append("La data di scadenza deve essere anteriore a quella odierno\n");
+        }
+
+        return s.toString();
+    }
+
+    private String _validatePhoto(final Part foto){
+        if(foto == null || foto.getSize() <= 0)
+            return "La foto non può essere vuota\n";
+        else if(foto.getSize() > 1024 * 1024 * 2)
+            return "La foto deve essere minore di 2MB\n";
+        else if(!Utils.checkImageExtension(foto))
+            return "La foto deve essere un'immagine con estensione: jpg, jpeg o png\n";
+        else if(!Utils.assureSquareImage(foto))
+            return "La foto deve avere dimensioni 1:1\n";
+        else
+            return null;
     }
 }

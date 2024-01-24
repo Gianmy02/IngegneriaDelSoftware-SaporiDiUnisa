@@ -25,8 +25,7 @@ public class Lotto
         return this.costo/this.quantita;
     }
 
-    @Override
-    public String toString() {
+    public String getInfo() {
         return "Id lotto:" + id +
                 ", costo totale: " + costo +
                 ", dataScadenza: " + dataScadenza +

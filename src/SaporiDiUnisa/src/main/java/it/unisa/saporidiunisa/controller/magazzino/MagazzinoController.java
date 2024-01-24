@@ -7,7 +7,6 @@ import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
 import it.unisa.saporidiunisa.model.entity.Fornitura;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.model.entity.Prodotto;
-import it.unisa.saporidiunisa.model.form.LottoForm;
 import lombok.val;
 
 import java.time.LocalDate;
@@ -18,14 +17,6 @@ import java.util.*;
  * La classe <code>MagazzinoController</code> funge da tramite fra il database e le servlet per le operazioni sul magazzino
  */
 public class MagazzinoController {
-
-    /**
-     * Il metodo <code>aggiungiLotto</code> aggiunge un nuovo lotto alla fornitura che si sta inserendo
-     * */
-    public static String aggiungiLotto(final LottoForm lottoForm) {
-        return null;
-    }
-
     /**
      * Il metodo <code>registraFornitura</code> registra una nuova fornitura del giorno nel db
      * @param fornitura fornitura inserita in input

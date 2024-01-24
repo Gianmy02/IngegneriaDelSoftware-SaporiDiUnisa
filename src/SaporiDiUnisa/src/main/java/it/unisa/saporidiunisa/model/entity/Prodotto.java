@@ -27,8 +27,8 @@ public class Prodotto
         return this.fineSconto != null && this.fineSconto.isAfter(LocalDate.now());
     }
 
-    @Override
-    public String toString() {
+
+    public String getInfo() {
         return "Nome prodotto: " + nome +
                 ", marchio: " + marchio +
                 ", prezzo prodotto: " + prezzo;
