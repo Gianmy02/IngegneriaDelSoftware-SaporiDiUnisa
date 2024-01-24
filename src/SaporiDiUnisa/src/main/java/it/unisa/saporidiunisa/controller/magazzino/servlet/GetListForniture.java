@@ -32,7 +32,7 @@ public class GetListForniture extends HttpServlet {
             json.put("giorno", f.getGiorno().format(Patterns.DATE_TIME_FORMATTER));
             val s = new StringBuilder();
             for(val l : f.getLotti())
-                s.append(l.toString()).append("\n");
+                s.append(l.getInfo()).append("\n");
             json.put("lotti", s.toString());
             jsonArray.put(json);
         }
