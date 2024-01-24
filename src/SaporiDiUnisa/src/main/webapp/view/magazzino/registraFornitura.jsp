@@ -76,7 +76,8 @@
                             <input type="file" name="foto" id="foto" accept=".png, .jpg, .jpeg" required>
                         </div>
                     </div>
-                    <p id="errors"></p>
+                    <ul id="errors">
+                    </ul>
                     <input id="ajax-caller" type="button" value="Aggiungi lotto">
                 </form>
             </div>

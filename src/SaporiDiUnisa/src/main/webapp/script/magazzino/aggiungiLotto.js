@@ -3,7 +3,7 @@
 $(document).ready(function(){
     const table_lottiInseriti = $("#lottiInseriti");
 
-    const paragraph_errors = $("#errors");
+    const list_errors = $("#errors");
     $("#ajax-caller").click(function(){
         const formData = new FormData($('form')[0]);
         $.post({
@@ -12,12 +12,20 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(json) {
-                if(json.errors != null){
-                    paragraph_errors.css("display", "block");
-                    paragraph_errors.text(json.errors);                }
+                const errors = json.errors;
+                if(errors != null){
+                    list_errors.empty();
+                    const array_errors = errors.split("\n");
+                    for(let i = 0; i < array_errors.length - 1; i++)
+                        list_errors.append($("<li></li>")
+                            .text(array_errors[i])
+                            .css("color", "red")
+                            .css("text-align", "left"));
+                    list_errors.css("display", "block");
+                }
                 else {
-                    paragraph_errors.css("display", "none");
-                    paragraph_errors.text("");
+                    list_errors.css("display", "none");
+                    list_errors.empty();
 
                     const tr = $("<tr></tr>")
                         .append($("<td></td>").text(json.nome))
