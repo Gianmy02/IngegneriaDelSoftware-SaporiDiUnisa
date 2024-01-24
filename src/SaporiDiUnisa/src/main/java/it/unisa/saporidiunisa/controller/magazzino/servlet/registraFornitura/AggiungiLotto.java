@@ -93,11 +93,15 @@ public class AggiungiLotto extends HttpServlet {
 
         if(nome.isEmpty() || nome.isBlank())
             s.append("Il nome non può essere vuoto\n");
+        else if(!Patterns.INPUT_STRING.matcher(nome).matches())
+            s.append("Il nome non rispetta il formato\n");
         else if(nome.length() < 2 || nome.length() > 255)
             s.append("Il nome deve essere compreso tra 2 e 255 caratteri\n");
 
         if(marchio.isEmpty() || marchio.isBlank())
             s.append("Il marchio non può essere vuoto\n");
+        else if(!Patterns.INPUT_STRING.matcher(marchio).matches())
+            s.append("Il marchio non rispetta il formato\n");
         else if(marchio.length() < 2 || marchio.length() > 255)
             s.append("Il marchio deve essere compreso tra 2 e 255 caratteri\n");
 
@@ -107,15 +111,14 @@ public class AggiungiLotto extends HttpServlet {
         }
         else{
             _prezzo = Utils.parseAsFloat(prezzo);
-            if(_prezzo == null){
+            if(_prezzo == null)
                 s.append("Il prezzo deve essere un numero\n");
-            }
-            else {
-                if(_prezzo <= 0)
-                    s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
-                else if(_prezzo >= 100000.00)
-                    s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
-            }
+            else if(!Patterns.PRICE.matcher(prezzo).matches())
+                s.append("Il prezzo non rispetta il formato\n");
+            else if(_prezzo <= 0)
+                s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
+            else if(_prezzo >= 100000.00)
+                s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
         }
 
         Integer _quantita;
@@ -124,15 +127,14 @@ public class AggiungiLotto extends HttpServlet {
         }
         else{
             _quantita = Utils.parseAsInteger(quantita);
-            if(_quantita == null) {
+            if(_quantita == null)
                 s.append("La quantità deve essere un numero\n");
-            }
-            else {
-                if(_quantita <= 0)
-                    s.append("La quantità deve essere maggiore di 0\n");
-                else if(_quantita >= 1000000)
-                    s.append("La quantità deve essere minore di 1000000\n");
-            }
+            else if(!Patterns.QUANTITY.matcher(quantita).matches())
+                s.append("La quantità non rispetta il formato\n");
+            else if(_quantita <= 0)
+                s.append("La quantità deve essere maggiore di 0\n");
+            else if(_quantita >= 1000000)
+                s.append("La quantità deve essere minore di 1000000\n");
         }
 
         LocalDate _dataScadenza;
