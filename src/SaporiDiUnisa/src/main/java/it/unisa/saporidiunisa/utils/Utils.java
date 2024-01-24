@@ -41,19 +41,6 @@ public class Utils
         response.getWriter().write(json.toString());
     }
 
-    // Converte una stringa a oggetto LocalDate
-    public static LocalDate parseAsLocalDate(String str)
-    {
-        try
-        {
-            return LocalDate.parse(str);
-        }
-        catch (DateTimeParseException e)
-        {
-            return null;
-        }
-    }
-
     // Converte una stringa a oggetto Integer
     public static Integer parseAsInteger(String str)
     {
@@ -80,6 +67,19 @@ public class Utils
         }
     }
 
+    // Converte una stringa a oggetto LocalDate
+    public static LocalDate parseAsLocalDate(String str)
+    {
+        try
+        {
+            return LocalDate.parse(str);
+        }
+        catch (DateTimeParseException e)
+        {
+            return null;
+        }
+    }
+
     // Converte un oggetto Part in una stringa
     public static String readPart(final Part part)
     {
@@ -95,6 +95,7 @@ public class Utils
     }
 
     // Controlla se un oggetto Part è un'immagine con estensione jpg, jpeg o png
+    // TODO: https://stackoverflow.com/a/43891850
     public static boolean checkImageExtension(final Part part)
     {
         val contentDisposition = part.getHeader("content-disposition");

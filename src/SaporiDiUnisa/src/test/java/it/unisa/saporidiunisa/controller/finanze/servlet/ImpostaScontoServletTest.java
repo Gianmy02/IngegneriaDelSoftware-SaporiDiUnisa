@@ -48,7 +48,7 @@ class ImpostaScontoServletTest
         verify(dispatcher, atLeastOnce()).forward(request, response);
 
         val captor = ArgumentCaptor.forClass(String.class);
-        verify(request, atLeastOnce()).setAttribute(eq("message"), captor.capture());
+        verify(request, times(1)).setAttribute(eq("message"), captor.capture());
 
         System.out.println(captor.getValue());
     }
@@ -79,7 +79,7 @@ class ImpostaScontoServletTest
     @DisplayName("5.2.3")
     void tc_5_2_3()
     {
-        populateRequest("1", "2023-12-32", "2025-01-02", "1");
+        populateRequest("1", "2025-01-00", "2025-01-02", "1");
     }
 
     @Test
@@ -93,7 +93,7 @@ class ImpostaScontoServletTest
     @DisplayName("5.2.5")
     void tc_5_2_5()
     {
-        populateRequest("1", "2025-01-01", "0000-31-02", "1");
+        populateRequest("1", "2025-01-01", "2025-01-00", "1");
     }
 
     @Test

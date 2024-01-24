@@ -48,7 +48,7 @@ class BilancioPeriodoServletTest
     }
 
     @Nested
-    class Invalid
+    class WithMessage
     {
         @AfterEach
         void afterEach() throws ServletException, IOException
@@ -84,14 +84,14 @@ class BilancioPeriodoServletTest
     }
 
     @Nested
-    class Valid
+    class WithoutMessage
     {
         @AfterEach
         void afterEach() throws ServletException, IOException
         {
             servlet.doPost(request, response);
 
-            verify(request, times(0)).setAttribute(eq("message"), eq(null));
+            verify(request, never()).setAttribute(eq("message"), any());
         }
 
         @Test
