@@ -65,7 +65,7 @@ class ImpostaScontoServletTest
     @DisplayName("5.2.1")
     void tc_5_2_1()
     {
-        populateRequest("0", "2024-01-01", "2024-01-02", "1");
+        populateRequest("0", "2025-01-01", "2025-01-02", "1");
     }
 
     @Test
@@ -79,21 +79,21 @@ class ImpostaScontoServletTest
     @DisplayName("5.2.3")
     void tc_5_2_3()
     {
-        populateRequest("1", "2023-12-32", "2024-01-02", "1");
+        populateRequest("1", "2023-12-32", "2025-01-02", "1");
     }
 
     @Test
     @DisplayName("5.2.4")
     void tc_5_2_4()
     {
-        populateRequest("1", "2020-01-01", "2024-01-02", "1");
+        populateRequest("1", "2020-01-01", "2025-01-02", "1");
     }
 
     @Test
     @DisplayName("5.2.5")
     void tc_5_2_5()
     {
-        populateRequest("1", "2024-01-01", "0000-31-02", "1");
+        populateRequest("1", "2025-01-01", "0000-31-02", "1");
     }
 
     @Test
