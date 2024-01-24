@@ -124,8 +124,4 @@ public class VenditaController {
             VendutoDAO.doSaveGiornoLavorativo();
     }
 
-    public static boolean checkVenduto(Venduto v) {
-        return v.validate(EsposizioneDAO.getEspostiByProdotto(v.getProdotto()));
-    }
-
 }

@@ -13,42 +13,6 @@ import java.util.ArrayList;
 
 public class VendutoDAO
 {
-
-    public static ArrayList<Venduto> getVendutiGiornalieri()
-    {
-        try (val connection = Database.getConnection())
-        {
-            PreparedStatement ps =
-                    connection.prepareStatement("SELECT * FROM prodotto, venduto WHERE venduto.prodotto = prodotto.id AND venduto.giorno = CURDATE()");
-            ResultSet rs = ps.executeQuery();
-            ArrayList<Venduto> venduti = new ArrayList<>();
-            while (rs.next())
-            {
-                Prodotto p = new Prodotto();
-                Venduto v = new Venduto();
-                p.setId(rs.getInt(1));
-                p.setNome(rs.getString(2));
-                p.setMarchio(rs.getString(3));
-                p.setPrezzo(rs.getFloat(4));
-                p.setPrezzoScontato(rs.getFloat(5));
-                p.setInizioSconto(LocalDate.parse(rs.getString(6)));
-                p.setFineSconto(LocalDate.parse(rs.getString(7)));
-                p.setFoto(rs.getBytes(8));
-                v.setCosto(rs.getFloat(9));
-                v.setQuantita(rs.getInt(10));
-                v.setGuadagno(rs.getFloat(11));
-                v.setProdotto(p);
-                v.setGiorno(LocalDate.parse(rs.getString(13)));
-                venduti.add(v);
-            }
-            return venduti;
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static Venduto getVendutiGiornalieroByProdotto(Prodotto p)
     {
         try (val connection = Database.getConnection())
