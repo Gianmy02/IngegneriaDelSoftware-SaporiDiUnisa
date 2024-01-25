@@ -50,6 +50,7 @@ public class AggiungiVenditaServlet extends HttpServlet {
             val p = MagazzinoController.getProdottoById(productId);
             if (p == null) {
                 Utils.sendMessage(Messages.INVALID_FIELD.formatted("prodotto"), resp);
+                return;
             }
             v.setProdotto(MagazzinoController.getProdottoById(productId));
             v.setGiorno(LocalDate.now());

@@ -72,14 +72,28 @@ class BilancioPeriodoServletTest
         @DisplayName("5.1.2")
         void tc_5_1_2()
         {
-            populateRequest("2024-01-01", "2024-02/01");
+            populateRequest("2025-01-01", "2024-02-01");
         }
 
         @Test
         @DisplayName("5.1.3")
         void tc_5_1_3()
         {
-            populateRequest("2024-02-01", "2024-01-01");
+            populateRequest("2024-01-01", "2024-02/01");
+        }
+
+        @Test
+        @DisplayName("5.1.4")
+        void tc_5_1_4()
+        {
+            populateRequest("2024-01-10", "2024-01-01");
+        }
+
+        @Test
+        @DisplayName("5.1.5")
+        void tc_5_1_5()
+        {
+            populateRequest("2024-01-01", "2025-01-01");
         }
     }
 
@@ -95,10 +109,10 @@ class BilancioPeriodoServletTest
         }
 
         @Test
-        @DisplayName("5.1.4")
-        void tc_5_1_4()
+        @DisplayName("5.1.6")
+        void tc_5_1_6()
         {
-            populateRequest("2024-01-01", "2024-02-01");
+            populateRequest("2024-01-10", "2024-01-12");
         }
     }
 }
