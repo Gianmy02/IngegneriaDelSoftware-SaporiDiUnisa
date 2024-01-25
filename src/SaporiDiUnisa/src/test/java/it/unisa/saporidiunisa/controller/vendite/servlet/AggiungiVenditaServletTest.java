@@ -1,6 +1,7 @@
 package it.unisa.saporidiunisa.controller.vendite.servlet;
 
 import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 
 import java.io.BufferedReader;
@@ -28,6 +30,7 @@ class AggiungiVenditaServletTest
     HttpServletRequest request;
     HttpServletResponse response;
     RequestDispatcher dispatcher;
+
 
     @BeforeEach
     void beforeEach() throws ServletException, IOException
@@ -51,25 +54,27 @@ class AggiungiVenditaServletTest
     @AfterEach
     void afterEach() throws ServletException, IOException
     {
-        servlet.doPost(request, response);
+        try (val utils = mockStatic(Utils.class))
+        {
+            // Stubba Utils.sendMessage ma ottieni il messaggio di errore
+            val captor = ArgumentCaptor.forClass(String.class);
+            utils.when(() -> Utils.sendMessage(captor.capture(), eq(response))).thenAnswer(Answers.RETURNS_DEFAULTS);
 
-        verify(dispatcher, atLeastOnce()).forward(request, response);
+            servlet.doPost(request, response);
 
-        val captor = ArgumentCaptor.forClass(String.class);
-        verify(request, times(1)).setAttribute(eq("message"), captor.capture());
-
-        System.out.println(captor.getValue());
+            System.out.println(captor.getValue());
+        }
     }
 
     void populateJson(String prodotto, String quantita, String prezzo) throws IOException
     {
-        String jsonData = "[{\"productId\": " + prodotto + ", \"quantity\": " + quantita + ", \"price\": " + prezzo + "}]";
+        val jsonString = "[{\"productId\": " + prodotto + ", \"quantity\": " + quantita + ", \"price\": " + prezzo + "}]";
 
         // Creare un InputStream dalla stringa JSON
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(jsonData.getBytes());
+        val inputStream = new ByteArrayInputStream(jsonString.getBytes());
 
         // Creare un BufferedReader dallo InputStream
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        val bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         // Configurare il mock per restituire il BufferedReader
         when(request.getReader()).thenReturn(bufferedReader);

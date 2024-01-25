@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AggiungiVenditaServletTest" type="JUnit" factoryName="JUnit">
+    <module name="SaporiDiUnisa" />
+    <option name="PACKAGE_NAME" value="it.unisa.saporidiunisa.controller.vendite.servlet" />
+    <option name="MAIN_CLASS_NAME" value="it.unisa.saporidiunisa.controller.vendite.servlet.AggiungiVenditaServletTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-ea -XX:+EnableDynamicAgentLoading -Xshare:off" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
