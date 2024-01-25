@@ -36,8 +36,8 @@ create table lotto
     id int not null auto_increment primary key,
     costo decimal(5,2) not null,
     data_scadenza date not null,
-    quantita int not null,
-    quantita_attuale int not null,
+    quantita int(6) not null,
+    quantita_attuale int(6) not null,
     fornitura int not null references fornitura(id) on delete cascade,
     prodotto int not null references prodotto(id) on delete cascade,
 
@@ -54,7 +54,7 @@ create table vendita
 create table venduto
 (
     costo decimal(5,2) not null,
-    quantita int not null,
+    quantita int(6) not null,
     guadagno decimal(5,2) not null,
     prodotto int not null references prodotto(id) on delete cascade,
     giorno date not null references vendita(giorno),
@@ -62,15 +62,14 @@ create table venduto
     primary key(giorno, prodotto),
 
     check(costo > 0.00),
-    check(quantita > 0),
-    check(guadagno > 0.00)
+    check(quantita > 0)
 );
 
 create table esposizione
 (
     prodotto int not null references prodotto(id) on delete cascade,
     lotto int not null references lotto(id) on delete cascade,
-    quantita int not null,
+    quantita int(6) not null,
 
     primary key(lotto, prodotto),
     
