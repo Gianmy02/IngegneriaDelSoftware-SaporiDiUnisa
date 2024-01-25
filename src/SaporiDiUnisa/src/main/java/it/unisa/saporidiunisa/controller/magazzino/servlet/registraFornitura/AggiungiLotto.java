@@ -24,7 +24,7 @@ import java.time.LocalDate;
 public class AggiungiLotto extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         val nome = Utils.readPart(req.getPart("nome"));
         val marchio = Utils.readPart(req.getPart("marchio"));
         val prezzo_str = Utils.readPart(req.getPart("prezzo"));
@@ -81,7 +81,7 @@ public class AggiungiLotto extends HttpServlet {
         json.put("keyId", lotto.getId());
         json.put("nome", nome);
         json.put("marchio", marchio);
-        json.put("prezzo", prezzo);
+        json.put("prezzo", String.format("%.2f", prezzo));
         json.put("quantita", quantita);
         json.put("dataScadenza", dataScadenza.format(Patterns.DATE_TIME_FORMATTER));
         resp.setContentType("application/json");
@@ -93,17 +93,17 @@ public class AggiungiLotto extends HttpServlet {
 
         if(nome.isEmpty() || nome.isBlank())
             s.append("Il nome non può essere vuoto\n");
-        else if(!Patterns.INPUT_STRING.matcher(nome).matches())
-            s.append("Il nome non rispetta il formato\n");
         else if(nome.length() < 2 || nome.length() > 255)
             s.append("Il nome deve essere compreso tra 2 e 255 caratteri\n");
+        else if(!Patterns.INPUT_STRING.matcher(nome).matches())
+            s.append("Il nome non rispetta il formato\n");
 
         if(marchio.isEmpty() || marchio.isBlank())
             s.append("Il marchio non può essere vuoto\n");
-        else if(!Patterns.INPUT_STRING.matcher(marchio).matches())
-            s.append("Il marchio non rispetta il formato\n");
         else if(marchio.length() < 2 || marchio.length() > 255)
             s.append("Il marchio deve essere compreso tra 2 e 255 caratteri\n");
+        else if(!Patterns.INPUT_STRING.matcher(marchio).matches())
+            s.append("Il marchio non rispetta il formato\n");
 
         Float _prezzo;
         if(prezzo.isEmpty() || prezzo.isBlank()) {
