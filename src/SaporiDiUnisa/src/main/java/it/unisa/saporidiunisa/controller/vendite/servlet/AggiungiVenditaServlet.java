@@ -66,7 +66,7 @@ public class AggiungiVenditaServlet extends HttpServlet
                 return;
             }
 
-            if (quantita >= 100000)
+            if (quantita >= 1000000)
             {
                 Utils.sendMessage("La quantità inserita è sopra il limite consentito", response);
                 return;
