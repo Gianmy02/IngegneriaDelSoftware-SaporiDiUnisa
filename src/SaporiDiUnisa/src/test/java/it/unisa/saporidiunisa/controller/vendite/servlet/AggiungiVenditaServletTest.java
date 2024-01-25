@@ -1,6 +1,9 @@
 package it.unisa.saporidiunisa.controller.vendite.servlet;
 
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -46,9 +49,19 @@ class AggiungiVenditaServletTest
         dipendente.setRuolo(Dipendente.Ruolo.CASSIERE);
         when(session.getAttribute("dipendente")).thenReturn(dipendente);
 
+        val magazzinoController = mockStatic(MagazzinoController.class);
         dispatcher = mock(RequestDispatcher.class);
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         doNothing().when(dispatcher).forward(any(), any());
+
+        Prodotto prodotto = new Prodotto(1,"Farina", "Caputo", 1.00F,0, null,null, null);
+        Prodotto prodotto2 = new Prodotto(2,"Farina", "Caputo", 1.00F,0, null,null, null);
+
+        when(MagazzinoController.getProdottoById(1)).thenReturn(prodotto);
+        when(MagazzinoController.getProdottoById(2)).thenReturn(prodotto2);
+
+        when(ScaffaleController.getEspostiByProdotto(prodotto)).thenReturn(10);
+        when(ScaffaleController.getEspostiByProdotto(prodotto2)).thenReturn(1);
     }
 
     @AfterEach
@@ -86,4 +99,62 @@ class AggiungiVenditaServletTest
     {
         populateJson("0", "1", "1.00");
     }
+
+    @Test
+    @DisplayName("2.1.2")
+    void tc_2_1_2() throws IOException
+    {
+        populateJson("1", "a", "1.00");
+    }
+
+    @Test
+    @DisplayName("2.1.3")
+    void tc_2_1_3() throws IOException
+    {
+        populateJson("1", "0", "1.00");
+    }
+
+    @Test
+    @DisplayName("2.1.4")
+    void tc_2_1_4() throws IOException
+    {
+        populateJson("1", "1000000", "1.00");
+    }
+
+    @Test
+    @DisplayName("2.1.5")
+    void tc_2_1_5() throws IOException
+    {
+        populateJson("2", "5", "1.00");
+    }
+
+    @Test
+    @DisplayName("2.1.6")
+    void tc_2_1_6() throws IOException
+    {
+        populateJson("1", "5", "10a");
+    }
+
+    @Test
+    @DisplayName("2.1.7")
+    void tc_2_1_7() throws IOException
+    {
+        populateJson("1", "5", "-1.00");
+    }
+
+    @Test
+    @DisplayName("2.1.8")
+    void tc_2_1_8() throws IOException
+    {
+        populateJson("1", "1", "100000.00");
+    }
+
+    @Test
+    @DisplayName("2.1.9")
+    void tc_2_1_9() throws IOException
+    {
+        populateJson("1", "1", "1.00");
+    }
+
+
 }
