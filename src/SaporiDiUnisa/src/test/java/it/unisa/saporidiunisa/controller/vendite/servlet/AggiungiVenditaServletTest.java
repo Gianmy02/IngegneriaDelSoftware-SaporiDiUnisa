@@ -22,8 +22,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class AggiungiVenditaTest {
-
+class AggiungiVenditaServletTest
+{
     AggiungiVenditaServlet servlet;
     HttpServletRequest request;
     HttpServletResponse response;
@@ -53,7 +53,6 @@ class AggiungiVenditaTest {
     {
         servlet.doPost(request, response);
 
-
         verify(dispatcher, atLeastOnce()).forward(request, response);
 
         val captor = ArgumentCaptor.forClass(String.class);
@@ -62,7 +61,8 @@ class AggiungiVenditaTest {
         System.out.println(captor.getValue());
     }
 
-    void populateJson(String prodotto, String quantita, String prezzo) throws IOException {
+    void populateJson(String prodotto, String quantita, String prezzo) throws IOException
+    {
         String jsonData = "[{\"productId\": " + prodotto + ", \"quantity\": " + quantita + ", \"price\": " + prezzo + "}]";
 
         // Creare un InputStream dalla stringa JSON
@@ -77,7 +77,8 @@ class AggiungiVenditaTest {
 
     @Test
     @DisplayName("2.1.1")
-    void tc_2_1_1() throws IOException {
+    void tc_2_1_1() throws IOException
+    {
         populateJson("0", "1", "1.00");
     }
 }

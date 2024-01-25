@@ -14,100 +14,129 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.val;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "AggiungiVenditaServlet", value = "/AggiungiVenditaServlet")
-public class AggiungiVenditaServlet extends HttpServlet {
+@WebServlet(name = "aggiungiVenditaServlet", value = "/aggiungi-vendita-servlet")
+public class AggiungiVenditaServlet extends HttpServlet
+{
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        Dipendente d = (Dipendente) session.getAttribute("dipendente");
-        if (d == null || d.getRuolo() != Dipendente.Ruolo.CASSIERE) {
-            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
+        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.CASSIERE)
+        {
+            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);
             return;
         }
-        BufferedReader reader = req.getReader();
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
+
+        val reader = request.getReader();
+        val sb = new StringBuilder();
+        var line = (String)null;
+        while ((line = reader.readLine()) != null)
             sb.append(line);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        List<Map<String, Object>> saleDataList = mapper.readValue(sb.toString(), new TypeReference<>() {
-        });
-        ArrayList<Venduto> selezionati = new ArrayList<>();
-        for (Map<String, Object> saleData : saleDataList) {
-            int productId = (int) saleData.get("productId");
-            Venduto v = new Venduto();
+
+        val mapper = new ObjectMapper();
+        val saleDataList = ((List<Map<String, Object>>)mapper.readValue(sb.toString(), new TypeReference<>() {}));
+
+        val selezionati = new ArrayList<Venduto>();
+        for (val saleData : saleDataList)
+        {
+            val productId = (int)saleData.get("productId");
+            val venduto = new Venduto();
             val p = MagazzinoController.getProdottoById(productId);
-            if (p == null) {
-                Utils.sendMessage(Messages.INVALID_FIELD.formatted("prodotto"), resp);
-                return;
-            }
-            v.setProdotto(MagazzinoController.getProdottoById(productId));
-            v.setGiorno(LocalDate.now());
-            int quantita = (int) saleData.get("quantity");
-            if (quantita <= 0) {
-                Utils.sendMessage("La quantità inserita è sotto il limite consentito", resp);
-                return;
-            }
-            if (quantita >= 100000) {
-                Utils.sendMessage("La quantità inserita è sopra il limite consentito", resp);
+            if (p == null)
+            {
+                Utils.sendMessage(Messages.INVALID_FIELD.formatted("prodotto"), response);
                 return;
             }
 
-            if (ScaffaleController.getEspostiByProdotto(p) - quantita < 0) {
-                Utils.sendMessage("La quantità inserita è maggiore della quantità esposta", resp);
+            venduto.setProdotto(MagazzinoController.getProdottoById(productId));
+            venduto.setGiorno(LocalDate.now());
+
+            val quantita = (int)saleData.get("quantity");
+            if (quantita <= 0)
+            {
+                Utils.sendMessage("La quantità inserita è sotto il limite consentito", response);
                 return;
             }
-            v.setQuantita(quantita);
-            if (saleData.get("price") instanceof Number) {
-                if (((Number) saleData.get("price")).floatValue() < 0) {
-                    Utils.sendMessage("Il prezzo è sotto il limite consentito", resp);
+
+            if (quantita >= 100000)
+            {
+                Utils.sendMessage("La quantità inserita è sopra il limite consentito", response);
+                return;
+            }
+
+            if (ScaffaleController.getEspostiByProdotto(p) - quantita < 0)
+            {
+                Utils.sendMessage("La quantità inserita è maggiore della quantità esposta", response);
+                return;
+            }
+
+            venduto.setQuantita(quantita);
+
+            if (saleData.get("price") instanceof Number)
+            {
+                if (((Number)saleData.get("price")).floatValue() < 0)
+                {
+                    Utils.sendMessage("Il prezzo è sotto il limite consentito", response);
                     return;
                 }
 
-                if (((Number) saleData.get("price")).floatValue() >= 100000) {
-                    Utils.sendMessage("Il prezzo è sopra il limite consentito", resp);
+                if (((Number)saleData.get("price")).floatValue() >= 100000)
+                {
+                    Utils.sendMessage("Il prezzo è sopra il limite consentito", response);
                     return;
                 }
-                v.setCosto(((Number) saleData.get("price")).floatValue());
-            } else if (saleData.get("price") instanceof String) {
-                try {
-                    if (Float.parseFloat((String) saleData.get("price")) < 0) {
-                        Utils.sendMessage("Il prezzo è sotto il limite consentito", resp);
+
+                venduto.setCosto(((Number)saleData.get("price")).floatValue());
+            }
+            else if (saleData.get("price") instanceof String)
+            {
+                try
+                {
+                    if (Float.parseFloat((String)saleData.get("price")) < 0)
+                    {
+                        Utils.sendMessage("Il prezzo è sotto il limite consentito", response);
                         return;
                     }
 
-                    if (Float.parseFloat((String) saleData.get("price")) >= 100000) {
-                        Utils.sendMessage("Il prezzo è sopra il limite consentito", resp);
+                    if (Float.parseFloat((String)saleData.get("price")) >= 100000)
+                    {
+                        Utils.sendMessage("Il prezzo è sopra il limite consentito", response);
                         return;
                     }
-                    v.setCosto(Float.parseFloat((String) saleData.get("price")));
 
-                } catch (NumberFormatException e) {
-                    Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), resp);
+                    venduto.setCosto(Float.parseFloat((String)saleData.get("price")));
+                }
+                catch (NumberFormatException e)
+                {
+                    Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), response);
                     return;
                 }
-            } else {
-                Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), resp);
+            }
+            else
+            {
+                Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), response);
                 return;
             }
-            selezionati.add(v);
+
+            selezionati.add(venduto);
         }
+
         VenditaController.addGiornoVendite();
-        if (VenditaController.venditaProdotti(selezionati)) {
-            req.getRequestDispatcher("view/cassiere/vendita.jsp").forward(req, resp);
-        } else {
-            Utils.sendMessage(Messages.FAIL, resp);
+
+        if (!VenditaController.venditaProdotti(selezionati))
+        {
+            Utils.sendMessage(Messages.FAIL, response);
+            return;
         }
+
+        request.getRequestDispatcher("view/cassiere/vendita.jsp").forward(request, response);
     }
 }

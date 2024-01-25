@@ -39,7 +39,7 @@ function confirmSale() {
         // Invia una richiesta AJAX alla servlet per confermare la vendita
         $.ajax({
             method: 'POST',
-            url: 'AggiungiVenditaServlet',
+            url: 'aggiungi-vendita-servlet',
             contentType: "application/json",
             data: JSON.stringify(saleData)
         })
