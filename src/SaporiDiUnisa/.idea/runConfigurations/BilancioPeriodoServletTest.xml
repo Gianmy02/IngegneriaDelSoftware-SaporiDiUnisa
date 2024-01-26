@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="BilancioPeriodoServletTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+  <configuration default="false" name="BilancioPeriodoServletTest" type="JUnit" factoryName="JUnit">
     <module name="SaporiDiUnisa" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="it.unisa.saporidiunisa.controller.finanze.servlet.*" />
+        <option name="PATTERN" value="it.unisa.saporidiunisa.controller.finanze.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

@@ -1,118 +1,104 @@
 package it.unisa.saporidiunisa.controller.finanze.servlet;
 
+import it.unisa.saporidiunisa.controller.ServletTest;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import jakarta.servlet.RequestDispatcher;
+import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.val;
 import org.junit.jupiter.api.*;
+import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 
+import static java.util.Map.entry;
+import static java.util.Map.ofEntries;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class BilancioPeriodoServletTest
+class BilancioPeriodoServletTest extends ServletTest
 {
-    BilancioPeriodoServlet servlet;
-    HttpServletRequest request;
-    HttpServletResponse response;
-
     @BeforeEach
-    void beforeEach() throws ServletException, IOException
+    void beforeEach()
     {
-        servlet = new BilancioPeriodoServlet();
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-
-        val session = mock(HttpSession.class);
-        when(request.getSession()).thenReturn(session);
-
-        val dipendente = new Dipendente();
-        dipendente.setRuolo(Dipendente.Ruolo.FINANZE);
-        when(session.getAttribute("dipendente")).thenReturn(dipendente);
-
-        val requestDispatcher = mock(RequestDispatcher.class);
-        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        doNothing().when(requestDispatcher).forward(any(), any());
-    }
-
-    void populateRequest(String inizio, String fine)
-    {
-        when(request.getParameter("inizio")).thenReturn(inizio);
-        when(request.getParameter("fine")).thenReturn(fine);
+        init();
+        mockSession();
+        mockDipendente(Dipendente.Ruolo.FINANZE);
+        mockDispatcher();
     }
 
     @Nested
-    class WithMessage
+    class Incorrect
     {
         @AfterEach
         void afterEach() throws ServletException, IOException
         {
-            servlet.doPost(request, response);
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
+                val captor = ArgumentCaptor.forClass(String.class);
+                utils.when(() -> Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
 
-            val captor = ArgumentCaptor.forClass(String.class);
-            verify(request, times(1)).setAttribute(eq("message"), captor.capture());
+                new BilancioPeriodoServlet().doPost(request, response);
 
-            System.out.println(captor.getValue());
+                System.out.println(captor.getValue());
+            }
         }
 
         @Test
         @DisplayName("5.1.1")
         void tc_5_1_1()
         {
-            populateRequest("2024-01/01", "2024-02-01");
+            populateRequest(ofEntries(entry("inizio", "2024-01/01"), entry("fine", "2024-02-01")));
         }
 
         @Test
         @DisplayName("5.1.2")
         void tc_5_1_2()
         {
-            populateRequest("2025-01-01", "2024-02-01");
+            populateRequest(ofEntries(entry("inizio", "2025-01-01"), entry("fine", "2024-02-01")));
         }
 
         @Test
         @DisplayName("5.1.3")
         void tc_5_1_3()
         {
-            populateRequest("2024-01-01", "2024-02/01");
+            populateRequest(ofEntries(entry("inizio", "2024-01-01"), entry("fine", "2024-02/01")));
         }
 
         @Test
         @DisplayName("5.1.4")
         void tc_5_1_4()
         {
-            populateRequest("2024-01-10", "2024-01-01");
+            populateRequest(ofEntries(entry("inizio", "2024-01-10"), entry("fine", "2024-01-01")));
         }
 
         @Test
         @DisplayName("5.1.5")
         void tc_5_1_5()
         {
-            populateRequest("2024-01-01", "2025-01-01");
+            populateRequest(ofEntries(entry("inizio", "2024-01-01"), entry("fine", "2025-01-01")));
         }
     }
 
     @Nested
-    class WithoutMessage
+    class Correct
     {
         @AfterEach
         void afterEach() throws ServletException, IOException
         {
-            servlet.doPost(request, response);
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
+                utils.verify(() -> Utils.dispatchError(any(), any(), any()), never());
 
-            verify(request, never()).setAttribute(eq("message"), any());
+                new BilancioPeriodoServlet().doPost(request, response);
+            }
         }
 
         @Test
         @DisplayName("5.1.6")
         void tc_5_1_6()
         {
-            populateRequest("2024-01-10", "2024-01-12");
+            populateRequest(ofEntries(entry("inizio", "2024-01-10"), entry("fine", "2024-01-12")));
         }
     }
 }
