@@ -58,21 +58,19 @@ class AggiungiVenditaServletTest
     @AfterEach
     void afterEach() throws ServletException, IOException
     {
-        try(val magazzinoController = mockStatic(MagazzinoController.class)){
-            Prodotto prodotto = new Prodotto(1,"Farina", "Caputo", 1.00F,0, null,null, null);
-            Prodotto prodotto2 = new Prodotto(2,"Farina", "Caputo", 1.00F,0, null,null, null);
-
-            magazzinoController.when(() -> MagazzinoController.getProdottoById(1)).thenReturn(prodotto);
-            magazzinoController.when(() -> MagazzinoController.getProdottoById(2)).thenReturn(prodotto2);
-            try(val scaffaleController = mockStatic(ScaffaleController.class)){
-                scaffaleController.when(() -> ScaffaleController.getEspostiByProdotto(prodotto)).thenReturn(10);
-                scaffaleController.when(() -> ScaffaleController.getEspostiByProdotto(prodotto2)).thenReturn(1);
-            }
-        }
-
-        try (val utils = mockStatic(Utils.class))
+        try (val magazzinoController = mockStatic(MagazzinoController.class, Answers.CALLS_REAL_METHODS);
+             val scaffaleController = mockStatic(ScaffaleController.class, Answers.CALLS_REAL_METHODS);
+             val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
         {
-            // Stubba Utils.sendMessage ma ottieni il messaggio di errore
+            val prodotto1 = new Prodotto(1, "Farina", "Caputo", 1.00F, 0, null, null, null);
+            val prodotto2 = new Prodotto(2, "Farina", "Caputo", 1.00F, 0, null, null, null);
+
+            magazzinoController.when(() -> MagazzinoController.getProdottoById(1)).thenReturn(prodotto1);
+            magazzinoController.when(() -> MagazzinoController.getProdottoById(2)).thenReturn(prodotto2);
+
+            scaffaleController.when(() -> ScaffaleController.getEspostiByProdotto(prodotto1)).thenReturn(10);
+            scaffaleController.when(() -> ScaffaleController.getEspostiByProdotto(prodotto2)).thenReturn(1);
+
             val captor = ArgumentCaptor.forClass(String.class);
             utils.when(() -> Utils.sendMessage(captor.capture(), eq(response))).thenAnswer(Answers.RETURNS_DEFAULTS);
 
