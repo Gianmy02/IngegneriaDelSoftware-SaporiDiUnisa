@@ -18,6 +18,10 @@ import java.util.ArrayList;
 
 import lombok.val;
 
+/**
+ * @author Gianmarco Riviello
+ * La servlet <code>MostraStoricoVenditeServlet</code> restituisce lo storico delle vendite in un periodo scelto settando la sessione
+ */
 
 @WebServlet(name = "MostraStoricoVenditeServlet", value = "/MostraStoricoVenditeServlet")
 public class MostraStoricoVenditeServlet extends HttpServlet {

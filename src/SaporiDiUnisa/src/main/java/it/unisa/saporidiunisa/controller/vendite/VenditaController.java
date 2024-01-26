@@ -71,7 +71,7 @@ public class VenditaController {
      *
      * @return prodotti esposti
      */
-    public ArrayList<Esposizione> visualizzaProdottiEsposti() {
+    public static ArrayList<Esposizione> visualizzaProdottiEsposti() {
         return EsposizioneDAO.visualizzaProdottiEspostiCassiere();
     }
 

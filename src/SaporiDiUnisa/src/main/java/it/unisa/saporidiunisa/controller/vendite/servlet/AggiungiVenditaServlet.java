@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Gianmarco Riviello
+ * La servlet <code>aggiungiVenditaServlet</code> funge con AJAX e aggiunge una vendita al db
+ */
 @WebServlet(name = "aggiungiVenditaServlet", value = "/aggiungi-vendita-servlet")
 public class AggiungiVenditaServlet extends HttpServlet
 {
@@ -42,8 +46,14 @@ public class AggiungiVenditaServlet extends HttpServlet
             sb.append(line);
 
         val mapper = new ObjectMapper();
-        val saleDataList = ((List<Map<String, Object>>)mapper.readValue(sb.toString(), new TypeReference<>() {}));
-
+        List<Map<String, Object>> saleDataList;
+        try {
+            saleDataList = (mapper.readValue(sb.toString(), new TypeReference<>() {
+            }));
+        }catch (Exception e){
+            Utils.sendMessage(Messages.INVALID_FIELD.formatted("quantita o prezzo"), response);
+            return;
+        }
         val selezionati = new ArrayList<Venduto>();
         for (val saleData : saleDataList)
         {
@@ -58,7 +68,6 @@ public class AggiungiVenditaServlet extends HttpServlet
 
             venduto.setProdotto(p);
             venduto.setGiorno(LocalDate.now());
-
             val quantita = (int) saleData.get("quantity");
             if (quantita <= 0)
             {
