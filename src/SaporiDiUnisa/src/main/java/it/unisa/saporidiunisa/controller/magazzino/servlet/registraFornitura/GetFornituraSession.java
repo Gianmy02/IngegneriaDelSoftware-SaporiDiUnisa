@@ -28,7 +28,7 @@ public class GetFornituraSession extends HttpServlet {
             val json = new JSONObject();
             json.put("nome", l.getProdotto().getNome());
             json.put("marchio", l.getProdotto().getMarchio());
-            json.put("prezzo", l.getCosto() / l.getQuantita());
+            json.put("prezzo", String.format("%.2f €", l.getCosto() / l.getQuantita()));
             json.put("quantita", l.getQuantita());
             json.put("dataScadenza", l.getDataScadenza().toString());
             jsonArray.put(json);

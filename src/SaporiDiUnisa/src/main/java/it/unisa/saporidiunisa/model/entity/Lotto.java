@@ -30,6 +30,6 @@ public class Lotto
                 ", costo totale: " + costo +
                 ", dataScadenza: " + dataScadenza +
                 ", quantità: " + quantita +
-                ", " + prodotto.toString();
+                ", " + prodotto.getInfo();
     }
 }

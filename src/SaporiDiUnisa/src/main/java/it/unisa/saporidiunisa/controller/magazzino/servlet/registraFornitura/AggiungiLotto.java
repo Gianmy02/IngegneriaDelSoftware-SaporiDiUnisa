@@ -81,7 +81,7 @@ public class AggiungiLotto extends HttpServlet {
         json.put("keyId", lotto.getId());
         json.put("nome", nome);
         json.put("marchio", marchio);
-        json.put("prezzo", String.format("%.2f", prezzo));
+        json.put("prezzo", String.format("%.2f €", prezzo));
         json.put("quantita", quantita);
         json.put("dataScadenza", dataScadenza.format(Patterns.DATE_TIME_FORMATTER));
         resp.setContentType("application/json");

@@ -30,7 +30,7 @@ $(document).ready(function(){
                     const tr = $("<tr></tr>")
                         .append($("<td></td>").text(json.nome))
                         .append($("<td></td>").text(json.marchio))
-                        .append($("<td></td>").text(json.prezzo) + " €")
+                        .append($("<td></td>").text(json.prezzo))
                         .append($("<td></td>").text(json.quantita))
                         .append($("<td></td>").text(json.dataScadenza))
                         .append($("<td></td>")
