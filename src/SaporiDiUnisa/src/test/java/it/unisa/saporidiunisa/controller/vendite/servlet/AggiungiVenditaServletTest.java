@@ -49,24 +49,27 @@ class AggiungiVenditaServletTest
         dipendente.setRuolo(Dipendente.Ruolo.CASSIERE);
         when(session.getAttribute("dipendente")).thenReturn(dipendente);
 
-        val magazzinoController = mockStatic(MagazzinoController.class);
         dispatcher = mock(RequestDispatcher.class);
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         doNothing().when(dispatcher).forward(any(), any());
 
-        Prodotto prodotto = new Prodotto(1,"Farina", "Caputo", 1.00F,0, null,null, null);
-        Prodotto prodotto2 = new Prodotto(2,"Farina", "Caputo", 1.00F,0, null,null, null);
-
-        when(MagazzinoController.getProdottoById(1)).thenReturn(prodotto);
-        when(MagazzinoController.getProdottoById(2)).thenReturn(prodotto2);
-
-        when(ScaffaleController.getEspostiByProdotto(prodotto)).thenReturn(10);
-        when(ScaffaleController.getEspostiByProdotto(prodotto2)).thenReturn(1);
     }
 
     @AfterEach
     void afterEach() throws ServletException, IOException
     {
+        try(val magazzinoController = mockStatic(MagazzinoController.class)){
+            Prodotto prodotto = new Prodotto(1,"Farina", "Caputo", 1.00F,0, null,null, null);
+            Prodotto prodotto2 = new Prodotto(2,"Farina", "Caputo", 1.00F,0, null,null, null);
+
+            magazzinoController.when(() -> MagazzinoController.getProdottoById(1)).thenReturn(prodotto);
+            magazzinoController.when(() -> MagazzinoController.getProdottoById(2)).thenReturn(prodotto2);
+            try(val scaffaleController = mockStatic(ScaffaleController.class)){
+                scaffaleController.when(() -> ScaffaleController.getEspostiByProdotto(prodotto)).thenReturn(10);
+                scaffaleController.when(() -> ScaffaleController.getEspostiByProdotto(prodotto2)).thenReturn(1);
+            }
+        }
+
         try (val utils = mockStatic(Utils.class))
         {
             // Stubba Utils.sendMessage ma ottieni il messaggio di errore

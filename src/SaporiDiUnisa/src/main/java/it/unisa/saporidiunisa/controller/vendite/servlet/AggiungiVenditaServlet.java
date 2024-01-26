@@ -56,10 +56,10 @@ public class AggiungiVenditaServlet extends HttpServlet
                 return;
             }
 
-            venduto.setProdotto(MagazzinoController.getProdottoById(productId));
+            venduto.setProdotto(p);
             venduto.setGiorno(LocalDate.now());
 
-            val quantita = (int)saleData.get("quantity");
+            val quantita = (int) saleData.get("quantity");
             if (quantita <= 0)
             {
                 Utils.sendMessage("La quantità inserita è sotto il limite consentito", response);
