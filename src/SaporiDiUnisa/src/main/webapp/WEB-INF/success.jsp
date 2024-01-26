@@ -1,3 +1,4 @@
+<%@ page import="it.unisa.saporidiunisa.model.entity.Dipendente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -19,7 +20,19 @@
                 <span class="material-symbols-outlined">verified</span>
             </div>
             <p><%= request.getAttribute("message") %></p>
-            <button onclick="window.history.back()" class ="back-button">Torna indietro</button>
+            <%
+                Dipendente d = (Dipendente) session.getAttribute("dipendente");
+                String address;
+                if(d.getRuolo()== Dipendente.Ruolo.FINANZE)
+                    address = "view/select/finanze.jsp";
+                else if (d.getRuolo()== Dipendente.Ruolo.ADMIN)
+                    address = "view/select/admin.jsp";
+                else if (d.getRuolo()== Dipendente.Ruolo.CASSIERE)
+                    address = "view/select/cassiere.jsp";
+                else
+                    address = "view/select/magazziniere.jsp";
+            %>
+            <a href="${pageContext.request.contextPath}/<%=address%>"><button class ="back-button">Torna alla Pagina Iniziale</button></a>
         </div>
     </main>
     <%@ include file="include/footer.html" %>
