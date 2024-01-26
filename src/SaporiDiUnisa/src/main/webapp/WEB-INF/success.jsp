@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Sapori di Unisa - Errore</title>
+    <title>Sapori di Unisa - Operazione effettuata</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/resultPage.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/success.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css">
