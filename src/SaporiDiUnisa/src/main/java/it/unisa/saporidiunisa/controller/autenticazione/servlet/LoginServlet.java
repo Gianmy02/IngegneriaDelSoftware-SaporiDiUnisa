@@ -19,8 +19,6 @@ public class LoginServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        val session = request.getSession();
-
         val pin = request.getParameter("pin");
         if (pin == null)
         {
@@ -42,17 +40,14 @@ public class LoginServlet extends HttpServlet
             return;
         }
 
-        session.setAttribute("dipendente", dipendente);
-
-        val address = switch (dipendente.getRuolo())
+        request.getSession().setAttribute("dipendente", dipendente);
+        response.sendRedirect("view/select/" + switch (dipendente.getRuolo())
         {
-            case ADMIN -> "view/select/admin.jsp";
-            case CASSIERE -> "view/select/cassiere.jsp";
-            case MAGAZZINIERE -> "view/select/magazziniere.jsp";
-            case FINANZE -> "view/select/finanze.jsp";
-        };
-
-        response.sendRedirect(address);
+            case ADMIN -> "admin.jsp";
+            case CASSIERE -> "cassiere.jsp";
+            case MAGAZZINIERE -> "magazziniere.jsp";
+            case FINANZE -> "finanze.jsp";
+        });
     }
 }
 
