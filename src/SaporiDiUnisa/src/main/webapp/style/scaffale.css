@@ -65,3 +65,6 @@ a {
     text-decoration: none; /* Rimuove la sottolineatura */
 }
 
+h2 {
+    text-align: center;
+}
