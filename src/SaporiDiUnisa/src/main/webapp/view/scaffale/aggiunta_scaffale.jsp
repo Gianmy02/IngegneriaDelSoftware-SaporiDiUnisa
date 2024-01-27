@@ -2,6 +2,7 @@
 <%@ page import="it.unisa.saporidiunisa.model.entity.Lotto" %>
 <%@ page import="it.unisa.saporidiunisa.model.entity.Esposizione" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!doctype html>
 <html lang="it">
@@ -43,9 +44,9 @@
 
                 <%
                     for (Esposizione e : lottiScaffale) {
-                        String foto = Base64.encodeBase64String(e.getProdotto().getFoto());
-
-                        int qntMax = e.getLotto().getQuantitaAttuale();
+                        if(e.getLotto().getDataScadenza().isAfter(LocalDate.now())){
+                            String foto = Base64.encodeBase64String(e.getProdotto().getFoto());
+                            int qntMax = e.getLotto().getQuantitaAttuale();
                 %>
 
                 <tr class="RigaS">
@@ -59,6 +60,7 @@
                 </tr>
 
                 <%
+                        }
                     }
                 %>
 
