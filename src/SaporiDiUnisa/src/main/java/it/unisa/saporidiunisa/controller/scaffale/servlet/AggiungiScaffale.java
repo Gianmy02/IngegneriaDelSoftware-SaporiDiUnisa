@@ -45,6 +45,10 @@ public class AggiungiScaffale extends HttpServlet {
                         ScaffaleController.aumentaEsposizione(qntScaffale, e);
                         ScaffaleController.diminuisciLotto(e.getLotto().getId(), qntScaffale);
                     }
+                    else {
+                        Utils.dispatchError(Messages.INVALID_FORMAT.formatted("qnt Scaffale"), req, resp);
+                        return;
+                    }
                 }
             }
             catch (NumberFormatException ex)
@@ -61,6 +65,10 @@ public class AggiungiScaffale extends HttpServlet {
                     if (qntScaffale <= l.getQuantitaAttuale() && qntScaffale > 0) {
                         ScaffaleController.inserisciEsposizione(qntScaffale, l);
                         ScaffaleController.diminuisciLotto(l.getId(), qntScaffale);
+                    }
+                    else {
+                        Utils.dispatchError(Messages.INVALID_FORMAT.formatted("qnt Magazzino"), req, resp);
+                        return;
                     }
                 }
             }

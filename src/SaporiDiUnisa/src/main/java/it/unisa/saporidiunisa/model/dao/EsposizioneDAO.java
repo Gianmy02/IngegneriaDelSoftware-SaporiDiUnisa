@@ -20,7 +20,7 @@ public class EsposizioneDAO
         try (val connection = Database.getConnection())
         {
             PreparedStatement ps =
-                    connection.prepareStatement("SELECT esposizione.prodotto, esposizione.lotto, esposizione.quantita, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto from esposizione, prodotto, lotto WHERE lotto.id = esposizione.lotto AND esposizione.prodotto = prodotto.id;");
+                    connection.prepareStatement("SELECT esposizione.prodotto, esposizione.lotto, esposizione.quantita, lotto.costo, lotto.data_scadenza, lotto.quantita, lotto.quantita_attuale, prodotto.nome, prodotto.marchio, prodotto.prezzo, prodotto.prezzo_scontato, prodotto.inizio_sconto, prodotto.fine_sconto, prodotto.foto from esposizione, prodotto, lotto WHERE lotto.id = esposizione.lotto AND esposizione.prodotto = prodotto.id ORDER BY lotto.data_scadenza;");
             ResultSet rs = ps.executeQuery();
             ArrayList<Esposizione> esposti = new ArrayList<>();
             while(rs.next()){
