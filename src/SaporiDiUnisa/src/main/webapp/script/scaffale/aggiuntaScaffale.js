@@ -12,8 +12,8 @@ $(document).ready(function() {
         var azienda;
         var scadenza;
         var qntAttuale;
-        var operazioniS = "Riepilogo Operazioni Scaffale:\n";
-        var operazioniM = "Riepilogo Operazioni Magazzino:\n";
+        var operazioniS = "Riepilogo Operazioni Scaffale:\n\n";
+        var operazioniM = "Riepilogo Operazioni Magazzino:\n\n";
         var operazioniTotali = "";
         var qntMax;
 
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 scadenza = $(this).find(".dataScadenzaS").text();
                 qntAttuale = $(this).find(".qntAttualeS").text();
 
-                operazioniS += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n";
+                operazioniS += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n\n";
             }
 
         });
@@ -56,7 +56,7 @@ $(document).ready(function() {
                 scadenza = $(this).find(".dataScadenzaM").text();
                 qntAttuale = $(this).find(".qntAttualeM").text();
 
-                operazioniM += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Magazzino: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n";
+                operazioniM += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Magazzino: " + qntAttuale + ", Qnt Aggiunta: " + qnt + ";\n\n";
             }
 
         });

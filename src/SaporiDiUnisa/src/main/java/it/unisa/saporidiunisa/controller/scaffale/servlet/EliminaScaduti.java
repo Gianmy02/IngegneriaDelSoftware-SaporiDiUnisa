@@ -32,13 +32,7 @@ public class EliminaScaduti extends HttpServlet {
 
         ScaffaleController.eliminaScadutiScaffale();
 
-        ArrayList<Esposizione> lottiScaffale = ScaffaleController.visualizzaProdottiScaffale();
-        ArrayList<Esposizione> lottiScaffaleScaduti = ScaffaleController.visualizzaProdottiScaffaleScaduti();
-        req.setAttribute("lottiScaffale", lottiScaffale);
-        req.setAttribute("lottiScaffaleScaduti", lottiScaffaleScaduti);
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher("view/scaffale/visualizza_scaffale.jsp");
-        dispatcher.forward(req, resp);
+        Utils.dispatchSuccess(Messages.SUCCESS, req, resp);
     }
 
 }

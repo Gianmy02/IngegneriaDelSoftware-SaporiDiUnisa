@@ -53,16 +53,11 @@
 
                 <tr class="rigaScaduto" style="background-color: red">
                     <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
-                    <td class="idLotto"><%=e.getLotto().getId()%>
-                    </td>
-                    <td class="nomeProdotto"><%=e.getProdotto().getNome()%>
-                    </td>
-                    <td class="azienda"><%=e.getProdotto().getMarchio()%>
-                    </td>
-                    <td class="scadenza"><%=e.getLotto().getDataScadenza()%>
-                    </td>
-                    <td class="quantita"><%=e.getQuantita()%>
-                    </td>
+                    <td class="idLotto"><%=e.getLotto().getId()%></td>
+                    <td class="nomeProdotto"><%=e.getProdotto().getNome()%></td>
+                    <td class="azienda"><%=e.getProdotto().getMarchio()%></td>
+                    <td class="scadenza"><%=e.getLotto().getDataScadenza()%></td>
+                    <td class="quantita"><%=e.getQuantita()%></td>
                 </tr>
 
                 <%
@@ -72,16 +67,12 @@
                 %>
 
                 <tr>
-                    <td><%=e.getLotto().getId()%>
-                    </td>
-                    <td><%=e.getProdotto().getNome()%>
-                    </td>
-                    <td><%=e.getProdotto().getMarchio()%>
-                    </td>
-                    <td><%=e.getLotto().getDataScadenza()%>
-                    </td>
-                    <td><%=e.getQuantita()%>
-                    </td>
+                    <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
+                    <td><%=e.getLotto().getId()%></td>
+                    <td><%=e.getProdotto().getNome()%></td>
+                    <td><%=e.getProdotto().getMarchio()%></td>
+                    <td><%=e.getLotto().getDataScadenza()%></td>
+                    <td><%=e.getQuantita()%></td>
                 </tr>
 
                 <%

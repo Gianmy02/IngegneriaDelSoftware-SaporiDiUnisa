@@ -50,18 +50,12 @@
 
                 <tr class="RigaS">
                     <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
-                    <td class="idLottoS"><%=e.getLotto().getId()%>
-                    </td>
-                    <td class="nomeProdottoS"><%=e.getProdotto().getNome()%>
-                    </td>
-                    <td class="nomeAziendaS"><%=e.getProdotto().getMarchio()%>
-                    </td>
-                    <td class="dataScadenzaS"><%=e.getLotto().getDataScadenza()%>
-                    </td>
-                    <td class="qntAttualeS"><%=e.getQuantita()%>
-                    </td>
-                    <td><input type="number" name="qntScaffale<%=e.getLotto().getId()%>" min="0" max="<%=qntMax%>"
-                               value="0"></td>
+                    <td class="idLottoS"><%=e.getLotto().getId()%></td>
+                    <td class="nomeProdottoS"><%=e.getProdotto().getNome()%></td>
+                    <td class="nomeAziendaS"><%=e.getProdotto().getMarchio()%></td>
+                    <td class="dataScadenzaS"><%=e.getLotto().getDataScadenza()%></td>
+                    <td class="qntAttualeS"><%=e.getQuantita()%></td>
+                    <td><input type="number" name="qntScaffale<%=e.getLotto().getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
                 </tr>
 
                 <%
@@ -97,16 +91,11 @@
 
                 <tr class="RigaM">
                     <td><img src="data:image/jpeg;base64,<%= foto %>" alt="foto"></td>
-                    <td class="idLottoM"><%=l.getId()%>
-                    </td>
-                    <td class="nomeProdottoM"><%=l.getProdotto().getNome()%>
-                    </td>
-                    <td class="nomeAziendaM"><%=l.getProdotto().getMarchio()%>
-                    </td>
-                    <td class="dataScadenzaM"><%=l.getDataScadenza()%>
-                    </td>
-                    <td class="qntAttualeM"><%=l.getQuantitaAttuale()%>
-                    </td>
+                    <td class="idLottoM"><%=l.getId()%></td>
+                    <td class="nomeProdottoM"><%=l.getProdotto().getNome()%></td>
+                    <td class="nomeAziendaM"><%=l.getProdotto().getMarchio()%></td>
+                    <td class="dataScadenzaM"><%=l.getDataScadenza()%></td>
+                    <td class="qntAttualeM"><%=l.getQuantitaAttuale()%></td>
                     <td><input type="number" name="qntMagazzino<%=l.getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
                 </tr>
 
