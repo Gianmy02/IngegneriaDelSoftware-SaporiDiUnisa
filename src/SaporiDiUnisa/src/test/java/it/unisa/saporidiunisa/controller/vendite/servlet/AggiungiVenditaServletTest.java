@@ -104,7 +104,7 @@ class AggiungiVenditaServletTest extends ServletTest
         @Test
         @DisplayName("2.1.6")
         void tc_2_1_6() throws IOException {
-            populateJson("1", "5", "10a");
+            populateJson("1", "5", "1.5555");
         }
 
         @Test

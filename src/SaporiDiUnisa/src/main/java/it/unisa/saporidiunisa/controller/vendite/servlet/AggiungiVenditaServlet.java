@@ -8,6 +8,7 @@ import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.model.entity.Venduto;
 import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Patterns;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -91,15 +92,21 @@ public class AggiungiVenditaServlet extends HttpServlet
 
             if (saleData.get("price") instanceof Number)
             {
-                if (((Number)saleData.get("price")).floatValue() < 0)
+                val prezzo =((Number)saleData.get("price")).floatValue();
+                if (prezzo < 0)
                 {
                     Utils.sendMessage("Il prezzo è sotto il limite consentito", response);
                     return;
                 }
 
-                if (((Number)saleData.get("price")).floatValue() >= 100000)
+                if (prezzo >= 100000)
                 {
                     Utils.sendMessage("Il prezzo è sopra il limite consentito", response);
+                    return;
+                }
+
+                if((!Patterns.PRICE.matcher(Float.toString(prezzo)).matches())){
+                    Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), response);
                     return;
                 }
 
@@ -118,6 +125,10 @@ public class AggiungiVenditaServlet extends HttpServlet
                     if (Float.parseFloat((String)saleData.get("price")) >= 100000)
                     {
                         Utils.sendMessage("Il prezzo è sopra il limite consentito", response);
+                        return;
+                    }
+                    if((!Patterns.PRICE.matcher((String) saleData.get("price")).matches())){
+                        Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), response);
                         return;
                     }
 
