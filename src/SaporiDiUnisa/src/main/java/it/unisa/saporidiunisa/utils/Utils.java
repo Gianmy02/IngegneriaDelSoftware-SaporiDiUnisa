@@ -80,6 +80,19 @@ public class Utils
         }
     }
 
+    // Ottiene un oggetto Enum a partire dal suo nome
+    public static <E extends Enum<E>> E getEnum(Class<E> enumClass, String name)
+    {
+        try
+        {
+            return Enum.valueOf(enumClass, name);
+        }
+        catch (IllegalArgumentException e)
+        {
+            return null;
+        }
+    }
+
     // Converte un oggetto Part in una stringa
     public static String readPart(final Part part)
     {

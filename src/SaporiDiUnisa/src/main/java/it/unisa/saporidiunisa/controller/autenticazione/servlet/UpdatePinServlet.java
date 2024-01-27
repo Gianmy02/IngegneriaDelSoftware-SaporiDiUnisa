@@ -20,7 +20,6 @@ public class UpdatePinServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         val dipendente = (Dipendente)request.getSession().getAttribute("dipendente");
-
         if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.ADMIN)
         {
             Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);
@@ -28,7 +27,11 @@ public class UpdatePinServlet extends HttpServlet
         }
 
         val pin = request.getParameter("newPin");
-        val ruolo = Dipendente.Ruolo.valueOf(request.getParameter("ruolo"));
+        if (pin == null)
+        {
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("nuovo pin"), request, response);
+            return;
+        }
 
         if (!Patterns.LOGIN_PIN.matcher(pin).matches())
         {
@@ -36,12 +39,26 @@ public class UpdatePinServlet extends HttpServlet
             return;
         }
 
-        if (!AutenticazioneController.modificaPin(pin, ruolo))
+        val ruolo = request.getParameter("ruolo");
+        if (ruolo == null)
+        {
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("ruolo"), request, response);
+            return;
+        }
+
+        val ruoloValue = Utils.getEnum(Dipendente.Ruolo.class, ruolo);
+        if (ruoloValue == null)
+        {
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("ruolo"), request, response);
+            return;
+        }
+
+        if (!AutenticazioneController.modificaPin(pin, ruoloValue))
         {
             Utils.dispatchError("Non è stato possibile completare l'operazione per pin uguale ad altri ruoli oppure allo stesso.", request, response);
             return;
         }
-        Utils.dispatchSuccess("Pin modificato con successo", request, response);
 
+        Utils.dispatchSuccess(Messages.SUCCESS, request, response);
     }
 }
