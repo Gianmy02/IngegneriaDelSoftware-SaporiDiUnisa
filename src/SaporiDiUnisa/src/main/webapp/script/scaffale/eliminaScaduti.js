@@ -26,7 +26,7 @@ $(document).ready(function() {
 
         });
 
-        if(operazioni.length > 21){
+        if(operazioni.length > 22){
             if(confirm(operazioni))
                 $("#formRimozione").submit();
             else

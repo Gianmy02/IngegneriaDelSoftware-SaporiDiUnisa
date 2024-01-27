@@ -27,6 +27,11 @@ $(document).ready(function() {
                 return;
             }
 
+            if(qnt < 0){
+                alert("La quantità non può essere minore di 0");
+                return;
+            }
+
             if (qnt > 0) {
                 idLotto = $(this).find(".idLottoS").text();
                 nomeProdotto = $(this).find(".nomeProdottoS").text();
@@ -49,6 +54,11 @@ $(document).ready(function() {
                 return;
             }
 
+            if(qnt < 0){
+                alert("La quantità non può essere minore di 0");
+                return;
+            }
+
             if (qnt > 0) {
                 idLotto = $(this).find(".idLottoM").text();
                 nomeProdotto = $(this).find(".nomeProdottoM").text();
@@ -61,9 +71,9 @@ $(document).ready(function() {
 
         });
 
-        if(operazioniS.length > 31)
+        if(operazioniS.length > 32)
             operazioniTotali += operazioniS;
-        if(operazioniM.length > 32)
+        if(operazioniM.length > 33)
             operazioniTotali += operazioniM;
 
         if(operazioniTotali.length >0){
