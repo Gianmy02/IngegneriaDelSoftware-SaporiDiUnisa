@@ -11,7 +11,7 @@ $(document).ready(function() {
         var azienda;
         var scadenza;
         var qntAttuale;
-        var operazioni = "Riepilogo Rimozione:\n";
+        var operazioni = "Riepilogo Rimozione:\n\n";
 
 
         $(".rigaScaduto").each(function() {
@@ -22,7 +22,7 @@ $(document).ready(function() {
             scadenza = $(this).find(".scadenza").text();
             qntAttuale = $(this).find(".quantita").text();
 
-            operazioni += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ";\n";
+            operazioni += "ID Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Azienda: " + azienda + ", Scadenza: " + scadenza + ", Qnt Attuale Scaffale: " + qntAttuale + ";\n\n";
 
         });
 

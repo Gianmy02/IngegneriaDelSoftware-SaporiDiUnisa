@@ -71,13 +71,8 @@ public class AggiungiScaffale extends HttpServlet {
             }
         }
 
-        lottiMagazzino = ScaffaleController.visualizzaProdottiMagazzino();
-        lottiScaffale = ScaffaleController.visualizzaProdottiScaffale();
-        req.setAttribute("lottiMagazzino", lottiMagazzino);
-        req.setAttribute("lottiScaffale", lottiScaffale);
+        Utils.dispatchSuccess(Messages.SUCCESS, req, resp);
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("view/scaffale/aggiunta_scaffale.jsp");
-        dispatcher.forward(req, resp);
     }
 
 }
