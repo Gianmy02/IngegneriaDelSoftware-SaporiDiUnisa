@@ -18,11 +18,6 @@ public class GetListForniture extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        val dipendente = (Dipendente)req.getSession().getAttribute("dipendente");
-        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)
-        {
-            // TODO: ritornare errori con ajax
-        }
         val forniture = MagazzinoController.visualizzaForniture();
 
         val jsonArray = new JSONArray();
