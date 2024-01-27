@@ -45,7 +45,11 @@ public class FinanzeController
         return bilancio;
     }
 
-    /*La funzione Prenderebbe un periodo e un prodotto correlato e restituirebbe un array di interi nel quale si ha per ogni giorno, vendite e acquisti del prodotto*/
+    /* La funzione prenderebbe in ingresso un periodo e un prodotto correlato,
+       e restituirebbe un array di interi nel quale si ha, per ogni giorno,
+       vendite e acquisti del prodotto
+       */
+    @SuppressWarnings("unused")
     public static ArrayList<Integer> visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
     {
         if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))
