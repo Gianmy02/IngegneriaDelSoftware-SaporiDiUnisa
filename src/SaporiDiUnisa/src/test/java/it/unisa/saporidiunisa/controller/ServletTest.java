@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-public class ServletTest
+public abstract class ServletTest
 {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
