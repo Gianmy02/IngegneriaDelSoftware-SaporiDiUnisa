@@ -127,11 +127,9 @@ class ImpostaScontoServletTest extends ServletTest
             try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS);
                  val magazzinoController = mockStatic(MagazzinoController.class, Answers.CALLS_REAL_METHODS))
             {
-                val prodotto1 = new Prodotto(1, "Farina", "Caputo", 10.00F, 0, null, null, null);
-                val prodotto2 = new Prodotto(5, "Farina", "Caputo", 10.00F, 7.50F, LocalDate.of(2024, 3, 3), LocalDate.of(2024, 3, 5), null);
+                val prodotto1 = new Prodotto(10, "Farina", "Caputo", 10.00F, 0, null, null, null);
 
                 magazzinoController.when(() -> MagazzinoController.getProdottoById(1)).thenReturn(prodotto1);
-                magazzinoController.when(() -> MagazzinoController.getProdottoById(5)).thenReturn(prodotto2);
 
                 val captor = ArgumentCaptor.forClass(String.class);
                 utils.when(() -> Utils.dispatchSuccess(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
