@@ -33,10 +33,7 @@ public class AggiungiLotto extends HttpServlet {
 
         val errorString = _validateLotto(nome, marchio, prezzo_str, quantita_str, dataScadenza_str);
         if(!errorString.isEmpty()){
-            val json = new JSONObject();
-            json.put("errors", errorString);
-            resp.setContentType("application/json");
-            resp.getWriter().write(String.valueOf(json));
+            Utils.sendMessage(errorString, resp);
             return;
         }
 
@@ -50,10 +47,7 @@ public class AggiungiLotto extends HttpServlet {
             val fotoPart = req.getPart("foto");
             val errorPhotoString = _validatePhoto(fotoPart);
             if(errorPhotoString != null) {
-                val json = new JSONObject();
-                json.put("errors", errorPhotoString);
-                resp.setContentType("application/json");
-                resp.getWriter().write(String.valueOf(json));
+                Utils.sendMessage(errorPhotoString, resp);
                 return;
             }
             // se non ci sono errori
@@ -146,7 +140,7 @@ public class AggiungiLotto extends HttpServlet {
             if(_dataScadenza == null)
                 s.append("La data di scadenza non è valida\n");
             else if(_dataScadenza.isBefore(LocalDate.now()) || _dataScadenza.isEqual(LocalDate.now()))
-                s.append("La data di scadenza deve essere anteriore a quella odierno\n");
+                s.append("La data di scadenza deve essere posteriore a quella odierna\n");
         }
 
         return s.toString();
