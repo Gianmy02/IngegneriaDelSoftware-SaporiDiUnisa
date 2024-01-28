@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * @author Gianmarco Riviello
- * La servlet <code>aggiungiVenditaServlet</code> funge con AJAX e aggiunge una vendita al db
+ * La servlet <code>aggiungiVenditaServlet</code> funge con AJAX e salva una vendita nel db
  */
 @WebServlet(name = "aggiungiVenditaServlet", value = "/aggiungi-vendita-servlet")
 public class AggiungiVenditaServlet extends HttpServlet
@@ -111,34 +111,6 @@ public class AggiungiVenditaServlet extends HttpServlet
                 }
 
                 venduto.setCosto(((Number)saleData.get("price")).floatValue());
-            }
-            else if (saleData.get("price") instanceof String)
-            {
-                try
-                {
-                    if (Float.parseFloat((String)saleData.get("price")) < 0)
-                    {
-                        Utils.sendMessage("Il prezzo è sotto il limite consentito", response);
-                        return;
-                    }
-
-                    if (Float.parseFloat((String)saleData.get("price")) >= 100000)
-                    {
-                        Utils.sendMessage("Il prezzo è sopra il limite consentito", response);
-                        return;
-                    }
-                    if((!Patterns.PRICE.matcher((String) saleData.get("price")).matches())){
-                        Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), response);
-                        return;
-                    }
-
-                    venduto.setCosto(Float.parseFloat((String)saleData.get("price")));
-                }
-                catch (NumberFormatException e)
-                {
-                    Utils.sendMessage(Messages.INVALID_FORMAT.formatted("prezzo"), response);
-                    return;
-                }
             }
             else
             {
