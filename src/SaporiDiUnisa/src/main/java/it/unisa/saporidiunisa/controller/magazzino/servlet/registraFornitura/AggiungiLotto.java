@@ -107,12 +107,10 @@ public class AggiungiLotto extends HttpServlet {
             _prezzo = Utils.parseAsFloat(prezzo);
             if(_prezzo == null)
                 s.append("Il prezzo deve essere un numero\n");
+            else if(_prezzo <= 0 || _prezzo >= 100000.00)
+                s.append("Il prezzo deve essere compreso tra 0.01 € e 100000.00 €\n");
             else if(!Patterns.PRICE.matcher(prezzo).matches())
                 s.append("Il prezzo non rispetta il formato\n");
-            else if(_prezzo <= 0)
-                s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
-            else if(_prezzo >= 100000.00)
-                s.append("Il prezzo deve essere compreso tra 0 e 100000.00\n");
         }
 
         Integer _quantita;
@@ -153,8 +151,6 @@ public class AggiungiLotto extends HttpServlet {
             return "La foto deve essere minore di 2MB\n";
         else if(!Utils.checkImageExtension(foto))
             return "La foto deve essere un'immagine con estensione: jpg, jpeg o png\n";
-        else if(!Utils.assureSquareImage(foto))
-            return "La foto deve avere dimensioni 1:1\n";
         else
             return null;
     }
