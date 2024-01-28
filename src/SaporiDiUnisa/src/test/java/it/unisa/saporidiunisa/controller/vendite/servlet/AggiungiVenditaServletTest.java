@@ -46,13 +46,16 @@ class AggiungiVenditaServletTest extends ServletTest
 
 
     @Nested
-    class Incorrect {
+    class Incorrect
+    {
 
         @AfterEach
-        void afterEach() throws ServletException, IOException {
+        void afterEach() throws ServletException, IOException
+        {
             try (val magazzinoController = mockStatic(MagazzinoController.class, Answers.CALLS_REAL_METHODS);
                  val scaffaleController = mockStatic(ScaffaleController.class, Answers.CALLS_REAL_METHODS);
-                 val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS)) {
+                 val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
                 val prodotto1 = new Prodotto(1, "Farina", "Caputo", 1.00F, 0, null, null, null);
                 val prodotto2 = new Prodotto(2, "Farina", "Caputo", 1.00F, 0, null, null, null);
 
@@ -73,64 +76,76 @@ class AggiungiVenditaServletTest extends ServletTest
 
         @Test
         @DisplayName("2.1.1")
-        void tc_2_1_1() throws IOException {
+        void tc_2_1_1() throws IOException
+        {
             populateJson("0", "1", "1.00");
         }
 
         @Test
         @DisplayName("2.1.2")
-        void tc_2_1_2() throws IOException {
+        void tc_2_1_2() throws IOException
+        {
             populateJson("1", "a", "1.00");
         }
 
         @Test
         @DisplayName("2.1.3")
-        void tc_2_1_3() throws IOException {
+        void tc_2_1_3() throws IOException
+        {
             populateJson("1", "0", "1.00");
         }
 
         @Test
         @DisplayName("2.1.4")
-        void tc_2_1_4() throws IOException {
+        void tc_2_1_4() throws IOException
+        {
             populateJson("1", "1000000", "1.00");
         }
 
         @Test
         @DisplayName("2.1.5")
-        void tc_2_1_5() throws IOException {
+        void tc_2_1_5() throws IOException
+        {
             populateJson("2", "5", "1.00");
         }
 
         @Test
         @DisplayName("2.1.6")
-        void tc_2_1_6() throws IOException {
+        void tc_2_1_6() throws IOException
+        {
             populateJson("1", "5", "1.5555");
         }
 
         @Test
         @DisplayName("2.1.7")
-        void tc_2_1_7() throws IOException {
+        void tc_2_1_7() throws IOException
+        {
             populateJson("1", "5", "-1.00");
         }
 
         @Test
         @DisplayName("2.1.8")
-        void tc_2_1_8() throws IOException {
+        void tc_2_1_8() throws IOException
+        {
             populateJson("1", "1", "100000.00");
         }
     }
 
     @Nested
-    class Correct{
+    class Correct
+    {
         @AfterEach
-        void afterEach() throws ServletException, IOException {
+        void afterEach() throws ServletException, IOException
+        {
             try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
             {
                 utils.verify(() -> Utils.dispatchError(any(), any(), any()), never());
+                utils.verify(() -> Utils.sendMessage(any(), any()), never());
 
                 new AggiungiVenditaServlet().doPost(request, response);
             }
         }
+
         @Test
         @DisplayName("2.1.9")
         void tc_2_1_9() throws IOException

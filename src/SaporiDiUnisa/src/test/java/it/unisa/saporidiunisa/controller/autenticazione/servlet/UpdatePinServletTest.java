@@ -5,10 +5,7 @@ import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
 import lombok.val;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 
@@ -29,40 +26,60 @@ class UpdatePinServletTest extends ServletTest
         mockDipendente(Dipendente.Ruolo.ADMIN);
     }
 
-    @AfterEach
-    void afterEach() throws ServletException, IOException
+    @Nested
+    class Incorrect
     {
-        try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+        @AfterEach
+        void afterEach() throws ServletException, IOException
         {
-            val dipendente = new Dipendente(1, Dipendente.Ruolo.CASSIERE, "7786");
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
+                val captor = ArgumentCaptor.forClass(String.class);
+                utils.when(() -> Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
 
-            val captor = ArgumentCaptor.forClass(String.class);
-            utils.when(() -> Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
+                new UpdatePinServlet().doPost(request, response);
 
-            new UpdatePinServlet().doPost(request, response);
+                System.out.println(captor.getValue());
+            }
+        }
 
-            System.out.println(captor.getValue());
+        @Test
+        @DisplayName("3.2.1")
+        void tc_3_2_1()
+        {
+            populateRequest(ofEntries(entry("newPin", "bob456"), entry("ruolo", "CASSIERE")));
+        }
+
+        @Test
+        @DisplayName("3.2.2")
+        void tc_3_2_2()
+        {
+            populateRequest(ofEntries(entry("newPin", "1234"), entry("ruolo", "CASSIERE")));
         }
     }
 
-    @Test
-    @DisplayName("3.2.1")
-    void tc_3_2_1()
+    @Nested
+    class Correct
     {
-        populateRequest(ofEntries(entry("newPin", "bob456"), entry("ruolo", "CASSIERE")));
-    }
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
+                val captor = ArgumentCaptor.forClass(String.class);
+                utils.when(() -> Utils.dispatchSuccess(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
 
-    @Test
-    @DisplayName("3.2.2")
-    void tc_3_2_2()
-    {
-        populateRequest(ofEntries(entry("newPin", "7786"), entry("ruolo", "CASSIERE")));
-    }
+                new UpdatePinServlet().doPost(request, response);
 
-    @Test
-    @DisplayName("3.2.3")
-    void tc_3_2_3()
-    {
-        populateRequest(ofEntries(entry("newPin", "1823"), entry("ruolo", "CASSIERE")));
+                System.out.println(captor.getValue());
+            }
+        }
+
+        @Test
+        @DisplayName("3.2.3")
+        void tc_3_2_3()
+        {
+            populateRequest(ofEntries(entry("newPin", "1111"), entry("ruolo", "CASSIERE")));
+        }
     }
 }
