@@ -16,7 +16,8 @@ import static java.util.Map.ofEntries;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 
-public class AggiungiScaffaleTest extends ServletTest{
+public class AggiungiScaffaleTest extends ServletTest
+{
     @BeforeEach
     void beforeEach()
     {
@@ -27,10 +28,13 @@ public class AggiungiScaffaleTest extends ServletTest{
     }
 
     @Nested
-    class Incorrect{
+    class Incorrect
+    {
         @AfterEach
-        void afterEach() throws ServletException, IOException {
-            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS)){
+        void afterEach() throws ServletException, IOException
+        {
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
                 val captor = ArgumentCaptor.forClass(String.class);
                 utils.when(() -> Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
 
@@ -70,12 +74,15 @@ public class AggiungiScaffaleTest extends ServletTest{
     }
 
     @Nested
-    class Correct{
+    class Correct
+    {
         @AfterEach
-        void afterEach() throws ServletException, IOException {
-            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS)){
+        void afterEach() throws ServletException, IOException
+        {
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            {
                 val captor = ArgumentCaptor.forClass(String.class);
-                utils.when(() -> Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
+                utils.when(() -> Utils.dispatchSuccess(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
 
                 new AggiungiScaffale().doPost(request, response);
 
@@ -87,6 +94,7 @@ public class AggiungiScaffaleTest extends ServletTest{
         @DisplayName("4.1.5")
         void tc_4_1_5()
         {
-            populateRequest(ofEntries(entry("qntScaffale", "10"), entry("qntMagazzino", "500")));        }
+            populateRequest(ofEntries(entry("qntScaffale", "10"), entry("qntMagazzino", "500")));
+        }
     }
 }
