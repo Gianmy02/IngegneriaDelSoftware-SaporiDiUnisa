@@ -107,7 +107,7 @@ class ImpostaScontoServletTest extends ServletTest
         @DisplayName("5.2.8")
         void tc_5_2_8()
         {
-            populateRequest(ofEntries(entry("prodotto", "1"), entry("dataInizioSconto", "2025-01-01"), entry("dataFineSconto", "2025-01-00"), entry("sconto", "101")));
+            populateRequest(ofEntries(entry("prodotto", "1"), entry("dataInizioSconto", "2025-01-01"), entry("dataFineSconto", "2025-01-02"), entry("sconto", "101")));
         }
 
         @Test

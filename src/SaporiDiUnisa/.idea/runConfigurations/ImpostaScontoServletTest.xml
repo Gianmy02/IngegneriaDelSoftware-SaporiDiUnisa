@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ImpostaScontoServletTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
     <module name="SaporiDiUnisa" />
-    <extension name="coverage">
+    <extension name="coverage" runner="jacoco">
       <pattern>
         <option name="PATTERN" value="it.unisa.saporidiunisa.controller.finanze.servlet.*" />
         <option name="ENABLED" value="true" />
