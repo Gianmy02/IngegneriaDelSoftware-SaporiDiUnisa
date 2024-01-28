@@ -84,6 +84,11 @@ public class ScaffaleController
         LottoDAO.diminuisciLotto(id, qnt);
     }
 
+    /**
+     * Il metodo <code>getEspostiByProdotto</code> restituisce la quantità totale di prodotti esposti sullo scaffale
+     * @param p Prodotto
+     * @return intero, quantità di esposti
+     */
     public static int getEspostiByProdotto(Prodotto p){
         return EsposizioneDAO.getEspostiByProdotto(p);
     }

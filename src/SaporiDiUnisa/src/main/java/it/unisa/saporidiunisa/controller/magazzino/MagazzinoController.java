@@ -126,6 +126,10 @@ public class MagazzinoController {
         return ProdottoDAO.selectByNameAndBrand(nome, marchio);
     }
 
+    /**
+     * Il metodo <code>getAllProducts</code> restituisce tutti i prodotti contenuti nella banca dati
+     * @return lista di prodotti o null
+     */
     public static List<Prodotto> getAllProducts() {
         return ProdottoDAO.selectAll();
     }

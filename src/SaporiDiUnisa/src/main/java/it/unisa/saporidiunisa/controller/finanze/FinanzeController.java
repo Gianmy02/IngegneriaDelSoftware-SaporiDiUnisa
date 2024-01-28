@@ -33,6 +33,13 @@ public class FinanzeController
         return bilancio;
     }
 
+    /**
+     * Il metodo <code>visualizzaBilancioParziale</code> restituisce un bilancio calcolato su un periodo scelto
+     * @param inizio parametro data di delimitazione iniziale del periodo
+     * @param fine parametro data di delimitazione finale del periodo
+     * @return Bilancio
+     */
+
     public static Bilancio visualizzaBilancioParziale(LocalDate inizio, LocalDate fine)
     {
         val bilancio = new Bilancio();
