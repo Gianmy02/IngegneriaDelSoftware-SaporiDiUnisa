@@ -15,7 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @WebServlet(name = "AggiungiScaffale", value = "/AggiungiScaffale")
@@ -35,49 +37,88 @@ public class AggiungiScaffale extends HttpServlet {
         ArrayList<Lotto> lottiMagazzino = ScaffaleController.visualizzaProdottiMagazzino();
         ArrayList<Esposizione> lottiScaffale = ScaffaleController.visualizzaProdottiScaffale();
 
+        HashMap<Lotto, Integer> lottiMagazzinoValid = new HashMap<>();
+        HashMap<Esposizione, Integer> lottiScaffaleValid = new HashMap<>();
+
+
         int qntScaffale = 0;
 
         for(Esposizione e : lottiScaffale) {
-            try {
-                if (Integer.parseInt(req.getParameter("qntScaffale" + e.getLotto().getId())) != 0) {
-                    qntScaffale = Integer.parseInt(req.getParameter("qntScaffale" + e.getLotto().getId()));
-                    if (qntScaffale <= e.getLotto().getQuantitaAttuale() && qntScaffale > 0) {
-                        ScaffaleController.aumentaEsposizione(qntScaffale, e);
-                        ScaffaleController.diminuisciLotto(e.getLotto().getId(), qntScaffale);
-                    }
-                    else {
-                        Utils.dispatchError(Messages.INVALID_FORMAT.formatted("qnt Scaffale"), req, resp);
-                        return;
-                    }
-                }
-            }
-            catch (NumberFormatException ex)
+            if(e.getLotto().getDataScadenza().isAfter(LocalDate.now()))
             {
-                Utils.dispatchError(Messages.INVALID_FORMAT.formatted("qnt Scaffale"), req, resp);
-                return;
+                try {
+                    if (Integer.parseInt(req.getParameter("qntScaffale" + e.getLotto().getId())) != 0) {
+                        qntScaffale = Integer.parseInt(req.getParameter("qntScaffale" + e.getLotto().getId()));
+                        if (qntScaffale < 0) {
+                            Utils.dispatchError("la quantità scaffale è minore di 0", req, resp);
+                            return;
+                        } else if (qntScaffale >= 1000000) {
+                            Utils.dispatchError("la quantità scaffale è maggiore della massima consentita", req, resp);
+                            return;
+                        } else if (qntScaffale > e.getLotto().getQuantitaAttuale()) {
+                            Utils.dispatchError("la quantità scaffale è maggiore della quantità presente in magazzino", req, resp);
+                            return;
+                        } else if (qntScaffale > 0) {
+                            lottiScaffaleValid.put(e, qntScaffale);
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    Utils.dispatchError(Messages.INVALID_FORMAT.formatted("quantità scaffale"), req, resp);
+                    return;
+                }
             }
         }
 
         for(Lotto l : lottiMagazzino) {
-            try {
+            try
+            {
                 if (Integer.parseInt(req.getParameter("qntMagazzino" + l.getId())) != 0) {
                     qntScaffale = Integer.parseInt(req.getParameter("qntMagazzino" + l.getId()));
-                    if (qntScaffale <= l.getQuantitaAttuale() && qntScaffale > 0) {
-                        ScaffaleController.inserisciEsposizione(qntScaffale, l);
-                        ScaffaleController.diminuisciLotto(l.getId(), qntScaffale);
-                    }
-                    else {
-                        Utils.dispatchError(Messages.INVALID_FORMAT.formatted("qnt Magazzino"), req, resp);
+                    if(qntScaffale < 0)
+                    {
+                        Utils.dispatchError("la quantità del prodotto non esposto è minore di 0", req, resp);
                         return;
+                    }
+                    else if(qntScaffale >= 1000000)
+                    {
+                        Utils.dispatchError("la quantità del prodotto non esposto è maggiore della massima consentita", req, resp);
+                        return;
+                    }
+                    else if(qntScaffale > l.getQuantitaAttuale())
+                    {
+                        Utils.dispatchError("la quantità del prodotto non esposto è maggiore della quantità presente in magazzino", req, resp);
+                        return;
+                    }
+                    else if (qntScaffale > 0) {
+                        lottiMagazzinoValid.put(l, qntScaffale);
                     }
                 }
             }
             catch (NumberFormatException ex)
             {
-                Utils.dispatchError(Messages.INVALID_FORMAT.formatted("qnt Magazzino"), req, resp);
+                Utils.dispatchError(Messages.INVALID_FORMAT.formatted("quantità magazzino"), req, resp);
                 return;
             }
         }
+
+
+        for (HashMap.Entry<Esposizione, Integer> entry : lottiScaffaleValid.entrySet()) {
+            Esposizione esposizione = entry.getKey();
+            Integer quantita = entry.getValue();
+
+            ScaffaleController.aumentaEsposizione(quantita, esposizione);
+            ScaffaleController.diminuisciLotto(esposizione.getLotto().getId(), quantita);
+        }
+
+
+        for (HashMap.Entry<Lotto, Integer> entry : lottiMagazzinoValid.entrySet()) {
+            Lotto lotto = entry.getKey();
+            Integer quantita = entry.getValue();
+
+            ScaffaleController.inserisciEsposizione(quantita, lotto);
+            ScaffaleController.diminuisciLotto(lotto.getId(), quantita);
+        }
+
 
         Utils.dispatchSuccess(Messages.SUCCESS, req, resp);
 

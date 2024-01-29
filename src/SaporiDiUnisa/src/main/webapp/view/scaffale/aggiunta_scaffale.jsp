@@ -39,11 +39,13 @@
                     <th>Azienda</th>
                     <th>Data Scadenza</th>
                     <th>Qnt Attuale Scaffale</th>
+                    <th>Qnt Disponibile Magazzino</th>
                     <th>Qnt Aggiunta</th>
                 </tr>
 
                 <%
                     for (Esposizione e : lottiScaffale) {
+                        if(e.getLotto().getDataScadenza().isAfter(LocalDate.now())){
                             String foto = Base64.encodeBase64String(e.getProdotto().getFoto());
                             int qntMax = e.getLotto().getQuantitaAttuale();
                 %>
@@ -55,14 +57,12 @@
                     <td class="nomeAziendaS"><%=e.getProdotto().getMarchio()%></td>
                     <td class="dataScadenzaS"><%=e.getLotto().getDataScadenza()%></td>
                     <td class="qntAttualeS"><%=e.getQuantita()%></td>
-                    <% if(e.getLotto().getDataScadenza().isBefore(LocalDate.now())) {%>
-                        <td style="background-color: red; color: white" >Scaduto</td>
-                    <%}else{ %>
-                        <td><input type="number" name="qntScaffale<%=e.getLotto().getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
-                    <% } %>
+                    <td class="qntAttualeS"><%=e.getLotto().getQuantitaAttuale()%></td>
+                    <td><input type="number" name="qntScaffale<%=e.getLotto().getId()%>" min="0" max="<%=qntMax%>" value="0"></td>
                 </tr>
 
                 <%
+                        }
                     }
                 %>
 
