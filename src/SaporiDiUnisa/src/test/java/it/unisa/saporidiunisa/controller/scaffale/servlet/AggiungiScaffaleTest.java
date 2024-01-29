@@ -57,6 +57,13 @@ public class AggiungiScaffaleTest extends ServletTest
 
                 scaffaleController.when(ScaffaleController::visualizzaProdottiScaffale).thenReturn(lottiScaffale);
                 scaffaleController.when(ScaffaleController::visualizzaProdottiMagazzino).thenReturn(lottiMagazzino);
+
+                val captor = ArgumentCaptor.forClass(String.class);
+                utils.when(() -> Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);
+
+                new AggiungiScaffale().doPost(request, response);
+
+                System.out.println(captor.getValue());
             }
         }
 
