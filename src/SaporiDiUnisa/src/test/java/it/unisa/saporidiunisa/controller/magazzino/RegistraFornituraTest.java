@@ -25,6 +25,9 @@ public class RegistraFornituraTest extends ServletTest {
 
     @Nested
     class Incorrect {
+
+        private String errorString;
+
         @AfterEach
         void afterEach() throws ServletException, IOException {
             try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS)) {
@@ -34,6 +37,7 @@ public class RegistraFornituraTest extends ServletTest {
                 new AggiungiLotto().doPost(request, response);
 
                 System.out.println(captor.getValue());
+                Assertions.assertEquals(errorString, captor.getValue());
             }
         }
 
@@ -42,6 +46,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_1() {
             populatePart("x", "Barilla", "50.00", "100", "2024-08-24");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il nome deve essere compreso tra 2 e 255 caratteri\n";
         }
 
         @Test
@@ -58,6 +63,7 @@ public class RegistraFornituraTest extends ServletTest {
                     "2024-10-05"
             );
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il nome deve essere compreso tra 2 e 255 caratteri\n";
         }
 
         @Test
@@ -65,6 +71,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_3() {
             populatePart("Pas@ta al pomod!!or=o", "Barilla", "50.00", "100", "2024-12-03");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il nome non rispetta il formato\n";
         }
 
         @Test
@@ -72,6 +79,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_4() {
             populatePart("Cereali", "c", "60.00", "80", "2025-07-05");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il marchio deve essere compreso tra 2 e 255 caratteri\n";
         }
 
         @Test
@@ -87,6 +95,7 @@ public class RegistraFornituraTest extends ServletTest {
                     "2024-07-10"
             );
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il marchio deve essere compreso tra 2 e 255 caratteri\n";
         }
 
         @Test
@@ -94,6 +103,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_6() {
             populatePart("Yogurt", "F!a--ge", "80.00", "50", "2025-01-07");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il marchio non rispetta il formato\n";
         }
 
         @Test
@@ -101,6 +111,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_7() {
             populatePart("Cioccolato", "Lindt", "0.00", "100", "2024-03-07");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il prezzo deve essere compreso tra 0.01 € e 100000.00 €\n";
         }
 
         @Test
@@ -108,12 +119,15 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_8() {
             populatePart("Sottilette", "Mulino Bianco", "100000.00", "150", "2025-01-27");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il prezzo deve essere compreso tra 0.01 € e 100000.00 €\n";
         }
 
         @Test
         @DisplayName("1.1.9")
         void tc_1_1_9() {
             populatePart("Crostini", "Mulino Bianco", "50.7849", "120", "2024-02-20");
+            makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "Il prezzo non rispetta il formato\n";
         }
 
         @Test
@@ -121,6 +135,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_10() {
             populatePart("Biscotti", "Digestive", "50.00", "cil", "2024-03-20");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "La quantità deve essere un numero\n";
         }
 
         @Test
@@ -128,6 +143,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_11() {
             populatePart("Fette biscottate", "Natura", "70.00", "0", "2024-04-30");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "La quantità deve essere maggiore di 0\n";
         }
 
         @Test
@@ -135,6 +151,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_12() {
             populatePart("Fesa di tacchino", "Piacersi", "70.00", "1000000", "2025-01-11");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "La quantità deve essere minore di 1000000\n";
         }
 
         @Test
@@ -142,6 +159,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_13() {
             populatePart("Burro", "Santa Lucia", "80.00", "150", "11/017-24");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "La data di scadenza non è valida\n";
         }
 
         @Test
@@ -149,6 +167,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_14() {
             populatePart("Philadelphia", "Benessere", "80.00", "150", "2010-05-10");
             makeImage("Foto.png", 1024 * 1024, "image/png");
+            errorString = "La data di scadenza deve essere posteriore a quella odierna\n";
         }
 
         @Test
@@ -156,6 +175,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_15() {
             populatePart("Pangrattato", "Mulino Bianco", "60.00", "100", "2024-02-09");
             makeImage("foto.java", 1024 * 1024, "image/png");
+            errorString = "La foto deve essere un'immagine con estensione: jpg, jpeg o png\n";
         }
 
         @Test
@@ -163,6 +183,7 @@ public class RegistraFornituraTest extends ServletTest {
         void tc_1_1_16() {
             populatePart("Burro di arachidi", "Fiorentini", "80.00", "130", "2024-04-17");
             makeImage("Foto.png", 5 * 1024 * 1024, "image/png");
+            errorString = "La foto deve essere minore di 2MB\n";
         }
     }
 
