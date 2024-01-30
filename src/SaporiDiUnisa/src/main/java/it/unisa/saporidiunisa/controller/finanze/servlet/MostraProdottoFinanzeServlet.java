@@ -13,13 +13,16 @@ import lombok.val;
 
 import java.io.IOException;
 
-@WebServlet(name = "MostraProdottoFinanzeServlet", value = "/mostra-prodotto-finanze-servlet")
+/**
+ * @author Antonio Facchiano
+ * La servlet <code>mostraProdottoFinanzeServlet</code> mostra il prodotto scelto
+ */
+@WebServlet(name = "mostraProdottoFinanzeServlet", value = "/mostra-prodotto-finanze-servlet")
 public class MostraProdottoFinanzeServlet extends HttpServlet
 {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-
         val session = request.getSession();
 
         val dipendente = (Dipendente)session.getAttribute("dipendente");
@@ -32,11 +35,18 @@ public class MostraProdottoFinanzeServlet extends HttpServlet
         val id = request.getParameter("prodotto");
         if (id == null)
         {
-            Utils.dispatchError("Errore sul prodotto richiesto", request, response);
+            Utils.dispatchError(Messages.INVALID_FIELD.formatted("prodotto"), request, response);
             return;
         }
 
-        session.setAttribute("prodottoSelezionato", MagazzinoController.getProdottoById(Integer.parseInt(id)));
+        val idInteger = Utils.parseAsInteger(id);
+        if (idInteger == null)
+        {
+            Utils.dispatchError(Messages.INVALID_FORMAT.formatted("prodotto"), request, response);
+            return;
+        }
+
+        session.setAttribute("prodottoSelezionato", MagazzinoController.getProdottoById(idInteger));
         request.getRequestDispatcher("view/finanze/impostaSconto.jsp").forward(request, response);
     }
 }

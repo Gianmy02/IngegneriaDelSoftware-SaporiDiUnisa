@@ -14,6 +14,10 @@ import lombok.val;
 import java.io.IOException;
 import java.time.LocalDate;
 
+/**
+ * @author Antonio Facchiano
+ * La servlet <code>bilancioPeriodoServlet</code> visualizza il bilancio tra due date
+ */
 @WebServlet(name = "bilancioPeriodoServlet", value = "/bilancio-periodo-servlet")
 public class BilancioPeriodoServlet extends HttpServlet
 {
@@ -61,13 +65,13 @@ public class BilancioPeriodoServlet extends HttpServlet
             return;
         }
 
-        if (inizioDate.isAfter(LocalDate.now().minusDays(1)))
+        val yesterday = LocalDate.now().minusDays(1);
+        if (inizioDate.isAfter(yesterday))
         {
             Utils.dispatchError("La data di inizio non può essere dopo quella di ieri", request, response);
             return;
         }
-
-        if (fineDate.isAfter(LocalDate.now().minusDays(1)))
+        if (fineDate.isAfter(yesterday))
         {
             Utils.dispatchError("La data di fine non può essere dopo quella di ieri", request, response);
             return;

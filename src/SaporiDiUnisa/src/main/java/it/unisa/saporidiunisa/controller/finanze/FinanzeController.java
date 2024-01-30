@@ -39,7 +39,6 @@ public class FinanzeController
      * @param fine parametro data di delimitazione finale del periodo
      * @return Bilancio
      */
-
     public static Bilancio visualizzaBilancioParziale(LocalDate inizio, LocalDate fine)
     {
         val bilancio = new Bilancio();
