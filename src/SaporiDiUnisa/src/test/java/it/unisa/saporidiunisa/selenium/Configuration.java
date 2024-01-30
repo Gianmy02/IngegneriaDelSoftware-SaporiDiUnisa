@@ -10,6 +10,11 @@ public abstract class Configuration {
     final static WebDriver driver = new ChromeDriver();
     final static String baseUrl = "http://localhost:8080/SaporiDiUnisa_war_exploded/";
 
+    final static String PIN_ADMIN = "1234";
+    final static String PIN_CASSIERE = "1111";
+    final static String PIN_FINANZE = "2222";
+    final static String PIN_MAGAZZINIERE = "9876";
+
     static void init(){
         driver.get(baseUrl);
         driver.manage().timeouts().implicitlyWait(java.time.Duration.ofMillis(1000));
