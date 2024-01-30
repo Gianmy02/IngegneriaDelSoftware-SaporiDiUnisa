@@ -21,6 +21,12 @@ public class RegistraFornituraTest extends Configuration{
         for(int i=0; i < 3; i++)
             driver.findElements(By.tagName("form")).getFirst().click();
     }
+
+    @AfterAll
+    static void afterAll()
+    {
+        driver.close();
+    }
     
     @Nested
     class Incorrect{
