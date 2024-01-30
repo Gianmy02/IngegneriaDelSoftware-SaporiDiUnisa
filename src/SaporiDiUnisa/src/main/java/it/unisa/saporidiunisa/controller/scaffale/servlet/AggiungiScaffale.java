@@ -6,7 +6,6 @@ import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.model.entity.Lotto;
 import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,7 +40,7 @@ public class AggiungiScaffale extends HttpServlet {
         HashMap<Esposizione, Integer> lottiScaffaleValid = new HashMap<>();
 
 
-        int qntScaffale = 0;
+        int qntScaffale;
 
         for(Esposizione e : lottiScaffale) {
             if(e.getLotto().getDataScadenza().isAfter(LocalDate.now()))

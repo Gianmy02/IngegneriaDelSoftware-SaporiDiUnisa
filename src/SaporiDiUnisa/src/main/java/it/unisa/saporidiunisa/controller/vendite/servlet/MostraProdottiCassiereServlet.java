@@ -2,7 +2,6 @@ package it.unisa.saporidiunisa.controller.vendite.servlet;
 
 import it.unisa.saporidiunisa.controller.vendite.VenditaController;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
-import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.utils.Messages;
 import it.unisa.saporidiunisa.utils.Utils;
 import jakarta.servlet.ServletException;
@@ -13,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * @author Gianmarco Riviello

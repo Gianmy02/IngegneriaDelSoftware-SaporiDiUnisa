@@ -1,9 +1,7 @@
 package it.unisa.saporidiunisa.controller.magazzino.servlet;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
-import it.unisa.saporidiunisa.model.entity.Dipendente;
 import it.unisa.saporidiunisa.utils.Patterns;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +15,7 @@ import java.io.IOException;
 public class GetListForniture extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         val forniture = MagazzinoController.visualizzaForniture();
 
         val jsonArray = new JSONArray();

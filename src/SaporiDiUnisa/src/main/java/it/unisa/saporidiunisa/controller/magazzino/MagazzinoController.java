@@ -75,7 +75,8 @@ public class MagazzinoController {
         return false;
     }
 
-    public static boolean modificaFornitura(Fornitura fornitura) {
+    public static boolean modificaFornitura(Fornitura fornitura)
+    {
         return false;
     }
 

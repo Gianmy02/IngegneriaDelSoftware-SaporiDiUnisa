@@ -1,7 +1,6 @@
 package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 
 import it.unisa.saporidiunisa.model.entity.Fornitura;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,15 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.val;
 
-import java.io.IOException;
-
 /**
  * Servlet, invocata tramite AJAX, che gestisce la rimozione di un lotto dalla fornitura che si sta inserendo
  */
 @WebServlet(name = "RimuoviLotto", value = "/RimuoviLotto")
 public class RimuoviLotto extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         val keyId = Integer.parseInt(req.getParameter("keyId"));
 
         final HttpSession session = req.getSession();

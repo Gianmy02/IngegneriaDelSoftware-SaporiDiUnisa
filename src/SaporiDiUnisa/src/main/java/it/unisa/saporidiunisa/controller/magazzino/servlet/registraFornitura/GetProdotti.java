@@ -1,7 +1,6 @@
 package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 
 import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ import java.io.IOException;
 @WebServlet(name = "GetProdotti", value = "/GetProdotti")
 public class GetProdotti extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         val prodotti = MagazzinoController.getAllProducts();
 
         val jsonArray = new JSONArray();

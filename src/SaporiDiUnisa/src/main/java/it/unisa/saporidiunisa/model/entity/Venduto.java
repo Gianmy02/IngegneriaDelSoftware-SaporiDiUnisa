@@ -2,7 +2,6 @@ package it.unisa.saporidiunisa.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDate;
 

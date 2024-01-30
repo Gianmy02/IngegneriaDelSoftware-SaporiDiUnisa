@@ -50,12 +50,7 @@ public class VendutoDAO
             ps.setFloat(3, v.getGuadagno());
             ps.setInt(4, v.getProdotto().getId());
 
-            if (ps.executeUpdate() != 1)
-            {
-                throw new RuntimeException("INSERT error.");
-            }
-            return true;
-
+            return ps.executeUpdate() == 1;
         }
         catch (SQLException e)
         {
@@ -103,12 +98,8 @@ public class VendutoDAO
             ps.setFloat(1, v.getGuadagno());
             ps.setInt(2, v.getQuantita());
             ps.setInt(3, v.getProdotto().getId());
-            if (ps.executeUpdate() != 1)
-            {
-                throw new RuntimeException("UPDATE error.");
-            }
-            return true;
 
+            return ps.executeUpdate() == 1;
         }
         catch (SQLException e)
         {
