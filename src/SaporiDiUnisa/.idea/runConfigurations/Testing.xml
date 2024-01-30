@@ -2,7 +2,7 @@
   <configuration default="false" name="Testing" type="JUnit" factoryName="JUnit">
     <module name="SaporiDiUnisa" />
     <extension name="coverage" runner="jacoco" />
-    <option name="PACKAGE_NAME" value="it.unisa.saporidiunisa" />
+    <option name="PACKAGE_NAME" value="it.unisa.saporidiunisa.controller" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />
