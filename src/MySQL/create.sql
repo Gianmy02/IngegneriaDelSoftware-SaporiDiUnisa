@@ -69,7 +69,7 @@ create table esposizione
 (
     prodotto int not null references prodotto(id) on delete cascade,
     lotto int not null references lotto(id) on delete cascade,
-    quantita int(6) not null,
+    quantita int not null,
 
     primary key(lotto, prodotto),
     
@@ -88,3 +88,9 @@ create trigger check_inizio_sconto
 	end;
 |
 delimiter ;
+
+insert into dipendente (ruolo, pin) values
+('admin', 1234),
+('cassiere', 5678),
+('magazziniere', 9876),
+('finanze', 5432);
