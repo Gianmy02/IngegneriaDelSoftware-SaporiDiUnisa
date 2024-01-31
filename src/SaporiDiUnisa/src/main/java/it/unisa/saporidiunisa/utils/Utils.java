@@ -14,23 +14,43 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
 
+/**
+ * La classe <code>Utils</code> ha al suo interno un insieme di metodi utili a tutti i programmatori per eliminare ridondanze e
+ * migliorare la leggibilità
+ */
 public class Utils
 {
-    // Reindirizza l'utente alla pagina di errore contenente un messaggio esplicativo
+    /**
+     * Il metodo <code>dispatchError</code> reindirizza l'utente alla pagina di errore contenente un messaggio esplicativo
+     * @param message stringa che spiega l'errore
+     * @param request parametro della servlet nel quale mettere il messaggio e fare il dispatch
+     * @param response parametro della servlet con il quale fare il forward con la request
+      */
     public static void dispatchError(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         request.setAttribute("message", message);
         request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);
     }
 
-    // Reindirizza l'utente alla pagina di successo contenente un messaggio esplicativo
+    /**
+     * Il metodo <code>dispatchSuccess</code> reindirizza l'utente alla pagina di successo contenente un messaggio esplicativo
+     * @param message stringa che spiega l'operazione andata a buon fine
+     * @param request parametro della servlet nel quale mettere il messaggio e fare il dispatch
+     * @param response parametro della servlet con il quale fare il forward con la request
+     */
+
     public static void dispatchSuccess(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         request.setAttribute("message", message);
         request.getRequestDispatcher("WEB-INF/success.jsp").forward(request, response);
     }
 
-    // Invia un oggetto JSON contenente un messaggio esplicativo di errore
+    /**
+     * Il metodo <code>sendMessage</code> invia un oggetto JSON contenente un messaggio esplicativo di errore
+     * @param message stringa che spiega l'errore
+     * @param response parametro nel quale scrivere il json
+     * @throws IOException
+     */
     public static void sendMessage(String message, HttpServletResponse response) throws IOException
     {
         val json = new JSONObject();
@@ -40,7 +60,11 @@ public class Utils
         response.getWriter().write(json.toString());
     }
 
-    // Converte una stringa a oggetto Integer
+    /**
+     * Il metodo <code>parseAsInteger</code> converte una stringa a oggetto Integer
+     * @param str stringa da castare a tipo intero
+     * @return intero o null in caso di cast andato male
+     */
     public static Integer parseAsInteger(String str)
     {
         try
@@ -53,7 +77,11 @@ public class Utils
         }
     }
 
-    // Converte una stringa a oggetto Float
+    /**
+     * Il metodo <code>parseAsFloat</code> converte una stringa a oggetto Float
+     * @param str stringa da castare a tipo float
+     * @return float o null in caso di cast andato male
+     */
     public static Float parseAsFloat(String str)
     {
         try
@@ -66,7 +94,11 @@ public class Utils
         }
     }
 
-    // Converte una stringa a oggetto LocalDate
+    /**
+     * Il metodo <code>parseAsLocalDate</code> converte una stringa a oggetto LocalDate
+     * @param str stringa da castare a tipo LocalDate
+     * @return LocalDate o null in caso di cast andato male
+     */
     public static LocalDate parseAsLocalDate(String str)
     {
         try
@@ -80,6 +112,7 @@ public class Utils
     }
 
     // Ottiene un oggetto Enum a partire dal suo nome
+
     public static <E extends Enum<E>> E getEnum(Class<E> enumClass, String name)
     {
         try
@@ -92,7 +125,11 @@ public class Utils
         }
     }
 
-    // Converte un oggetto Part in una stringa
+    /**
+     * Il metodo <code>readPart</code> converte un oggetto part a tipo Stringa
+     * @param part part da castare a tipo stringa
+     * @return stringa o null in caso di cast andato male
+     */
     public static String readPart(final Part part)
     {
         try (val is = part.getInputStream();
@@ -106,7 +143,11 @@ public class Utils
         }
     }
 
-    // Controlla se un oggetto Part è un'immagine con estensione jpg, jpeg o png
+    /**
+     * Il metodo <code>checkImageExtension</code> controlla se un oggetto Part è un'immagine con estensione jpg, jpeg o png
+     * @param part immagine
+     * @return booleano di conferma, true è uno dei tipi citati, false no
+     */
     // TODO: https://stackoverflow.com/a/43891850
     public static boolean checkImageExtension(final Part part)
     {

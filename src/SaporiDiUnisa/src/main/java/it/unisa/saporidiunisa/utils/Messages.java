@@ -1,5 +1,8 @@
 package it.unisa.saporidiunisa.utils;
 
+/**
+ * La classe <code>Messages</code> ha al suo interno i messaggi preimpostati per i vari utilizzi richiesti
+ */
 public class Messages
 {
     public static final String NO_PERMISSIONS = "Non hai i permessi necessari per poter visualizzare la pagina.";

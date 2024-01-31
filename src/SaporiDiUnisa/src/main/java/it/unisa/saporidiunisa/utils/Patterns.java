@@ -3,6 +3,9 @@ package it.unisa.saporidiunisa.utils;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
+/**
+ * La classe <code>Patterns</code> ha al suo interno tutte i pattern utili nel progetto per i controlli
+ */
 public class Patterns
 {
     public static final Pattern LOGIN_PIN = Pattern.compile("^[0-9]{4}$");
