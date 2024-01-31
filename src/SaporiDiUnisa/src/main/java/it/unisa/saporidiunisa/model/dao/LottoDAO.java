@@ -17,23 +17,9 @@ import java.util.Objects;
 
 public class LottoDAO
 {
-    public static int selectLastId()
-    {
-        try (val con = Database.getConnection())
-        {
-            val ps = con.prepareStatement("select id from lotto order by id desc limit 1");
-            val rs = ps.executeQuery();
-            return rs.next() ? rs.getInt("id") : 0;
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     /**
      * Il metodo <code>insert</code> inserisce nel DB un nuovo Lotto
-     * @param lotto
+     * @param lotto Lotto da inserire
      */
     public static void insert(final Lotto lotto)
     {
