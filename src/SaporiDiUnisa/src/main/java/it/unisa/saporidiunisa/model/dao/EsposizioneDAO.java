@@ -21,7 +21,7 @@ public class EsposizioneDAO
 
     /**
      * Il metodo <code>getEsposizione</code> restituisce tutti i prodotti in esposizione
-     * @return lista di prodotti in esposizione
+     * @return ArrayList di prodotti in esposizione
      */
     public static ArrayList<Esposizione> getEsposizione(){
         try (val connection = Database.getConnection())
@@ -65,7 +65,7 @@ public class EsposizioneDAO
     /**
      * Il metodo <code>getLottibyProdottoWithoutScaduti</code> restituisce i lotti che sono in esposizione e che non sono scaduti, relativi al prodotto passato come parametro
      * @param p prodotto del quale si vogliono ottenere i lotti in esposizione
-     * @return lista di lotti in esposizione relativi al prodotto senza scaduti
+     * @return ArrayList di lotti in esposizione relativi al prodotto senza scaduti
      */
     public static ArrayList<Esposizione> getLottibyProdottoWithoutScaduti(Prodotto p){
         try (val connection = Database.getConnection())
@@ -257,7 +257,7 @@ public class EsposizioneDAO
 
     /**
      * Il metodo <code>rimuoviScaduto</code> elimina l'esposizione passata (scaduta) e azzera a quantità del lotto
-     * @param es esposizione scadura da rimuovere
+     * @param es esposizione scaduto da rimuovere
      */
     public static void rimuoviScaduto(Esposizione es){
 

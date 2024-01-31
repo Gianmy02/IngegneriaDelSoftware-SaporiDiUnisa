@@ -83,7 +83,7 @@ public class ProdottoDAO
 
     /**
      * Il metodo <code>getLastId</code> restituisce l'id dell'ultimo prodotto inserito nel database.
-     * @return int
+     * @return id del lotto, intero
      */
     public static int getLastId()
     {

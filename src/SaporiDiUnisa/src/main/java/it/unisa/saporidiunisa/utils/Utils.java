@@ -49,7 +49,6 @@ public class Utils
      * Il metodo <code>sendMessage</code> invia un oggetto JSON contenente un messaggio esplicativo di errore
      * @param message stringa che spiega l'errore
      * @param response parametro nel quale scrivere il json
-     * @throws IOException
      */
     public static void sendMessage(String message, HttpServletResponse response) throws IOException
     {
@@ -62,7 +61,7 @@ public class Utils
 
     /**
      * Il metodo <code>parseAsInteger</code> converte una stringa a oggetto Integer
-     * @param str stringa da castare a tipo intero
+     * @param str stringa da cambiare a tipo intero
      * @return intero o null in caso di cast andato male
      */
     public static Integer parseAsInteger(String str)
@@ -79,7 +78,7 @@ public class Utils
 
     /**
      * Il metodo <code>parseAsFloat</code> converte una stringa a oggetto Float
-     * @param str stringa da castare a tipo float
+     * @param str stringa da cambiare a tipo float
      * @return float o null in caso di cast andato male
      */
     public static Float parseAsFloat(String str)
@@ -96,7 +95,7 @@ public class Utils
 
     /**
      * Il metodo <code>parseAsLocalDate</code> converte una stringa a oggetto LocalDate
-     * @param str stringa da castare a tipo LocalDate
+     * @param str stringa da cambiare a tipo LocalDate
      * @return LocalDate o null in caso di cast andato male
      */
     public static LocalDate parseAsLocalDate(String str)
@@ -127,7 +126,7 @@ public class Utils
 
     /**
      * Il metodo <code>readPart</code> converte un oggetto part a tipo Stringa
-     * @param part part da castare a tipo stringa
+     * @param part part da cambiare a tipo stringa
      * @return stringa o null in caso di cast andato male
      */
     public static String readPart(final Part part)
