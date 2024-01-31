@@ -75,6 +75,7 @@ public class MagazzinoController {
         return false;
     }
 
+    @SuppressWarnings("unused")
     public static boolean modificaFornitura(Fornitura fornitura)
     {
         return false;
