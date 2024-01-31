@@ -7,7 +7,6 @@ import jakarta.servlet.http.Part;
 import lombok.val;
 import org.json.JSONObject;
 
-import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -133,19 +132,5 @@ public class Utils
         }
 
         return false;
-    }
-
-    // Controlla se un oggetto Part è un'immagine con dimensioni 1:1
-    public static boolean assureSquareImage(final Part part)
-    {
-        try (val fileContent = part.getInputStream())
-        {
-            val image = ImageIO.read(fileContent);
-            return image != null && image.getWidth() == image.getHeight();
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }
