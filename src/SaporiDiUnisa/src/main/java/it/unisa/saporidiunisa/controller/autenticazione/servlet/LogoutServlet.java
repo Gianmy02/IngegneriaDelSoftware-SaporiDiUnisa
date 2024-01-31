@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author Antonio Facchiano
+ * @author Antonio Facchiano, Gianmarco Riviello
  * La servlet <code>logoutServlet</code> consente di uscire dall'account
  */
 @WebServlet(name = "logoutServlet", value = "/logout-servlet")

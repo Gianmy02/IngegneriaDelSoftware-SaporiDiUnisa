@@ -14,7 +14,7 @@ import lombok.val;
 import java.io.IOException;
 
 /**
- * @author Antonio Facchiano
+ * @author Antonio Facchiano, Gianmarco Riviello
  * La servlet <code>loginServlet</code> consente di effettuare il login al sistema con un account
  */
 @WebServlet(name = "loginServlet", value = "/login-servlet")
