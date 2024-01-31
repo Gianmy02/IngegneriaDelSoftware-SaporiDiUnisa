@@ -1,0 +1,15 @@
+it.unisa.saporidiunisa.controller
+it.unisa.saporidiunisa.controller.autenticazione
+it.unisa.saporidiunisa.controller.autenticazione.servlet
+it.unisa.saporidiunisa.controller.finanze
+it.unisa.saporidiunisa.controller.finanze.servlet
+it.unisa.saporidiunisa.controller.magazzino
+it.unisa.saporidiunisa.controller.magazzino.servlet
+it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura
+it.unisa.saporidiunisa.controller.scaffale
+it.unisa.saporidiunisa.controller.scaffale.servlet
+it.unisa.saporidiunisa.controller.vendite
+it.unisa.saporidiunisa.controller.vendite.servlet
+it.unisa.saporidiunisa.model.dao
+it.unisa.saporidiunisa.model.entity
+it.unisa.saporidiunisa.utils
