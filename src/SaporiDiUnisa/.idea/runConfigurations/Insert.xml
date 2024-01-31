@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Insert" type="DatabaseScript">
+    <script-file value="$PROJECT_DIR$/../MySQL/insert.sql" />
+    <script-mode>FILE</script-mode>
+    <data-source id="89c6428b-1509-4631-99db-e7a593014044" />
+    <method v="2" />
+  </configuration>
+</component>
