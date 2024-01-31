@@ -355,6 +355,11 @@ public class LottoDAO
         return null;
     }
 
+    /**
+     * La funzione updateDataScadenza modifica in un lotto la sua data scadenza, utilizzata solo per i rollback nei unit test
+     * @param lottoTmp lotto al quale modificare la data.
+     * @param dataScadenza nuova data da impostare
+     */
     public static void updateDataScadenza(Lotto lottoTmp, LocalDate dataScadenza) {
         try (val connection = Database.getConnection()) {
             val ps = connection.prepareStatement("UPDATE lotto SET data_scadenza = ? WHERE id = ?");
