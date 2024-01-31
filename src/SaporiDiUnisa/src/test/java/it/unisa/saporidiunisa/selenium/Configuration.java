@@ -11,8 +11,8 @@ public abstract class Configuration {
     final static String baseUrl = "http://localhost:8080/SaporiDiUnisa_war_exploded/";
 
     final static String PIN_ADMIN = "1234";
-    final static String PIN_CASSIERE = "1111";
-    final static String PIN_FINANZE = "2222";
+    final static String PIN_CASSIERE = "5678";
+    final static String PIN_FINANZE = "5432";
     final static String PIN_MAGAZZINIERE = "9876";
 
     static void init(){
