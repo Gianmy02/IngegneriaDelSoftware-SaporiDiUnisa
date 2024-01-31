@@ -15,7 +15,7 @@ public class FornituraDAO
 {
     /**
      * Il metodo <code>insert</code> inserisce una nuova fornitura nel DB
-     * @param fornitura
+     * @param fornitura Fornitura da inserire
      */
     public static void insert(final Fornitura fornitura)
     {
