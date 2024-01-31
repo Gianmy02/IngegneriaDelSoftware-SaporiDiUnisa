@@ -16,6 +16,11 @@ import lombok.val;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Simone Vittoria
+ * La servlet <code>VisualizzaScaffale</code> indirizza l'utente alla aggiunta_scaffale.jsp o alla visualizza_scaffale.jsp a seconda della richiesta.
+ * Prima di effettuare il dispatch, interroga il DB per recuperare i prodotti dallo scaffale ed eventualmente dal magazzino
+ */
 @WebServlet(name = "VisualizzaScaffale", value = "/VisualizzaScaffale")
 public class VisualizzaScaffale extends HttpServlet {
     @Override

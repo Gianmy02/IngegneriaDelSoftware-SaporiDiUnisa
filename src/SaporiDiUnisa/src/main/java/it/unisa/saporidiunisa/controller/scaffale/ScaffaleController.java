@@ -16,9 +16,9 @@ public class ScaffaleController
 {
 
     /**
-     * Il metodo <code>inserisciEsposizione</code> inserisce nei prodotti esposti un nuovo prodotto appartenente a un lotto diverso da quelli gia in esposizione
+     * Il metodo <code>inserisciEsposizione</code> mette in esposizione un prodotto appartenente a un lotto che non si trovava in esposizione
      * @param quantita quantità da mettere in esposizione
-     * @param l lotto dal quale si stanno prendendo i prodotti
+     * @param l lotto contenente i prodotti
      */
     public static void inserisciEsposizione(int quantita, Lotto l)
     {
@@ -26,7 +26,7 @@ public class ScaffaleController
     }
 
     /**
-     * Il metodo <code>eliminaScadutiScaffale</code> elimina tutti gli scaduti dallo scaffale facendo da tramite tra le servlet e il db
+     * Il metodo <code>eliminaScadutiScaffale</code> elimina tutti gli scaduti dallo scaffale
      */
     public static void eliminaScadutiScaffale()
     {
@@ -37,8 +37,8 @@ public class ScaffaleController
     }
 
     /**
-     * Il metodo <code>visualizzaProdottiScaffale()</code>  serve per avere tutti i prodotti in esposizione al giorno della chiamata
-     * @return ritorna un ArrayList con tutti in esposizione
+     * Il metodo <code>visualizzaProdottiScaffale()</code> restituisce tutti i prodotti in esposizione al momento della chiamata
+     * @return ritorna un ArrayList dei prodotti in esposizione
      */
     public static ArrayList<Esposizione> visualizzaProdottiScaffale()
     {
@@ -46,8 +46,8 @@ public class ScaffaleController
     }
 
     /**
-     * Il metodo <code>visualizzaProdottiScaffaleScaduti</code> viene utilizzato per avere tutti i prodotti scaduti rimasti nello scaffale
-     * @return ArrayList di oggetti scaduti
+     * Il metodo <code>visualizzaProdottiScaffaleScaduti</code> restituisce tutti i prodotti scaduti in esposizione
+     * @return ritorna un ArrayList dei prodotti scaduti in esposizione
      */
     public static ArrayList<Esposizione> visualizzaProdottiScaffaleScaduti()
     {
@@ -55,19 +55,18 @@ public class ScaffaleController
     }
 
     /**
-     * Il metodo <code>visualizzaProdottiMagazzino</code> visualizza i lotti in magazzino che non hanno nessun prodotto esposto e che hanno disponibilità
-     * @return ArrayList di lotti
+     * Il metodo <code>visualizzaProdottiMagazzino</code> restituisce i lotti presenti in magazzino che non hanno nessun prodotto esposto
+     * @return ritorna un ArrayList dei lotti presenti in magazzino
      */
-
     public static ArrayList<Lotto> visualizzaProdottiMagazzino()
     {
         return LottoDAO.getLottiWithoutEsposizione();
     }
 
     /**
-     * Il metodo <code>aumentaEsposizione</code> aumenta la quantità di un prodotto gia in esposizione di un determinato lotto
+     * Il metodo <code>aumentaEsposizione</code> aumenta la quantità di un prodotto gia in esposizione per un determinato lotto
      * @param qnt quantità da aggiungere
-     * @param e prodotto e lotto a cui fare riferimento
+     * @param e contiene il prodotto e il lotto da aumentare
      */
     public static void aumentaEsposizione(int qnt, Esposizione e)
     {
@@ -75,9 +74,9 @@ public class ScaffaleController
     }
 
     /**
-     * Il metodo <code>diminuisciLotto</code> diminuisce la quantità del lotto in magazzino
-     * @param id lotto al quale diminuire la quantità
-     * @param qnt quantità da detrarre
+     * Il metodo <code>diminuisciLotto</code> diminuisce la quantità del lotto in magazzino dopo aver effettuato un <code>aumentaEsposizione</code>
+     * @param id lotto del quale diminuire la quantità
+     * @param qnt quantità da sottrarre
      */
     public static void diminuisciLotto(int id, int qnt)
     {
@@ -85,9 +84,9 @@ public class ScaffaleController
     }
 
     /**
-     * Il metodo <code>getEspostiByProdotto</code> restituisce la quantità totale di prodotti esposti sullo scaffale
-     * @param p Prodotto
-     * @return intero, quantità di esposti
+     * Il metodo <code>getEspostiByProdotto</code> restituisce la quantità totale del prodotto esposto passato come parametro
+     * @param p Prodotto del quale ci interessa la quantità
+     * @return intero, quantità in esposizione
      */
     public static int getEspostiByProdotto(Prodotto p){
         return EsposizioneDAO.getEspostiByProdotto(p);

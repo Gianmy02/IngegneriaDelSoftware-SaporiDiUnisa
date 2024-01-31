@@ -16,6 +16,10 @@ import java.util.ArrayList;
 public class EsposizioneDAO
 {
 
+    /**
+     * Il metodo <code>getEsposizione</code> restituisce tutti i prodotti in esposizione
+     * @return ArrayList<Esposizione> ritorna un ArrayList dei prodotti in esposizione
+     */
     public static ArrayList<Esposizione> getEsposizione(){
         try (val connection = Database.getConnection())
         {
@@ -55,6 +59,11 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>getLottibyProdottoWithoutScaduti</code> restituisce i lotti che sono in esposizione e che non sono scaduti, relativi al prodotto passato come parametro
+     * @param p prodotto del quale si vogliono ottenere i lotti in esposizione
+     * @return ArrayList<Esposizione> ritorna un ArrayList di lotti in esposizione relativi al prodotto senza scaduti
+     */
     public static ArrayList<Esposizione> getLottibyProdottoWithoutScaduti(Prodotto p){
         try (val connection = Database.getConnection())
         {
@@ -89,6 +98,12 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>diminuisciEsposizione</code> diminuisce la quantità dell'esposizione passate e, se il parametro elimina è true, elimina l'esposizione
+     * @param quantita è la quantita da sottrarre all'esposizione
+     * @param es è l'esposizione che si intende diminuire
+     * @param elimina, se true vuol dire che la quantità rimasta in esposizione è 0, dunque elimina anche l'esposizione; se false non la elimina
+     */
     public static void diminuisciEsposizione(int quantita, Esposizione es, boolean elimina){
         try (val connection = Database.getConnection()) {
             if(elimina){
@@ -116,6 +131,11 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>aumentaEsposizione</code> aumenta la quantità di un prodotto gia in esposizione per un determinato lotto
+     * @param quantita è la quantità da aggiungere
+     * @param es contiene il prodotto e il lotto da aumentare
+     */
     public static void aumentaEsposizione(int quantita, Esposizione es){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
@@ -133,6 +153,11 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>inserisciEsposizione</code> mette in esposizione un prodotto appartenente a un lotto che non si trovava in esposizione
+     * @param quantita quantità da mettere in esposizione
+     * @param l lotto contenente i prodotti
+     */
     public static void inserisciEsposizione(int quantita, Lotto l){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
@@ -151,6 +176,10 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>visualizzaProdottiEspostiCassiere</code> restituisce i prodotti che sono in esposizione utile per la vista del cassiere sui prodotti
+     * @return ArrayList<Esposizione> ritorna un ArrayList di prodotti in esposizione
+     */
     public static ArrayList<Esposizione> visualizzaProdottiEspostiCassiere(){
         try (val connection = Database.getConnection())
         {
@@ -180,6 +209,10 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>getEsposizioneScaduti</code> restituisce tutti i prodotti scaduti in esposizione
+     * @return ArrayList<Esposizione> ritorna un ArrayList dei prodotti scaduti in esposizione
+     */
     public static ArrayList<Esposizione> getEsposizioneScaduti(){
         try (val connection = Database.getConnection())
         {
@@ -218,6 +251,11 @@ public class EsposizioneDAO
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Il metodo <code>rimuoviScaduto</code> elimina l'esposizione passata (scaduta) e azzera a quantità del lotto
+     * @param es esposizione scadura da rimuovere
+     */
     public static void rimuoviScaduto(Esposizione es){
 
         //se la quantita è 0, inutile la query
@@ -247,6 +285,10 @@ public class EsposizioneDAO
     }
 
 
+    /**
+     * Il metodo <code>getEsposizioneByLotto</code> restituisce l'esposizione relativa al lotto fornito
+     * @param l lotto di cui interessa l'esposizione
+     */
     public static Esposizione getEsposizioneByLotto(Lotto l){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
@@ -268,6 +310,11 @@ public class EsposizioneDAO
         }
     }
 
+    /**
+     * Il metodo <code>getEspostiByProdotto</code> restituisce la quantità totale del prodotto esposto passato come parametro
+     * @param p Prodotto del quale ci interessa la quantità
+     * @return intero, quantità in esposizione
+     */
     public static int getEspostiByProdotto(Prodotto p){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(

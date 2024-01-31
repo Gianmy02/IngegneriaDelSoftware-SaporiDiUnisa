@@ -13,6 +13,10 @@ import lombok.val;
 
 import java.io.IOException;
 
+/**
+ * @author Simone Vittoria
+ * La servlet <code>EliminaScaduti</code> elimina gli scaduti dallo scaffale
+ */
 @WebServlet(name = "EliminaScaduti", value = "/EliminaScaduti")
 public class EliminaScaduti extends HttpServlet {
     @Override

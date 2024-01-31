@@ -18,7 +18,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * @author Simone Vittoria
+ * La servlet <code>AggiungiScaffale</code> aggiunge o aumenta la quantità dei prodotti in esposizione
+ */
 @WebServlet(name = "AggiungiScaffale", value = "/AggiungiScaffale")
 public class AggiungiScaffale extends HttpServlet {
     @Override
