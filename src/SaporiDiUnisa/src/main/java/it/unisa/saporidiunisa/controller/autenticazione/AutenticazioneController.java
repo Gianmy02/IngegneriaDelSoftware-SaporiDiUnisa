@@ -12,7 +12,7 @@ public class AutenticazioneController
     /**
      * Effettua il login dei dipendenti verificando i propri pìn
      * @param pin pin del dipendente
-     * @return Dipendente loggato oppure null nel caso non esista nel db
+     * @return Dipendente accesso oppure null nel caso non esista nel db
      */
     public static Dipendente login(String pin)
     {
@@ -20,7 +20,7 @@ public class AutenticazioneController
     }
 
     /**
-     * Effettua la modifica del pin in un ruolo da parte dell'admin.
+     * Effettua la modifica del pin in un ruolo da di admin.
      * @param newPin pin nuovo da modificare nel dipendente
      * @param ruolo ruolo al quale modificare il pin
      * @return booleano di conferma

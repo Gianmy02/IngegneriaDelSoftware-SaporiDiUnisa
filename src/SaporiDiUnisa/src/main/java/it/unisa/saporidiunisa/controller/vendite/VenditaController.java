@@ -59,7 +59,7 @@ public class VenditaController {
      * Il metodo <code>visualizzaStoricoVendite</code> restituisce la somma delle attività di vendita di tutti i Prodotti in un determinato periodo scelto
      *
      * @param dataInizio data che delimita l'inizio del periodo
-     * @param dataFine   data che delimita la fine del periodo
+     * @param dataFine data che delimita la fine del periodo
      * @return ArrayList di venduti
      */
     public static ArrayList<Venduto> visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine) {
@@ -68,8 +68,7 @@ public class VenditaController {
 
     /**
      * Il metodo <code>visualizzaProdottiEsposti</code>mette in correlazione il db con le servlet ed e utile per la vista del cassiere sui prodotti
-     *
-     * @return prodotti esposti
+     * @return arrayList di prodotti esposti
      */
     public static ArrayList<Esposizione> visualizzaProdottiEsposti() {
         return EsposizioneDAO.visualizzaProdottiEspostiCassiere();
@@ -88,7 +87,6 @@ public class VenditaController {
 
     /**
      * Il metodo <code>getGuadagni</code> serve per avere la somma dei guadagni conseguiti nel periodo prescelto
-     *
      * @param dataInizio data per la delimitazione del periodo iniziale
      * @param dataFine   data per la delimitazione del periodo finale
      * @return guadagni, float
@@ -99,7 +97,6 @@ public class VenditaController {
 
     /**
      * Il metodo <code>getIncassiTotali</code> restituisce gli incassi fatti dal primo giorno di apertura
-     *
      * @return float incassi
      */
     public static float getIncassiTotali() {
@@ -108,7 +105,6 @@ public class VenditaController {
 
     /**
      * Il metodo <code>getIncassiTotali</code> restituisce i guadagni fatti dal primo giorno di apertura
-     *
      * @return float guadagni
      */
     public static float getGuadagniTotali() {
