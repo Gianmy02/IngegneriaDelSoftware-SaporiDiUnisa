@@ -25,7 +25,7 @@ public class RegistraFornituraTest extends Configuration{
     @AfterAll
     static void afterAll()
     {
-        driver.close();
+        driver.quit();
     }
     
     @Nested
