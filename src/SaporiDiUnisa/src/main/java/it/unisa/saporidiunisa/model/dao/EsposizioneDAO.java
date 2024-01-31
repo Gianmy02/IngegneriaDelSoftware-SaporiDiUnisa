@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * La classe <code>EsposizioneDAO</code> gestisce le transazioni nel DB per la tabella esposizione
+ */
 public class EsposizioneDAO
 {
 

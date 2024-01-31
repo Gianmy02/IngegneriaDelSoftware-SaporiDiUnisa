@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * La classe <code>FornituraDAO</code> gestisce le transazioni della tabella fornitura nel DB
+ */
 public class FornituraDAO
 {
     /**

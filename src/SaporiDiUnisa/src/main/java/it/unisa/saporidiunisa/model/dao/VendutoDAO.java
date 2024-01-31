@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * La classe <code>VendutoDAO</code> gestisce le transazioni nel DB per la tabella Venduto
+ */
 public class VendutoDAO
 {
     /**

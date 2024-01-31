@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * La classe <code>LottoDAO</code> gestisce le transazioni nel DB con la tabella Lotto
+ */
 public class LottoDAO
 {
     /**

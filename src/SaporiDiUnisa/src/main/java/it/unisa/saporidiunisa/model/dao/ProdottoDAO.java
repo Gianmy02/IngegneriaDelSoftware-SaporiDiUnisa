@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Il metodo <code>ProdottoDAO</code> gestisce la transazioni nel DB con la tabella Prodotto
+ */
 public class ProdottoDAO
 {
     /**

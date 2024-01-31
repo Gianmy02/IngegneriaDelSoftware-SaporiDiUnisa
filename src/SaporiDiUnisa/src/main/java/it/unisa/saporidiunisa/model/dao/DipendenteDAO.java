@@ -6,6 +6,9 @@ import lombok.val;
 
 import java.sql.SQLException;
 
+/**
+ * La classe <code>DipendenteDAO</code> gestisce le transazioni della tabella Dipendente nel DB
+ */
 public class DipendenteDAO
 {
     /**
