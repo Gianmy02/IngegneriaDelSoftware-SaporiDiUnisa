@@ -83,7 +83,7 @@ public class MagazzinoController {
 
     /**
      * Il metodo <code>visualizzaProdottiMagazzino</code> permette di avere per ogni prodotto tutti i lotti di quel prodotto
-     * @return HashMap<Prodotto, ArrayList<Lotto>>, per ogni prodotto si hanno tutti i lotti
+     * @return mappa con tutti i lotti per ogni prodotto
      */
     public static HashMap<Prodotto, ArrayList<Lotto>> visualizzaProdottiMagazzino() {
         return LottoDAO.getMagazzino();

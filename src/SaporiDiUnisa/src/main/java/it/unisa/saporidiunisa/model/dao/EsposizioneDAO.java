@@ -21,7 +21,7 @@ public class EsposizioneDAO
 
     /**
      * Il metodo <code>getEsposizione</code> restituisce tutti i prodotti in esposizione
-     * @return ArrayList<Esposizione> ritorna un ArrayList dei prodotti in esposizione
+     * @return lista di prodotti in esposizione
      */
     public static ArrayList<Esposizione> getEsposizione(){
         try (val connection = Database.getConnection())
@@ -65,7 +65,7 @@ public class EsposizioneDAO
     /**
      * Il metodo <code>getLottibyProdottoWithoutScaduti</code> restituisce i lotti che sono in esposizione e che non sono scaduti, relativi al prodotto passato come parametro
      * @param p prodotto del quale si vogliono ottenere i lotti in esposizione
-     * @return ArrayList<Esposizione> ritorna un ArrayList di lotti in esposizione relativi al prodotto senza scaduti
+     * @return lista di lotti in esposizione relativi al prodotto senza scaduti
      */
     public static ArrayList<Esposizione> getLottibyProdottoWithoutScaduti(Prodotto p){
         try (val connection = Database.getConnection())
@@ -181,7 +181,7 @@ public class EsposizioneDAO
 
     /**
      * Il metodo <code>visualizzaProdottiEspostiCassiere</code> restituisce i prodotti che sono in esposizione utile per la vista del cassiere sui prodotti
-     * @return ArrayList<Esposizione> ritorna un ArrayList di prodotti in esposizione
+     * @return lista di prodotti in esposizione
      */
     public static ArrayList<Esposizione> visualizzaProdottiEspostiCassiere(){
         try (val connection = Database.getConnection())
@@ -214,7 +214,7 @@ public class EsposizioneDAO
 
     /**
      * Il metodo <code>getEsposizioneScaduti</code> restituisce tutti i prodotti scaduti in esposizione
-     * @return ArrayList<Esposizione> ritorna un ArrayList dei prodotti scaduti in esposizione
+     * @return lista di prodotti scaduti in esposizione
      */
     public static ArrayList<Esposizione> getEsposizioneScaduti(){
         try (val connection = Database.getConnection())

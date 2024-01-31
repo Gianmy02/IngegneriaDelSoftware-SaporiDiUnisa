@@ -298,7 +298,7 @@ public class LottoDAO
 
     /**
      * Il metodo <code>getMagazzino</code> restituisce tutto il magazzino corrente con tutti i lotti non scaduti per ogni prodotto
-     * @return HashMap<Prodotto, ArrayList<Lotto>>
+     * @return mappa con lotti non scaduti per ogni prodotto
      */
     public static HashMap<Prodotto, ArrayList<Lotto>> getMagazzino(){
         try (val connection = Database.getConnection()) {

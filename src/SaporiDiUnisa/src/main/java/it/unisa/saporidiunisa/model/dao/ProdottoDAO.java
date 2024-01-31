@@ -17,7 +17,7 @@ public class ProdottoDAO
 {
     /**
      * Il metodo <code>selectAll</code> restituisce una lista di tutti i prodotti presenti nel database.
-     * @return ArrayList<Prodotto>
+     * @return lista di prodotti
      */
     public static ArrayList<Prodotto> selectAll()
     {

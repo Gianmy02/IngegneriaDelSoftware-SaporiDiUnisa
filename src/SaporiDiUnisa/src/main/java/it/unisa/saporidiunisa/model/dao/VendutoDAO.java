@@ -135,10 +135,10 @@ public class VendutoDAO
 
 
     /**
-     * Il metodo <code>getStorico</code> prende la somma dal db nei giorni richiesti di tutti i prodotti
+     * Il metodo <code>getStorico</code> prende la somma dal database nei giorni richiesti di tutti i prodotti
      * @param inizio delimitazione del periodo inferiore
      * @param fine delimitazione del periodo superiore
-     * @return ArrayList<Venduto> o null
+     * @return lista popolata, altrimenti null
      */
     public static ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine)
     {

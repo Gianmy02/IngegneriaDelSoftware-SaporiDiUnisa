@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * @author Simone Vittoria
- * La classe <code>ScaffaleController</code> si interpone fra il database e le operazioni da effettuare sullo scaffale
+ * La classe <code>ScaffaleController\</code> si interpone fra il database e le operazioni da effettuare sullo scaffale
  */
 public class ScaffaleController
 {
