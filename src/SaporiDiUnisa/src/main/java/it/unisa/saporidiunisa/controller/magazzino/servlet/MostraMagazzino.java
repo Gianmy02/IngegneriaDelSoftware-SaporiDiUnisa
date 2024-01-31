@@ -13,6 +13,10 @@ import lombok.val;
 
 import java.io.IOException;
 
+/**
+ * @author Gianmarco Riviello
+ * Servlet che mostra i prodotti presenti nel magazzino
+ */
 @WebServlet(name = "MostraMagazzino", value = "/MostraMagazzino")
 public class MostraMagazzino extends HttpServlet {
     @Override
@@ -26,5 +30,6 @@ public class MostraMagazzino extends HttpServlet {
             return;
         }
         session.setAttribute("magazzino", MagazzinoController.visualizzaProdottiMagazzino());
-        request.getRequestDispatcher("view/mostraProdottoLotti.jsp").forward(request, response);    }
+        request.getRequestDispatcher("view/mostraProdottoLotti.jsp").forward(request, response);
+    }
 }

@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * @author Gianmarco Riviello
+ * Servlet che mostra i lotti di un determinato prodotto
+ */
 @WebServlet(name = "MostraLottiProdotto", value = "/MostraLottiProdotto")
 public class MostraLottiProdotto extends HttpServlet {
     @Override
@@ -64,8 +68,5 @@ public class MostraLottiProdotto extends HttpServlet {
             req.setAttribute("message", "Prodotto non trovato");
             req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
         }
-
-
     }
-
 }

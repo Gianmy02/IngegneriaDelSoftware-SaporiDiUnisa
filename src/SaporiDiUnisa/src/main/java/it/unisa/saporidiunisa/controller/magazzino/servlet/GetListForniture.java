@@ -11,6 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.IOException;
 
+/**
+ * @author Salvatore Ruocco
+ * Servlet, chiamata tramite AJAX, per la visualizzazione delle forniture
+ */
+
 @WebServlet(name = "GetListForniture", value = "/GetListForniture")
 public class GetListForniture extends HttpServlet {
 

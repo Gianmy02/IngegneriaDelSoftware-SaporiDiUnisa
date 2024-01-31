@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 public class ProdottoDAO
 {
+    /**
+     * Il metodo <code>selectAll</code> restituisce una lista di tutti i prodotti presenti nel database.
+     * @return ArrayList<Prodotto>
+     */
     public static ArrayList<Prodotto> selectAll()
     {
         try (val connection = Database.getConnection())
@@ -30,6 +34,12 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>selectByNameAndBrand</code> restituisce un prodotto con un determinato nome e marchio.
+     * @param nome Nome del prodotto
+     * @param marchio Marchio del prodotto
+     * @return Prodotto
+     */
     public static Prodotto selectByNameAndBrand(final String nome, final String marchio)
     {
         try (val con = Database.getConnection())
@@ -47,6 +57,10 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>insert</code> inserisce un prodotto nel database.
+     * @param prodotto Prodotto da inserire
+     */
     public static void insert(final Prodotto prodotto)
     {
         try (val con = Database.getConnection())
@@ -64,6 +78,10 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getLastId</code> restituisce l'id dell'ultimo prodotto inserito nel database.
+     * @return int
+     */
     public static int getLastId()
     {
         try (val con = Database.getConnection())
@@ -78,6 +96,11 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>updatePrice</code> aggiorna il prezzo di un prodotto.
+     * @param prezzo Prezzo del prodotto
+     * @param id Id del prodotto
+     */
     public static void updatePrice(final float prezzo, final int id)
     {
         try (val con = Database.getConnection())
@@ -93,6 +116,11 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>updateSconto</code> aggiorna lo sconto di un prodotto.
+     * @param p Prodotto
+     * @return boolean true se l'aggiornamento è andato a buon fine, false altrimenti
+     */
     public static boolean updateSconto(Prodotto p)
     {
         try (val con = Database.getConnection())
@@ -110,6 +138,10 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>findProdottoById</code> trova un prodotto nel database tramite il suo id.
+     * @param id Id del prodotto da trovare
+     */
     public static Prodotto findProdottoById(int id)
     {
         try (val con = Database.getConnection())
@@ -125,6 +157,10 @@ public class ProdottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>buildBySQL</code> costruisce un prodotto tramite una query SQL.
+     * @param rs ResultSet
+     */
     public static Prodotto buildBySQL(final ResultSet rs) throws SQLException
     {
         try {

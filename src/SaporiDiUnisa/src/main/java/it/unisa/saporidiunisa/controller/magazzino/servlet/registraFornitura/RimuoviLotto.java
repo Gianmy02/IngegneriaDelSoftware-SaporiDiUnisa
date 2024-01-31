@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.val;
 
 /**
+ * @author Salvatore Ruocco
  * Servlet, invocata tramite AJAX, che gestisce la rimozione di un lotto dalla fornitura che si sta inserendo
  */
 @WebServlet(name = "RimuoviLotto", value = "/RimuoviLotto")

@@ -13,6 +13,10 @@ import lombok.val;
 
 import java.io.IOException;
 
+/**
+ * @author Gianmarco Riviello
+ * Servlet eseguita da un admin per l'eliminazione di un lotto
+ */
 @WebServlet(name = "EliminaLotto", value = "/EliminaLotto")
 public class EliminaLotto extends HttpServlet {
     @Override

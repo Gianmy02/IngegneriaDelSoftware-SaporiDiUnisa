@@ -15,6 +15,11 @@ import lombok.val;
 
 import java.io.IOException;
 
+/**
+ * @author Salvatore Ruocco
+ * Servlet che registra la fornitura presente in sessione
+ */
+
 @WebServlet(name = "RegistraFornitura", value = "/RegistraFornitura")
 public class RegistraFornitura extends HttpServlet {
 
