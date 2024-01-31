@@ -13,6 +13,10 @@ import java.util.List;
 
 public class FornituraDAO
 {
+    /**
+     * Il metodo <code>insert</code> inserisce una nuova fornitura nel DB
+     * @param fornitura
+     */
     public static void insert(final Fornitura fornitura)
     {
         try (val con = Database.getConnection())
@@ -27,6 +31,10 @@ public class FornituraDAO
         }
     }
 
+    /**
+     * Il metodo <code>getLastId</code> cerca l'ultima fornitura inserita
+     * @return id intero o, nel caso non venga trovato 0
+     */
     public static int getLastId()
     {
         try (val con = Database.getConnection())
@@ -41,6 +49,10 @@ public class FornituraDAO
         }
     }
 
+    /**
+     * Il metodo <code>selectAll</code> ritorna tutte le forniture arrivate, contenute nel DB
+     * @return Lista di forniture
+     */
     public static List<Fornitura> selectAll(){
         try (val connection = Database.getConnection()){
             val rs = connection.prepareStatement(

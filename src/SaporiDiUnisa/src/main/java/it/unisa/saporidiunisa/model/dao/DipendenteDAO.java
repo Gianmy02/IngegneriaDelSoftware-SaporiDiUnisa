@@ -8,6 +8,11 @@ import java.sql.SQLException;
 
 public class DipendenteDAO
 {
+    /**
+     * Il metodo <code>findDipendenteByPin</code> cerca nel database nella tabella dipendente uno che abbia un pin uguale a quello inviato
+     * @param pin stringa per trovare un determinato dipendente
+     * @return Dipendente trovato oppure null
+     */
     public static Dipendente findDipendenteByPin(String pin)
     {
         try (val connection = Database.getConnection())
@@ -33,6 +38,13 @@ public class DipendenteDAO
         }
     }
 
+    /**
+     * Il metodo <code>updatePin</code> cerca nella tabella dipendente del DB se un dipendente ha già il pin passato
+     * nel caso non sia così effettua una modifica del pin del ruolo passato
+     * @param pin Stringa, nuovo pin
+     * @param ruolo Ruolo al quale modificare il pin
+     * @return booleano di conferma
+     */
     public static boolean updatePin(String pin, Dipendente.Ruolo ruolo)
     {
         try (val connection = Database.getConnection())

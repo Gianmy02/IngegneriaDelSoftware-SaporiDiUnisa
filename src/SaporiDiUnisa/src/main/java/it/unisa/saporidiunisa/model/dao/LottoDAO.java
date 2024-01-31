@@ -31,6 +31,10 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>insert</code> inserisce nel DB un nuovo Lotto
+     * @param lotto
+     */
     public static void insert(final Lotto lotto)
     {
         try (val con = Database.getConnection())
@@ -50,6 +54,10 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getSpeseTotali</code> restituisce la somma delle spese effettuate per tutti i lotti nel DB
+     * @return float, nel caso di nessun riscontro 0
+     */
     public static float getSpeseTotali()
     {
         try (val connection = Database.getConnection())
@@ -65,6 +73,12 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getIncassi</code> restituisce le spese avute in un periodo inserito
+     * @param inizio delimitazione del periodo inferiore
+     * @param fine delimitazione del periodo superiore
+     * @return float, in caso di nessun riscontro tornerà 0.
+     */
     public static float getSpese(LocalDate inizio, LocalDate fine)
     {
         try (val connection = Database.getConnection())
@@ -84,6 +98,7 @@ public class LottoDAO
 
     /**
      * Restituisce tutti i lotti scaduti con solo gli attributi che servono
+     * @return ArrayList di lotti
      */
     public static ArrayList<Lotto> getPerditeTotali()
     {
@@ -148,6 +163,10 @@ public class LottoDAO
     }
 
 
+    /**
+     * Il metodo <code>getLottiWithoutEsposizione</code> restituisce tutti i lotti non scaduti nel DB che non hanno nessun prodotto in esposizione
+     * @return ArrayList di lotti
+     */
     public static ArrayList<Lotto> getLottiWithoutEsposizione()
     {
         try (val connection = Database.getConnection())
@@ -199,6 +218,11 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>diminuisciLotto</code> diminuisce la quantità attuale del lotto
+     * @param id id del Lotto
+     * @param qnt quantità da diminuire nel DB
+     */
     public static void diminuisciLotto(int id, int qnt){
 
         try (val connection = Database.getConnection()) {
@@ -217,6 +241,10 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>eliminaLotto</code> elimina un lotto scelto
+     * @param l Lotto da eliminare
+     */
     public static void eliminaLotto(Lotto l){
 
         try (val connection = Database.getConnection()) {
@@ -234,6 +262,11 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getLottoById</code> restituisce un lotto per un id inserito
+     * @param id id del lotto da ricercare
+     * @return Lotto oppure null nel caso non esista un lotto con l'id passato
+     */
     public static Lotto getLottoById(int id){
         try (val connection = Database.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
@@ -274,6 +307,10 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getMagazzino</code> restituisce tutto il magazzino corrente con tutti i lotti non scaduti per ogni prodotto
+     * @return HashMap<Prodotto, ArrayList<Lotto>>
+     */
     public static HashMap<Prodotto, ArrayList<Lotto>> getMagazzino(){
         try (val connection = Database.getConnection()) {
             val ps = connection.prepareStatement(
@@ -319,6 +356,12 @@ public class LottoDAO
         }
     }
 
+    /**
+     * Il metodo <code>_productIsInHashMap</code> verifica se il prodotto passato è gia contenuto nella hashmap
+     * @param hashMap del magazzino, con un array di lotti per ogni prodotto
+     * @param prodotto Prodotto da ricercare
+     * @return ArrayList di lotti o null
+     */
     private static ArrayList<Lotto> _productIsInHashMap(final HashMap<Prodotto, ArrayList<Lotto>> hashMap, final Prodotto prodotto){
         for (val p : hashMap.keySet())
             if (p.getId() == prodotto.getId())

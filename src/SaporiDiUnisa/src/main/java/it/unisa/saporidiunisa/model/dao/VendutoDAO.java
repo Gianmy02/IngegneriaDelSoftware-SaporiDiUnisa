@@ -13,6 +13,12 @@ import java.util.ArrayList;
 
 public class VendutoDAO
 {
+    /**
+     * Il metodo <code>getVendutiGiornalieroByProdotto</code> ricerca, per il prodotto passato nel DB, tutti i dati
+     * di vendita della giornata odierna e li restituisce
+     * @param p Prodotto
+     * @return oggetto Venduto, oppure null
+     */
     public static Venduto getVendutiGiornalieroByProdotto(Prodotto p)
     {
         try (val connection = Database.getConnection())
@@ -39,6 +45,11 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>doSaveVendita</code> salva una nuova Vendita nel giorno corrente di un prodotto ancora mai Venduto
+     * @param v Oggetto Venduto, Prodotto con la propria quantità, costo e guadagno
+     * @return booleano di conferma
+     */
     public static boolean doSaveVendita(Venduto v)
     {
         try (val connection = Database.getConnection())
@@ -58,6 +69,9 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>doSaveGiornoLavorativo</code> salva il giorno corrente nella tabella del db
+     */
     public static void doSaveGiornoLavorativo()
     {
         try (val connection = Database.getConnection())
@@ -75,6 +89,10 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>searchGiornoLavorativo</code> cerca nel DB se il giorno odierno è già contenuto
+     * @return booleano, se è contenuto ritorna false, in caso contrario true
+     */
     public static boolean searchGiornoLavorativo()
     {
         try (val connection = Database.getConnection())
@@ -89,6 +107,11 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>doUpdateVendita</code> modifica nel DB il guadagno e la quantità venduta del giorno odierno aggiungendoli a quelli correnti
+     * @param v Venduto, prodotto appena venduto
+     * @return booleano di conferma
+     */
     public static boolean doUpdateVendita(Venduto v)
     {
         try (val connection = Database.getConnection())
@@ -108,7 +131,12 @@ public class VendutoDAO
     }
 
 
-    /*la funzione prende la somma dal db nei giorni richiesti di tutti i prodotti*/
+    /**
+     * Il metodo <code>getStorico</code> prende la somma dal db nei giorni richiesti di tutti i prodotti
+     * @param inizio delimitazione del periodo inferiore
+     * @param fine delimitazione del periodo superiore
+     * @return ArrayList<Venduto> o null
+     */
     public static ArrayList<Venduto> getStorico(LocalDate inizio, LocalDate fine)
     {
         try (val connection = Database.getConnection())
@@ -142,6 +170,10 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getIncassiTotali</code> restituisce gli incassi totali contenuti nel DB
+     * @return float, nel caso di risultato vuoto 0
+     */
     public static float getIncassiTotali()
     {
         try (val connection = Database.getConnection())
@@ -157,6 +189,10 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getGuadagniTotali</code> restituisce i guadagni totali contenuti nel DB
+     * @return float, nel caso di risultato vuoto 0
+     */
     public static float getGuadagniTotali()
     {
         try (val connection = Database.getConnection())
@@ -172,6 +208,12 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getIncassi</code> restituisce gli incassi avuti in un periodo inserito
+     * @param inizio delimitazione del periodo inferiore
+     * @param fine delimitazione del periodo superiore
+     * @return float, in caso di nessun riscontro tornerà 0.
+     */
     public static float getIncassi(LocalDate inizio, LocalDate fine)
     {
         try (val connection = Database.getConnection())
@@ -189,6 +231,12 @@ public class VendutoDAO
         }
     }
 
+    /**
+     * Il metodo <code>getGuadagni</code> restituisce i guadagni avuti in un periodo inserito
+     * @param inizio delimitazione del periodo inferiore
+     * @param fine delimitazione del periodo superiore
+     * @return float, in caso di nessun riscontro tornerà 0.
+     */
     public static float getGuadagni(LocalDate inizio, LocalDate fine)
     {
         try (val connection = Database.getConnection())
