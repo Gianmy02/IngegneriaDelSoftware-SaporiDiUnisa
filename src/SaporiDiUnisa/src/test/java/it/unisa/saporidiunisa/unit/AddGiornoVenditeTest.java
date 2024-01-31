@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class UnitTest
+public class AddGiornoVenditeTest
 {
     /*la funzione testa la addGiornoVendite di VenditaController, funzione dedita all'aggiunta
     del giorno corrrente nel db, siccome lavorativo
