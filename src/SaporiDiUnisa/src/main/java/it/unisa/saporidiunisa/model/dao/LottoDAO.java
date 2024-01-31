@@ -354,4 +354,19 @@ public class LottoDAO
                 return hashMap.get(p);
         return null;
     }
+
+    public static void updateDataScadenza(Lotto lottoTmp, LocalDate dataScadenza) {
+        try (val connection = Database.getConnection()) {
+            val ps = connection.prepareStatement("UPDATE lotto SET data_scadenza = ? WHERE id = ?");
+            ps.setDate(1, Date.valueOf(dataScadenza));
+            ps.setInt(2, lottoTmp.getId());
+
+            if (ps.executeUpdate() != 1) {
+                throw new RuntimeException("UPDATE error.");
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
