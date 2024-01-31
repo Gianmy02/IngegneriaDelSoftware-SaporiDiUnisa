@@ -3,7 +3,7 @@ insert into fornitura (giorno) values
 ('2024-01-11');
 
 insert into prodotto (nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fine_sconto, foto) values
-('Pasta', 'Garofalo', 10.00, NULL, NULL, NULL, 1112x1168 JPEG image 122,4 kB);
+('Pasta', 'Garofalo', 10.00, NULL, NULL, NULL, 'BLOB1');
 
 insert into lotto (costo, data_scadenza, quantita, quantita_attuale, fornitura, prodotto) values
 (500.00, '2025-01-31', 100, 80, 1, 1),
