@@ -7,7 +7,7 @@ insert into prodotto (nome, marchio, prezzo, prezzo_scontato, inizio_sconto, fin
 
 insert into lotto (costo, data_scadenza, quantita, quantita_attuale, fornitura, prodotto) values
 (500.00, '2025-01-31', 100, 80, 1, 1),
-(500.00, '2025-01-31', 100, 100, 1, 1);
+(500.00, '2025-02-15', 100, 100, 1, 1);
 
 insert into esposizione (prodotto, lotto, quantita) values
 (1, 1, 20);
