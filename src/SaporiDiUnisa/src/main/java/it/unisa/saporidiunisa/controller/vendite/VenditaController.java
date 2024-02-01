@@ -9,8 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * @author Gianmarco Riviello
  * La classe <code>VenditaController</code>si interpone fra il database e le servlet rispetto alle vendite
+ * @author Gianmarco Riviello
  */
 public class VenditaController {
     /**

@@ -13,8 +13,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * @author Salvatore Ruocco
  * Servlet, invocata tramite AJAX, che ritorna l'oggetto fornitura in sessione
+ * @author Salvatore Ruocco
  */
 @WebServlet(name = "GetFornituraSession", value = "/GetFornituraSession")
 public class GetFornituraSession extends HttpServlet {

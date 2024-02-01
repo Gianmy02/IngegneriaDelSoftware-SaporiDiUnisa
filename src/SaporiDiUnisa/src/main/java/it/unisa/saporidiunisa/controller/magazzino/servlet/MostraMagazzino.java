@@ -14,8 +14,8 @@ import lombok.val;
 import java.io.IOException;
 
 /**
- * @author Gianmarco Riviello
  * Servlet che mostra i prodotti presenti nel magazzino
+ * @author Gianmarco Riviello
  */
 @WebServlet(name = "MostraMagazzino", value = "/MostraMagazzino")
 public class MostraMagazzino extends HttpServlet {

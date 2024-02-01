@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 /**
- * @author Antonio Facchiano
  * La servlet <code>bilancioPeriodoServlet</code> visualizza il bilancio tra due date
+ * @author Antonio Facchiano
  */
 @WebServlet(name = "bilancioPeriodoServlet", value = "/bilancio-periodo-servlet")
 public class BilancioPeriodoServlet extends HttpServlet

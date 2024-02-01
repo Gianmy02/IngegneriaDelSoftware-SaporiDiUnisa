@@ -11,8 +11,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * @author Salvatore Ruocco
  * Servlet, invocata tramite AJAX, che ritorna tutti i prodotti presenti nel db
+ * @author Salvatore Ruocco
  */
 @WebServlet(name = "GetProdotti", value = "/GetProdotti")
 public class GetProdotti extends HttpServlet {

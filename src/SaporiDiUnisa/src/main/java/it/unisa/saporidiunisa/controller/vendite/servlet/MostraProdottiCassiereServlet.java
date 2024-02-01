@@ -14,8 +14,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * @author Gianmarco Riviello
  * La servlet <code>MostraProdottiCassiereServlet</code> restituisce nella sessione i prodotti esposti nel supermercato per la vista del cassiere
+ * @author Gianmarco Riviello
  */
 @WebServlet(name = "MostraProdottiCassiereServlet", value = "/MostraProdottiCassiereServlet")
 public class MostraProdottiCassiereServlet extends HttpServlet {

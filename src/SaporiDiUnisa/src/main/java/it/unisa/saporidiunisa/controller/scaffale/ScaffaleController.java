@@ -9,8 +9,8 @@ import it.unisa.saporidiunisa.model.entity.Prodotto;
 import java.util.ArrayList;
 
 /**
- * @author Simone Vittoria
  * La classe <code>ScaffaleController\</code> si interpone fra il database e le operazioni da effettuare sullo scaffale
+ * @author Simone Vittoria
  */
 public class ScaffaleController
 {

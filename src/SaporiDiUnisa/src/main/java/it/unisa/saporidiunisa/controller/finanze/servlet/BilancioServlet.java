@@ -14,8 +14,8 @@ import lombok.val;
 import java.io.IOException;
 
 /**
- * @author Antonio Facchiano
  * La servlet <code>bilancioServet</code> visualizza il bilancio completo
+ * @author Antonio Facchiano
  */
 @WebServlet(name = "bilancioServet", value = "/bilancio-servlet")
 public class BilancioServlet extends HttpServlet

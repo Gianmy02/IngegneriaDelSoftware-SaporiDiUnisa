@@ -6,9 +6,9 @@ import java.time.Duration;
 import java.util.HashMap;
 
 /**
- * @author Salvatore Ruocco
  * Attacco di tipo bruteforce sul login
- * Stampa in output i pin che hanno permesso l'accesso e la pagina a cui si viene reindirizzati
+ * Stampa a video i pin che hanno permesso l'accesso e la pagina a cui si viene reindirizzati
+ * @author Salvatore Ruocco
  */
 public class LoginBruteforce extends Configuration{
     public static void main(String[] args) {

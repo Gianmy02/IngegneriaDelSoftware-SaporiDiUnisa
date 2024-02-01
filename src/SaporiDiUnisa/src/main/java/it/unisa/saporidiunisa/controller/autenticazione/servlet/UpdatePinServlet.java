@@ -15,8 +15,8 @@ import lombok.val;
 import java.io.IOException;
 
 /**
- * @author Antonio Facchiano, Gianmarco Riviello
  * La servlet <code>updatePinServlet</code> consente di modificare il pin di accesso di un account del sistema
+ * @author Antonio Facchiano, Gianmarco Riviello
  */
 @WebServlet(name = "updatePinServlet", value = "/update-pin-servlet")
 public class UpdatePinServlet extends HttpServlet

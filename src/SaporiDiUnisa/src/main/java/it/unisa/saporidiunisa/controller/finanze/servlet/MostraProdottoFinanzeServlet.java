@@ -14,8 +14,8 @@ import lombok.val;
 import java.io.IOException;
 
 /**
- * @author Antonio Facchiano
  * La servlet <code>mostraProdottoFinanzeServlet</code> mostra il prodotto scelto
+ * @author Antonio Facchiano
  */
 @WebServlet(name = "mostraProdottoFinanzeServlet", value = "/mostra-prodotto-finanze-servlet")
 public class MostraProdottoFinanzeServlet extends HttpServlet

@@ -12,8 +12,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * @author Antonio Facchiano, Gianmarco Riviello
  * La classe <code>FinanzeController</code> viene utilizzata per attingere al database e avere dati o funzioni utili in merito all'ambito finanziario
+ * @author Antonio Facchiano, Gianmarco Riviello
  */
 public class FinanzeController
 {

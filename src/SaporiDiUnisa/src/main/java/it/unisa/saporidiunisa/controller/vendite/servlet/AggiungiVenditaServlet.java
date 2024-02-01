@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Gianmarco Riviello
  * La servlet <code>aggiungiVenditaServlet</code> funge con AJAX e salva una vendita nel db
+ * @author Gianmarco Riviello
  */
 @WebServlet(name = "aggiungiVenditaServlet", value = "/aggiungi-vendita-servlet")
 public class AggiungiVenditaServlet extends HttpServlet

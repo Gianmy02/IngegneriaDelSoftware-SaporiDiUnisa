@@ -4,8 +4,8 @@ import it.unisa.saporidiunisa.model.dao.DipendenteDAO;
 import it.unisa.saporidiunisa.model.entity.Dipendente;
 
 /**
- * @author Riviello Gianmarco, Antonio Facchiano
  * Un oggetto <code>AutenticazioneController</code> mette il relazione il dabatabase con tutti i metodi messi a disposizione per l'autenticazione. Da richiamare nelle servlet
+ * @author Riviello Gianmarco, Antonio Facchiano
  */
 public class AutenticazioneController
 {

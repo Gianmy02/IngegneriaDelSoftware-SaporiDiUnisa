@@ -12,8 +12,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * @author Salvatore Ruocco
  * Servlet, chiamata tramite AJAX, per la visualizzazione delle forniture
+ * @author Salvatore Ruocco
  */
 
 @WebServlet(name = "GetListForniture", value = "/GetListForniture")

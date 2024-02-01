@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 /**
- * @author Antonio Facchiano
  * La servlet <code>impostaScontoServlet</code> inserisce uno sconto per un prodotto
+ * @author Antonio Facchiano
  */
 @WebServlet(name = "impostaScontoServlet", value = "/imposta-sconto-servlet")
 public class ImpostaScontoServlet extends HttpServlet

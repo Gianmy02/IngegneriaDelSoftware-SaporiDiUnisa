@@ -13,8 +13,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * @author Salvatore Ruocco
  * La classe <code>MagazzinoController</code> funge da tramite fra il database e le servlet per le operazioni sul magazzino
+ * @author Salvatore Ruocco
  */
 public class MagazzinoController {
     /**

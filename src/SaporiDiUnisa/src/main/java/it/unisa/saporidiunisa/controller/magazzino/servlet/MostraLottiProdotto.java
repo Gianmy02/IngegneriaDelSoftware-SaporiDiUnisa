@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * @author Gianmarco Riviello
  * Servlet che mostra i lotti di un determinato prodotto
+ * @author Gianmarco Riviello
  */
 @WebServlet(name = "MostraLottiProdotto", value = "/MostraLottiProdotto")
 public class MostraLottiProdotto extends HttpServlet {

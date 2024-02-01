@@ -16,8 +16,8 @@ import lombok.val;
 import java.io.IOException;
 
 /**
- * @author Salvatore Ruocco
  * Servlet che registra la fornitura presente in sessione
+ * @author Salvatore Ruocco
  */
 
 @WebServlet(name = "RegistraFornitura", value = "/RegistraFornitura")

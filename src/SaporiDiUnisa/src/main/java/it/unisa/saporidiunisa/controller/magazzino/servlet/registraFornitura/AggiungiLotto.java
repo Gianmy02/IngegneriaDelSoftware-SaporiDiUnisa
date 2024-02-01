@@ -18,8 +18,8 @@ import java.time.LocalDate;
 import org.apache.commons.io.IOUtils;
 
 /**
- * @author Salvatore Ruocco
  * Servlet, invocata tramite AJAX, che gestisce l'aggiunta di un lotto alla fornitura che si sta inserendo
+ * @author Salvatore Ruocco
  */
 @MultipartConfig
 @WebServlet(name = "AggiungiLotto", value = "/AggiungiLotto")
