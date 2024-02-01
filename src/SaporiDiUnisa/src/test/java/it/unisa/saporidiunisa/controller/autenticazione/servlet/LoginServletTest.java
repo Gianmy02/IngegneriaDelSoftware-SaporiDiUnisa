@@ -69,11 +69,8 @@ class LoginServletTest extends ServletTest
         @AfterEach
         void afterEach() throws ServletException, IOException
         {
-            try (val autenticazioneController = mockStatic(AutenticazioneController.class, Answers.CALLS_REAL_METHODS);
-                 val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
+            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))
             {
-                val dipendente = new Dipendente(1, Dipendente.Ruolo.ADMIN, "8547");
-                autenticazioneController.when(() -> AutenticazioneController.login("8547")).thenReturn(dipendente);
 
                 utils.verify(() -> Utils.dispatchError(any(), any(), any()), never());
 
@@ -85,7 +82,7 @@ class LoginServletTest extends ServletTest
         @DisplayName("3.1.3")
         void tc_3_1_3()
         {
-            populateRequest(ofEntries(entry("pin", "8547")));
+            populateRequest(ofEntries(entry("pin", "1234")));
         }
     }
 }
