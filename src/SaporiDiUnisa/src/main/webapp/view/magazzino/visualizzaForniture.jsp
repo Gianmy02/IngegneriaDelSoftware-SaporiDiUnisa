@@ -30,6 +30,5 @@
             </tbody>
         </table>
     </main>
-<%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>

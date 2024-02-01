@@ -74,7 +74,6 @@
         <a href="${pageContext.request.contextPath}/view/select/cassiere.jsp"><button id="cancel-button">Indietro</button></a>
     </div>
 </div>
-<%@ include file="/WEB-INF/include/footer.html" %>
 
 </body>
 </html>

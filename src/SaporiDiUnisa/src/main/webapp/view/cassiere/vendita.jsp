@@ -79,7 +79,6 @@
         <a href="${pageContext.request.contextPath}/view/select/cassiere.jsp"><button id="cancel-button">Annulla</button></a>
         <button id="confirm-button" onclick="confirmSale()">Conferma</button>
     </div>
-    <%@ include file="/WEB-INF/include/footer.html" %>
 </div>
 
 </body>

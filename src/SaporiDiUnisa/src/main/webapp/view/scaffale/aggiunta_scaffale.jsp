@@ -119,6 +119,5 @@
     </a>
 
 </main>
-<%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>

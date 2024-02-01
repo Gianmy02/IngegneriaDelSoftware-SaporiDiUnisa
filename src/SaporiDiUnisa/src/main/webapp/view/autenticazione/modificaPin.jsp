@@ -27,6 +27,5 @@
                 <input type="submit" value="Modifica" class="btn">
             </form>
         </main>
-        <%@ include file="/WEB-INF/include/footer.html" %>
     </body>
 </html>
