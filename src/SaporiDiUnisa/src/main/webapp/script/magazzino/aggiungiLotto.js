@@ -15,22 +15,7 @@ $(document).ready(function(){
                 list_errors.css("display", "none");
                 list_errors.empty();
 
-                const tr = $("<tr></tr>")
-                    .append($("<td></td>").text(json.nome))
-                    .append($("<td></td>").text(json.marchio))
-                    .append($("<td></td>").text(json.prezzo))
-                    .append($("<td></td>").text(json.quantita))
-                    .append($("<td></td>").text(json.dataScadenza))
-                    .append($("<td></td>")
-                        .append($("<button></button>")
-                            .attr("id", "btn-" + json.keyId)
-                            .text("Elimina")
-                            .click(function () {
-                                _deleteLotto(json.keyId)
-                            })
-                        )
-                    );
-                table_lottiInseriti.append(tr);
+                _buildTableRow(json);
             },
             error: function(error) {
                 const errors = error.responseJSON.message;
@@ -45,6 +30,38 @@ $(document).ready(function(){
             }
         });
     });
+
+    // Ottiene la lista dei lotti in sessione quando si carica la pagina
+    $.get({
+        url: 'GetFornituraSession',
+        success: function(json) {
+            for(let i = 0; i < json.length; i++)
+                _buildTableRow(json[i]);
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    });
+
+    // Costruisce una riga della tabella
+    function _buildTableRow(json){
+        const tr = $("<tr></tr>")
+            .append($("<td></td>").text(json.nome))
+            .append($("<td></td>").text(json.marchio))
+            .append($("<td></td>").text(json.prezzo))
+            .append($("<td></td>").text(json.quantita))
+            .append($("<td></td>").text(json.dataScadenza))
+            .append($("<td></td>")
+                .append($("<button></button>")
+                    .attr("id", "btn-" + json.keyId)
+                    .text("Elimina")
+                    .click(function () {
+                        _deleteLotto(json.keyId)
+                    })
+                )
+            );
+        table_lottiInseriti.append(tr);
+    }
 
     // Elimina il lotto dalla tabella
     function _deleteLotto(keyId){

@@ -5,7 +5,6 @@ import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
 import it.unisa.saporidiunisa.model.dao.LottoDAO;
 import it.unisa.saporidiunisa.model.entity.Esposizione;
 import it.unisa.saporidiunisa.model.entity.Lotto;
-import lombok.val;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;

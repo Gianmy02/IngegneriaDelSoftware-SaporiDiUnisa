@@ -1,6 +1,7 @@
 package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
 
 import it.unisa.saporidiunisa.model.entity.Fornitura;
+import it.unisa.saporidiunisa.utils.Patterns;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ public class GetFornituraSession extends HttpServlet {
             json.put("marchio", l.getProdotto().getMarchio());
             json.put("prezzo", String.format("%.2f €", l.getCosto() / l.getQuantita()));
             json.put("quantita", l.getQuantita());
-            json.put("dataScadenza", l.getDataScadenza().toString());
+            json.put("dataScadenza", l.getDataScadenza().format(Patterns.DATE_TIME_FORMATTER));
             jsonArray.put(json);
         }
         resp.setContentType("application/json");
