@@ -144,7 +144,8 @@ public class ProdottoDAO
     /**
      * Il metodo <code>findProdottoById</code> trova un prodotto nel database tramite il suo id.
      * @param id Id del prodotto da trovare
-     */
+     * @return Prodotto trovato oppure nel caso non si trovi null
+     * */
     public static Prodotto findProdottoById(int id)
     {
         try (val con = Database.getConnection())
@@ -163,6 +164,7 @@ public class ProdottoDAO
     /**
      * Il metodo <code>buildBySQL</code> costruisce un prodotto tramite una query SQL.
      * @param rs ResultSet
+     * @return oggetto prodotto costruito
      */
     public static Prodotto buildBySQL(final ResultSet rs) throws SQLException
     {

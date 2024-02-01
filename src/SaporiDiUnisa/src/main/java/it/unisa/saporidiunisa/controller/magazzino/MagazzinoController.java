@@ -97,6 +97,12 @@ public class MagazzinoController {
         return FornituraDAO.selectAll();
     }
 
+    /**
+     * Il metodo <code>getSpese</code> ritorna la somma delle spese (costi dei lotti) comprati in quel periodo
+     * @param dataInizio data inizio del periodo scelto
+     * @param dataFine data fine del periodo scelto
+     * @return float
+     */
     public static float getSpese(LocalDate dataInizio, LocalDate dataFine) {
         return LottoDAO.getSpese(dataInizio, dataFine);
     }

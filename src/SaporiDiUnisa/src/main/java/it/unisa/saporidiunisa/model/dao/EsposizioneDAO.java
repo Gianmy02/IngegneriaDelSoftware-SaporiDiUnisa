@@ -291,6 +291,7 @@ public class EsposizioneDAO
     /**
      * Il metodo <code>getEsposizioneByLotto</code> restituisce l'esposizione relativa al lotto fornito
      * @param l lotto di cui interessa l'esposizione
+     * @return esposizone trovata oppure null in caso non si trovi
      */
     public static Esposizione getEsposizioneByLotto(Lotto l){
         try (val connection = Database.getConnection()) {
