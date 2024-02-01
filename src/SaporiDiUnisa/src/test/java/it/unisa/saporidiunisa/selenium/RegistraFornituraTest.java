@@ -4,8 +4,11 @@ import lombok.val;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 
 public class RegistraFornituraTest extends Configuration {
 
@@ -26,6 +29,8 @@ public class RegistraFornituraTest extends Configuration {
 
         @AfterEach
         void afterEach() {
+            final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+            wait.until(ExpectedConditions.textToBe(By.id("errors"), errorString));
             Assertions.assertEquals(driver.findElement(By.id("errors")).getText(), errorString);
         }
 
