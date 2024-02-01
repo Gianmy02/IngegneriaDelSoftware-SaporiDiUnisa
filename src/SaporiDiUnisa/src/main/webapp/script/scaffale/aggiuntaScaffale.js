@@ -14,28 +14,43 @@ $(document).ready(function() {
         var operazioniM = "Riepilogo Operazioni Magazzino:\n\n";
         var operazioniTotali = "";
         var qntMax;
+        var error = false;
 
         $(".RigaS").each(function() {
 
             qnt = $(this).find("input[type='number']").val();
             qntMax = parseInt($(this).find("input[type='number']").attr("max"), 10);
 
-            if(qnt > qntMax){
-                alert("La quantità specificata è maggiore di quella disponibile");
-                return;
+            if(qnt === "" || isNaN(qnt))
+            {
+                error = true;
+                console.log("error")
             }
+            else
+            {
 
-            if(qnt < 0){
-                alert("La quantità non può essere minore di 0");
-                return;
-            }
+                if (qnt > qntMax)
+                {
+                    alert("La quantità specificata è maggiore di quella disponibile");
+                    error = true;
+                    return;
+                }
 
-            if (qnt > 0) {
-                idLotto = $(this).find(".idLottoS").text();
-                nomeProdotto = $(this).find(".nomeProdottoS").text();
-                scadenza = $(this).find(".dataScadenzaS").text();
+                if (qnt < 0)
+                {
+                    alert("La quantità non può essere minore di 0");
+                    error = true;
+                    return;
+                }
 
-                operazioniS += "Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Scadenza: " + scadenza + ", Qnt Aggiunta: " + qnt + ";\n\n";
+                if (qnt > 0)
+                {
+                    idLotto = $(this).find(".idLottoS").text();
+                    nomeProdotto = $(this).find(".nomeProdottoS").text();
+                    scadenza = $(this).find(".dataScadenzaS").text();
+
+                    operazioniS += "Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Scadenza: " + scadenza + ", Qnt Aggiunta: " + qnt + ";\n\n";
+                }
             }
 
         });
@@ -45,22 +60,34 @@ $(document).ready(function() {
             qnt = $(this).find("input[type='number']").val();
             qntMax = parseInt($(this).find("input[type='number']").attr("max"), 10);
 
-            if(qnt > qntMax){
-                alert("La quantità specificata è maggiore di quella disponibile");
-                return;
+            if(qnt === "" || isNaN(qnt))
+            {
+                error = true;
             }
+            else
+            {
+                if (qnt > qntMax)
+                {
+                    alert("La quantità specificata è maggiore di quella disponibile");
+                    error = true;
+                    return;
+                }
 
-            if(qnt < 0){
-                alert("La quantità non può essere minore di 0");
-                return;
-            }
+                if (qnt < 0)
+                {
+                    alert("La quantità non può essere minore di 0");
+                    error = true;
+                    return;
+                }
 
-            if (qnt > 0) {
-                idLotto = $(this).find(".idLottoM").text();
-                nomeProdotto = $(this).find(".nomeProdottoM").text();
-                scadenza = $(this).find(".dataScadenzaM").text();
+                if (qnt > 0)
+                {
+                    idLotto = $(this).find(".idLottoM").text();
+                    nomeProdotto = $(this).find(".nomeProdottoM").text();
+                    scadenza = $(this).find(".dataScadenzaM").text();
 
-                operazioniM += "Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Scadenza: " + scadenza + ", Qnt Aggiunta: " + qnt + ";\n\n";
+                    operazioniM += "Lotto: " + idLotto + ", Prodotto: " + nomeProdotto + ", Scadenza: " + scadenza + ", Qnt Aggiunta: " + qnt + ";\n\n";
+                }
             }
 
         });
@@ -70,14 +97,17 @@ $(document).ready(function() {
         if(operazioniM.length > 33)
             operazioniTotali += operazioniM;
 
-        if(operazioniTotali.length > 0){
+        if(operazioniTotali.length > 0 && !error)
+        {
             if(confirm(operazioniTotali))
                 $("#formAggiunta").submit();
             else
                 alert("L'operazione è stata annullata");
         }
+        else if(error)
+            alert("sono stati forniti degli input non validi");
         else
-            alert("Non sono state effettuate operazioni");
+            alert("non sono state effettuate operazioni");
     });
 });
 
