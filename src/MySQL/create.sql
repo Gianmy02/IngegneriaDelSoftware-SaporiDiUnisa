@@ -34,7 +34,7 @@ create table prodotto
 create table lotto
 (
     id int not null auto_increment primary key,
-    costo decimal(5,2) not null,
+    costo decimal(12,2) not null,
     data_scadenza date not null,
     quantita int(6) not null,
     quantita_attuale int(6) not null,
