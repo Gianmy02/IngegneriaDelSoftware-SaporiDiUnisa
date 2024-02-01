@@ -69,3 +69,9 @@ button:hover {
 button:active {
     background-color: #3e8e41; /* Colore di sfondo più scuro durante il clic */
 }
+
+img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}

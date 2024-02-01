@@ -1,3 +1,4 @@
+<%@ page import="java.time.LocalDate" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
 <html lang="it">
@@ -65,7 +66,7 @@
                             <label for="dataScadenza">Data scadenza</label>
                         </div>
                         <div class="col-50">
-                            <input type="date" name="dataScadenza" id="dataScadenza" required>
+                            <input type="date" name="dataScadenza" id="dataScadenza" min = "<%=LocalDate.now().plusDays(1)%>" required>
                         </div>
                     </div>
                     <div class="row">

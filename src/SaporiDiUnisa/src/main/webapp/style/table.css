@@ -32,9 +32,9 @@ th {
     font-weight: bold;
 }
 
-.vendita-item img {
-    width: 50px;
-    height: 50px;
+img {
+    width: 100px;
+    height: 100px;
     object-fit: cover;
 }
 

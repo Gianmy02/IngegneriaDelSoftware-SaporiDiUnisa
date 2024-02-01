@@ -13,7 +13,9 @@ import jakarta.servlet.http.*;
 import lombok.val;
 import org.json.JSONObject;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author Salvatore Ruocco
@@ -51,8 +53,9 @@ public class AggiungiLotto extends HttpServlet {
                 return;
             }
             // se non ci sono errori
-            final byte[] foto = Utils.readPart(fotoPart).getBytes();
-            prodotto = new Prodotto(0, nome, marchio, prezzo, 0, null, null, foto);
+            InputStream fileInputStream = fotoPart.getInputStream();
+            byte[] imageBytes = IOUtils.toByteArray(fileInputStream);
+            prodotto = new Prodotto(0, nome, marchio, prezzo, 0, null, null, imageBytes);
         }
 
         // tengo l'id della fornitura in sessione per evitare ripetute select dal db
