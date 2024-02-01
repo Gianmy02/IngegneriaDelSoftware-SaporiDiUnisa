@@ -2,7 +2,7 @@
   <configuration default="false" name="UnitTest" type="JUnit" factoryName="JUnit">
     <module name="SaporiDiUnisa" />
     <option name="PACKAGE_NAME" value="it.unisa.saporidiunisa.unit" />
-    <option name="MAIN_CLASS_NAME" value="it.unisa.saporidiunisa.unit.UnitTest" />
+    <option name="MAIN_CLASS_NAME" value="it.unisa.saporidiunisa.unit.AddGiornoVenditeTest" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <method v="2">
