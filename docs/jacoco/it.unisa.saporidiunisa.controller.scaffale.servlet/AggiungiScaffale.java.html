@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AggiungiScaffale.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.scaffale.servlet</a> &gt; <span class="el_source">AggiungiScaffale.java</span></div><h1>AggiungiScaffale.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.scaffale.servlet;
+
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * La servlet &lt;code&gt;AggiungiScaffale&lt;/code&gt; aggiunge o aumenta la quantità dei prodotti in esposizione
+ * @author Simone Vittoria
+ */
+@WebServlet(name = &quot;AggiungiScaffale&quot;, value = &quot;/AggiungiScaffale&quot;)
+<span class="fc" id="L26">public class AggiungiScaffale extends HttpServlet {</span>
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+<span class="fc" id="L30">        val session = req.getSession();</span>
+
+<span class="fc" id="L32">        val dipendente = (Dipendente)session.getAttribute(&quot;dipendente&quot;);</span>
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)</span>
+        {
+<span class="nc" id="L35">            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);</span>
+<span class="nc" id="L36">            return;</span>
+        }
+
+<span class="fc" id="L39">        ArrayList&lt;Lotto&gt; lottiMagazzino = ScaffaleController.visualizzaProdottiMagazzino();</span>
+<span class="fc" id="L40">        ArrayList&lt;Esposizione&gt; lottiScaffale = ScaffaleController.visualizzaProdottiScaffale();</span>
+
+<span class="fc" id="L42">        HashMap&lt;Lotto, Integer&gt; lottiMagazzinoValid = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L43">        HashMap&lt;Esposizione, Integer&gt; lottiScaffaleValid = new HashMap&lt;&gt;();</span>
+
+
+        int qntScaffale;
+
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for(Esposizione e : lottiScaffale) {</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            if(e.getLotto().getDataScadenza().isAfter(LocalDate.now()))</span>
+            {
+                try {
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">                    if (Integer.parseInt(req.getParameter(&quot;qntScaffale&quot; + e.getLotto().getId())) != 0) {</span>
+<span class="fc" id="L53">                        qntScaffale = Integer.parseInt(req.getParameter(&quot;qntScaffale&quot; + e.getLotto().getId()));</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">                        if (qntScaffale &lt; 0) {</span>
+<span class="fc" id="L55">                            Utils.dispatchError(&quot;la quantità scaffale è minore di 0&quot;, req, resp);</span>
+<span class="fc" id="L56">                            return;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">                        } else if (qntScaffale &gt;= 1000000) {</span>
+<span class="fc" id="L58">                            Utils.dispatchError(&quot;la quantità scaffale è maggiore della massima consentita&quot;, req, resp);</span>
+<span class="fc" id="L59">                            return;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">                        } else if (qntScaffale &gt; e.getLotto().getQuantitaAttuale()) {</span>
+<span class="fc" id="L61">                            Utils.dispatchError(&quot;la quantità scaffale è maggiore della quantità presente in magazzino&quot;, req, resp);</span>
+<span class="fc" id="L62">                            return;</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">                        } else if (qntScaffale &gt; 0) {</span>
+<span class="fc" id="L64">                            lottiScaffaleValid.put(e, qntScaffale);</span>
+                        }
+                    }
+<span class="fc" id="L67">                } catch (NumberFormatException ex) {</span>
+<span class="fc" id="L68">                    Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;quantità scaffale&quot;), req, resp);</span>
+<span class="fc" id="L69">                    return;</span>
+<span class="fc" id="L70">                }</span>
+            }
+<span class="fc" id="L72">        }</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for(Lotto l : lottiMagazzino) {</span>
+            try
+            {
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                if (Integer.parseInt(req.getParameter(&quot;qntMagazzino&quot; + l.getId())) != 0) {</span>
+<span class="fc" id="L78">                    qntScaffale = Integer.parseInt(req.getParameter(&quot;qntMagazzino&quot; + l.getId()));</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">                    if(qntScaffale &lt; 0)</span>
+                    {
+<span class="fc" id="L81">                        Utils.dispatchError(&quot;la quantità del prodotto non esposto è minore di 0&quot;, req, resp);</span>
+<span class="fc" id="L82">                        return;</span>
+                    }
+<span class="fc bfc" id="L84" title="All 2 branches covered.">                    else if(qntScaffale &gt;= 1000000)</span>
+                    {
+<span class="fc" id="L86">                        Utils.dispatchError(&quot;la quantità del prodotto non esposto è maggiore della massima consentita&quot;, req, resp);</span>
+<span class="fc" id="L87">                        return;</span>
+                    }
+<span class="fc bfc" id="L89" title="All 2 branches covered.">                    else if(qntScaffale &gt; l.getQuantitaAttuale())</span>
+                    {
+<span class="fc" id="L91">                        Utils.dispatchError(&quot;la quantità del prodotto non esposto è maggiore della quantità presente in magazzino&quot;, req, resp);</span>
+<span class="fc" id="L92">                        return;</span>
+                    }
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">                    else if (qntScaffale &gt; 0) {</span>
+<span class="fc" id="L95">                        lottiMagazzinoValid.put(l, qntScaffale);</span>
+                    }
+                }
+            }
+<span class="fc" id="L99">            catch (NumberFormatException ex)</span>
+            {
+<span class="fc" id="L101">                Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;quantità magazzino&quot;), req, resp);</span>
+<span class="fc" id="L102">                return;</span>
+<span class="fc" id="L103">            }</span>
+<span class="fc" id="L104">        }</span>
+
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (HashMap.Entry&lt;Esposizione, Integer&gt; entry : lottiScaffaleValid.entrySet()) {</span>
+<span class="fc" id="L108">            Esposizione esposizione = entry.getKey();</span>
+<span class="fc" id="L109">            Integer quantita = entry.getValue();</span>
+
+<span class="fc" id="L111">            ScaffaleController.aumentaEsposizione(quantita, esposizione);</span>
+<span class="fc" id="L112">            ScaffaleController.diminuisciLotto(esposizione.getLotto().getId(), quantita);</span>
+<span class="fc" id="L113">        }</span>
+
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (HashMap.Entry&lt;Lotto, Integer&gt; entry : lottiMagazzinoValid.entrySet()) {</span>
+<span class="fc" id="L117">            Lotto lotto = entry.getKey();</span>
+<span class="fc" id="L118">            Integer quantita = entry.getValue();</span>
+
+<span class="fc" id="L120">            ScaffaleController.inserisciEsposizione(quantita, lotto);</span>
+<span class="fc" id="L121">            ScaffaleController.diminuisciLotto(lotto.getId(), quantita);</span>
+<span class="fc" id="L122">        }</span>
+
+
+<span class="fc" id="L125">        Utils.dispatchSuccess(Messages.SUCCESS, req, resp);</span>
+
+<span class="fc" id="L127">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

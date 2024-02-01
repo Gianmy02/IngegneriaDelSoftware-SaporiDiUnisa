@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImpostaScontoServletTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.finanze.servlet</a> &gt; <span class="el_source">ImpostaScontoServletTest.java</span></div><h1>ImpostaScontoServletTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.finanze.servlet;
+
+import it.unisa.saporidiunisa.controller.ServletTest;
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import lombok.val;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+
+import java.io.IOException;
+import java.time.LocalDate;
+
+import static java.util.Map.entry;
+import static java.util.Map.ofEntries;
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L21">class ImpostaScontoServletTest extends ServletTest</span>
+{
+
+    @BeforeEach
+    void beforeEach()
+    {
+<span class="fc" id="L27">        init();</span>
+<span class="fc" id="L28">        mockSession();</span>
+<span class="fc" id="L29">        mockDipendente(Dipendente.Ruolo.FINANZE);</span>
+<span class="fc" id="L30">        mockDispatcher();</span>
+<span class="fc" id="L31">    }</span>
+
+    @Nested
+<span class="fc" id="L34">    class Incorrect</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L39">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS);</span>
+<span class="fc" id="L40">                 val magazzinoController = mockStatic(MagazzinoController.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L42">                val prodotto1 = new Prodotto(1, &quot;Farina&quot;, &quot;Caputo&quot;, 10.00F, 0, null, null, null);</span>
+<span class="fc" id="L43">                val prodotto2 = new Prodotto(5, &quot;Farina&quot;, &quot;Caputo&quot;, 10.00F, 7.50F, LocalDate.of(2024, 3, 3), LocalDate.of(2024, 3, 5), null);</span>
+
+<span class="fc" id="L45">                magazzinoController.when(() -&gt; MagazzinoController.getProdottoById(1)).thenReturn(prodotto1);</span>
+<span class="fc" id="L46">                magazzinoController.when(() -&gt; MagazzinoController.getProdottoById(5)).thenReturn(prodotto2);</span>
+
+<span class="fc" id="L48">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L49">                utils.when(() -&gt; Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L51">                new ImpostaScontoServlet().doPost(request, response);</span>
+
+<span class="fc" id="L53">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L55">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.1&quot;)
+        void tc_5_2_1()
+        {
+<span class="fc" id="L61">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;0&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L62">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.2&quot;)
+        void tc_5_2_2()
+        {
+<span class="fc" id="L68">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;5&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L69">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.3&quot;)
+        void tc_5_2_3()
+        {
+<span class="fc" id="L75">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-00&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L76">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.4&quot;)
+        void tc_5_2_4()
+        {
+<span class="fc" id="L82">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2020-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L83">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.5&quot;)
+        void tc_5_2_5()
+        {
+<span class="fc" id="L89">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-00&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L90">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.6&quot;)
+        void tc_5_2_6()
+        {
+<span class="fc" id="L96">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L97">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.7&quot;)
+        void tc_5_2_7()
+        {
+<span class="fc" id="L103">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;-1&quot;)));</span>
+<span class="fc" id="L104">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.8&quot;)
+        void tc_5_2_8()
+        {
+<span class="fc" id="L110">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;101&quot;)));</span>
+<span class="fc" id="L111">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.9&quot;)
+        void tc_5_2_9()
+        {
+<span class="fc" id="L117">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-00&quot;), entry(&quot;sconto&quot;, &quot;50a&quot;)));</span>
+<span class="fc" id="L118">        }</span>
+    }
+
+    @Nested
+<span class="fc" id="L122">    class Correct</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L127">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS);</span>
+<span class="fc" id="L128">                 val magazzinoController = mockStatic(MagazzinoController.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L130">                val prodotto1 = new Prodotto(1, &quot;Farina&quot;, &quot;Caputo&quot;, 10.00F, 0, null, null, null);</span>
+
+<span class="fc" id="L132">                magazzinoController.when(() -&gt; MagazzinoController.getProdottoById(1)).thenReturn(prodotto1);</span>
+
+<span class="fc" id="L134">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L135">                utils.when(() -&gt; Utils.dispatchSuccess(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L137">                new ImpostaScontoServlet().doPost(request, response);</span>
+
+<span class="fc" id="L139">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L141">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.2.10&quot;)
+        void tc_5_2_10()
+        {
+<span class="fc" id="L147">            populateRequest(ofEntries(entry(&quot;prodotto&quot;, &quot;1&quot;), entry(&quot;dataInizioSconto&quot;, &quot;2025-01-01&quot;), entry(&quot;dataFineSconto&quot;, &quot;2025-01-02&quot;), entry(&quot;sconto&quot;, &quot;1&quot;)));</span>
+<span class="fc" id="L148">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

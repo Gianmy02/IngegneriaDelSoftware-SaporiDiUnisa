@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BilancioPeriodoServletTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.finanze.servlet</a> &gt; <span class="el_source">BilancioPeriodoServletTest.java</span></div><h1>BilancioPeriodoServletTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.finanze.servlet;
+
+import it.unisa.saporidiunisa.controller.ServletTest;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import lombok.val;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+
+import java.io.IOException;
+
+import static java.util.Map.entry;
+import static java.util.Map.ofEntries;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L19">class BilancioPeriodoServletTest extends ServletTest</span>
+{
+    @BeforeEach
+    void beforeEach()
+    {
+<span class="fc" id="L24">        init();</span>
+<span class="fc" id="L25">        mockSession();</span>
+<span class="fc" id="L26">        mockDipendente(Dipendente.Ruolo.FINANZE);</span>
+<span class="fc" id="L27">        mockDispatcher();</span>
+<span class="fc" id="L28">    }</span>
+
+    @Nested
+<span class="fc" id="L31">    class Incorrect</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L36">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L38">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L39">                utils.when(() -&gt; Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L41">                new BilancioPeriodoServlet().doPost(request, response);</span>
+
+<span class="fc" id="L43">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L45">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.1.1&quot;)
+        void tc_5_1_1()
+        {
+<span class="fc" id="L51">            populateRequest(ofEntries(entry(&quot;inizio&quot;, &quot;2024-01/01&quot;), entry(&quot;fine&quot;, &quot;2024-02-01&quot;)));</span>
+<span class="fc" id="L52">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.1.2&quot;)
+        void tc_5_1_2()
+        {
+<span class="fc" id="L58">            populateRequest(ofEntries(entry(&quot;inizio&quot;, &quot;2025-01-01&quot;), entry(&quot;fine&quot;, &quot;2024-02-01&quot;)));</span>
+<span class="fc" id="L59">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.1.3&quot;)
+        void tc_5_1_3()
+        {
+<span class="fc" id="L65">            populateRequest(ofEntries(entry(&quot;inizio&quot;, &quot;2024-01-01&quot;), entry(&quot;fine&quot;, &quot;2024-02/01&quot;)));</span>
+<span class="fc" id="L66">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.1.4&quot;)
+        void tc_5_1_4()
+        {
+<span class="fc" id="L72">            populateRequest(ofEntries(entry(&quot;inizio&quot;, &quot;2024-01-10&quot;), entry(&quot;fine&quot;, &quot;2024-01-01&quot;)));</span>
+<span class="fc" id="L73">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.1.5&quot;)
+        void tc_5_1_5()
+        {
+<span class="fc" id="L79">            populateRequest(ofEntries(entry(&quot;inizio&quot;, &quot;2024-01-01&quot;), entry(&quot;fine&quot;, &quot;2025-01-01&quot;)));</span>
+<span class="fc" id="L80">        }</span>
+    }
+
+    @Nested
+<span class="fc" id="L84">    class Correct</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L89">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L91">                utils.verify(() -&gt; Utils.dispatchError(any(), any(), any()), never());</span>
+
+<span class="fc" id="L93">                new BilancioPeriodoServlet().doPost(request, response);</span>
+            }
+<span class="fc" id="L95">        }</span>
+
+        @Test
+        @DisplayName(&quot;5.1.6&quot;)
+        void tc_5_1_6()
+        {
+<span class="fc" id="L101">            populateRequest(ofEntries(entry(&quot;inizio&quot;, &quot;2024-01-10&quot;), entry(&quot;fine&quot;, &quot;2024-01-12&quot;)));</span>
+<span class="fc" id="L102">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

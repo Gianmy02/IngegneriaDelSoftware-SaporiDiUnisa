@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AggiungiVenditaServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.vendite.servlet</a> &gt; <span class="el_source">AggiungiVenditaServlet.java</span></div><h1>AggiungiVenditaServlet.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.vendite.servlet;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
+import it.unisa.saporidiunisa.controller.vendite.VenditaController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Venduto;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * La servlet &lt;code&gt;aggiungiVenditaServlet&lt;/code&gt; funge con AJAX e salva una vendita nel db
+ * @author Gianmarco Riviello
+ */
+@WebServlet(name = &quot;aggiungiVenditaServlet&quot;, value = &quot;/aggiungi-vendita-servlet&quot;)
+<span class="fc" id="L31">public class AggiungiVenditaServlet extends HttpServlet</span>
+{
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L36">        val dipendente = (Dipendente)request.getSession().getAttribute(&quot;dipendente&quot;);</span>
+<span class="pc bpc" id="L37" title="2 of 4 branches missed.">        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.CASSIERE)</span>
+        {
+<span class="nc" id="L39">            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);</span>
+<span class="nc" id="L40">            return;</span>
+        }
+
+<span class="fc" id="L43">        val reader = request.getReader();</span>
+<span class="fc" id="L44">        val sb = new StringBuilder();</span>
+<span class="fc" id="L45">        var line = (String)null;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        while ((line = reader.readLine()) != null)</span>
+<span class="fc" id="L47">            sb.append(line);</span>
+
+<span class="fc" id="L49">        val mapper = new ObjectMapper();</span>
+        List&lt;Map&lt;String, Object&gt;&gt; saleDataList;
+        try {
+<span class="fc" id="L52">            saleDataList = (mapper.readValue(sb.toString(), new TypeReference&lt;&gt;() {</span>
+            }));
+<span class="fc" id="L54">        }catch (Exception e){</span>
+<span class="fc" id="L55">            Utils.sendMessage(Messages.INVALID_FIELD.formatted(&quot;quantita o prezzo&quot;), response);</span>
+<span class="fc" id="L56">            return;</span>
+<span class="fc" id="L57">        }</span>
+<span class="fc" id="L58">        val selezionati = new ArrayList&lt;Venduto&gt;();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (val saleData : saleDataList)</span>
+        {
+<span class="fc" id="L61">            val productId = (int)saleData.get(&quot;productId&quot;);</span>
+<span class="fc" id="L62">            val venduto = new Venduto();</span>
+<span class="fc" id="L63">            val p = MagazzinoController.getProdottoById(productId);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (p == null)</span>
+            {
+<span class="fc" id="L66">                Utils.sendMessage(Messages.INVALID_FIELD.formatted(&quot;prodotto&quot;), response);</span>
+<span class="fc" id="L67">                return;</span>
+            }
+
+<span class="fc" id="L70">            venduto.setProdotto(p);</span>
+<span class="fc" id="L71">            venduto.setGiorno(LocalDate.now());</span>
+<span class="fc" id="L72">            val quantita = (int) saleData.get(&quot;quantity&quot;);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (quantita &lt;= 0)</span>
+            {
+<span class="fc" id="L75">                Utils.sendMessage(&quot;La quantità inserita è sotto il limite consentito&quot;, response);</span>
+<span class="fc" id="L76">                return;</span>
+            }
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            if (quantita &gt;= 1000000)</span>
+            {
+<span class="fc" id="L81">                Utils.sendMessage(&quot;La quantità inserita è sopra il limite consentito&quot;, response);</span>
+<span class="fc" id="L82">                return;</span>
+            }
+
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            if (ScaffaleController.getEspostiByProdotto(p) - quantita &lt; 0)</span>
+            {
+<span class="fc" id="L87">                Utils.sendMessage(&quot;La quantità inserita è maggiore della quantità esposta&quot;, response);</span>
+<span class="fc" id="L88">                return;</span>
+            }
+
+<span class="fc" id="L91">            venduto.setQuantita(quantita);</span>
+
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (saleData.get(&quot;price&quot;) instanceof Number)</span>
+            {
+<span class="fc" id="L95">                val prezzo =((Number)saleData.get(&quot;price&quot;)).floatValue();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                if (prezzo &lt; 0)</span>
+                {
+<span class="fc" id="L98">                    Utils.sendMessage(&quot;Il prezzo è sotto il limite consentito&quot;, response);</span>
+<span class="fc" id="L99">                    return;</span>
+                }
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">                if (prezzo &gt;= 100000)</span>
+                {
+<span class="fc" id="L104">                    Utils.sendMessage(&quot;Il prezzo è sopra il limite consentito&quot;, response);</span>
+<span class="fc" id="L105">                    return;</span>
+                }
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                if((!Patterns.PRICE.matcher(Float.toString(prezzo)).matches())){</span>
+<span class="fc" id="L109">                    Utils.sendMessage(Messages.INVALID_FORMAT.formatted(&quot;prezzo&quot;), response);</span>
+<span class="fc" id="L110">                    return;</span>
+                }
+
+<span class="fc" id="L113">                venduto.setCosto(((Number)saleData.get(&quot;price&quot;)).floatValue());</span>
+<span class="fc" id="L114">            }</span>
+            else
+            {
+<span class="nc" id="L117">                Utils.sendMessage(Messages.INVALID_FORMAT.formatted(&quot;prezzo&quot;), response);</span>
+<span class="nc" id="L118">                return;</span>
+            }
+
+<span class="fc" id="L121">            selezionati.add(venduto);</span>
+<span class="fc" id="L122">        }</span>
+
+<span class="fc" id="L124">        VenditaController.addGiornoVendite();</span>
+
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (!VenditaController.venditaProdotti(selezionati))</span>
+        {
+<span class="nc" id="L128">            Utils.sendMessage(Messages.FAIL, response);</span>
+<span class="nc" id="L129">            return;</span>
+        }
+
+<span class="fc" id="L132">        request.getRequestDispatcher(&quot;view/cassiere/vendita.jsp&quot;).forward(request, response);</span>
+<span class="fc" id="L133">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegistraFornituraTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.magazzino</a> &gt; <span class="el_source">RegistraFornituraTest.java</span></div><h1>RegistraFornituraTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.magazzino;
+
+import it.unisa.saporidiunisa.controller.ServletTest;
+import it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura.AggiungiLotto;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Part;
+import lombok.val;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+
+import java.io.*;
+
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L17">public class RegistraFornituraTest extends ServletTest {</span>
+    
+    @BeforeEach
+    void beforeEach() {
+<span class="fc" id="L21">        init();</span>
+<span class="fc" id="L22">        mockSession();</span>
+<span class="fc" id="L23">        mockDispatcher();</span>
+<span class="fc" id="L24">    }</span>
+
+    @Nested
+<span class="fc" id="L27">    class Incorrect {</span>
+
+        private String errorString;
+
+        @AfterEach
+        void afterEach() throws ServletException, IOException {
+<span class="fc" id="L33">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS)) {</span>
+<span class="fc" id="L34">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L35">                utils.when(() -&gt; Utils.sendMessage(captor.capture(), eq(response))).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L37">                new AggiungiLotto().doPost(request, response);</span>
+
+<span class="fc" id="L39">                System.out.println(captor.getValue());</span>
+<span class="fc" id="L40">                Assertions.assertEquals(errorString, captor.getValue());</span>
+            }
+<span class="fc" id="L42">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.1&quot;)
+        void tc_1_1_1() {
+<span class="fc" id="L47">            populatePart(&quot;x&quot;, &quot;Barilla&quot;, &quot;50.00&quot;, &quot;100&quot;, &quot;2024-08-24&quot;);</span>
+<span class="fc" id="L48">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L49">            errorString = &quot;Il nome deve essere compreso tra 2 e 255 caratteri\n&quot;;</span>
+<span class="fc" id="L50">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.2&quot;)
+        void tc_1_1_2() {
+<span class="fc" id="L55">            populatePart(&quot;Pasta2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss&quot; +</span>
+                            &quot;9Tt0Uu1Vv2Ww3Xx4Yy5Zz6Aa1Bb2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0Kk1Ll2Mm3Nn&quot; +
+                            &quot;4Oo5Pp6Qq7Rr8Ss9Tt0Uu1Vv2Ww3Xx4Yy5Zz6Aa1Bb2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0&quot; +
+                            &quot;Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss9Tt0Uu1Vv2Ww3Xx4Yy5Zz6a1Bb2Cc3Dd4Ee5Ff6Gg7Hh8&quot; +
+                            &quot;Ii9Jj0Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss9Tt0Uu1Vv2Ww3Xx4Yy5Zz6Aa1Bb2&quot;,
+                    &quot;Curtiriso&quot;,
+                    &quot;80.00&quot;,
+                    &quot;120&quot;,
+                    &quot;2024-10-05&quot;
+            );
+<span class="fc" id="L65">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L66">            errorString = &quot;Il nome deve essere compreso tra 2 e 255 caratteri\n&quot;;</span>
+<span class="fc" id="L67">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.3&quot;)
+        void tc_1_1_3() {
+<span class="fc" id="L72">            populatePart(&quot;Pas@ta al pomod!!or=o&quot;, &quot;Barilla&quot;, &quot;50.00&quot;, &quot;100&quot;, &quot;2024-12-03&quot;);</span>
+<span class="fc" id="L73">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L74">            errorString = &quot;Il nome non rispetta il formato\n&quot;;</span>
+<span class="fc" id="L75">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.4&quot;)
+        void tc_1_1_4() {
+<span class="fc" id="L80">            populatePart(&quot;Cereali&quot;, &quot;c&quot;, &quot;60.00&quot;, &quot;80&quot;, &quot;2025-07-05&quot;);</span>
+<span class="fc" id="L81">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L82">            errorString = &quot;Il marchio deve essere compreso tra 2 e 255 caratteri\n&quot;;</span>
+<span class="fc" id="L83">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.5&quot;)
+        void tc_1_1_5() {
+<span class="fc" id="L88">            populatePart(&quot;Mandorle&quot;,</span>
+                    &quot;prova2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss9Tt&quot; +
+                            &quot;0Uu1Vv2Ww3Xx4Yy5Zz6Aa1Bb2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss9Tt0Uu1Vv2&quot; +
+                            &quot;Ww3Xx4Yy5Zz6Aa1Bb2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss9Tt0Uu1Vv2Ww3Xx4Yy5Z&quot; +
+                            &quot;z6a1Bb2Cc3Dd4Ee5Ff6Gg7Hh8Ii9Jj0Kk1Ll2Mm3Nn4Oo5Pp6Qq7Rr8Ss9Tt0Uu1Vv2Ww3Xx4Yy5Zz6Aa1Bb2&quot;,
+                    &quot;100.00&quot;,
+                    &quot;40&quot;,
+                    &quot;2024-07-10&quot;
+            );
+<span class="fc" id="L97">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L98">            errorString = &quot;Il marchio deve essere compreso tra 2 e 255 caratteri\n&quot;;</span>
+<span class="fc" id="L99">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.6&quot;)
+        void tc_1_1_6() {
+<span class="fc" id="L104">            populatePart(&quot;Yogurt&quot;, &quot;F!a--ge&quot;, &quot;80.00&quot;, &quot;50&quot;, &quot;2025-01-07&quot;);</span>
+<span class="fc" id="L105">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L106">            errorString = &quot;Il marchio non rispetta il formato\n&quot;;</span>
+<span class="fc" id="L107">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.7&quot;)
+        void tc_1_1_7() {
+<span class="fc" id="L112">            populatePart(&quot;Cioccolato&quot;, &quot;Lindt&quot;, &quot;0.00&quot;, &quot;100&quot;, &quot;2024-03-07&quot;);</span>
+<span class="fc" id="L113">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L114">            errorString = &quot;Il prezzo deve essere compreso tra 0.01 € e 100000.00 €\n&quot;;</span>
+<span class="fc" id="L115">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.8&quot;)
+        void tc_1_1_8() {
+<span class="fc" id="L120">            populatePart(&quot;Sottilette&quot;, &quot;Mulino Bianco&quot;, &quot;100000.00&quot;, &quot;150&quot;, &quot;2025-01-27&quot;);</span>
+<span class="fc" id="L121">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L122">            errorString = &quot;Il prezzo deve essere compreso tra 0.01 € e 100000.00 €\n&quot;;</span>
+<span class="fc" id="L123">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.9&quot;)
+        void tc_1_1_9() {
+<span class="fc" id="L128">            populatePart(&quot;Crostini&quot;, &quot;Mulino Bianco&quot;, &quot;50.7849&quot;, &quot;120&quot;, &quot;2024-02-20&quot;);</span>
+<span class="fc" id="L129">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L130">            errorString = &quot;Il prezzo non rispetta il formato\n&quot;;</span>
+<span class="fc" id="L131">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.10&quot;)
+        void tc_1_1_10() {
+<span class="fc" id="L136">            populatePart(&quot;Biscotti&quot;, &quot;Digestive&quot;, &quot;50.00&quot;, &quot;cil&quot;, &quot;2024-03-20&quot;);</span>
+<span class="fc" id="L137">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L138">            errorString = &quot;La quantità deve essere un numero\n&quot;;</span>
+<span class="fc" id="L139">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.11&quot;)
+        void tc_1_1_11() {
+<span class="fc" id="L144">            populatePart(&quot;Fette biscottate&quot;, &quot;Natura&quot;, &quot;70.00&quot;, &quot;0&quot;, &quot;2024-04-30&quot;);</span>
+<span class="fc" id="L145">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L146">            errorString = &quot;La quantità deve essere maggiore di 0\n&quot;;</span>
+<span class="fc" id="L147">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.12&quot;)
+        void tc_1_1_12() {
+<span class="fc" id="L152">            populatePart(&quot;Fesa di tacchino&quot;, &quot;Piacersi&quot;, &quot;70.00&quot;, &quot;1000000&quot;, &quot;2025-01-11&quot;);</span>
+<span class="fc" id="L153">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L154">            errorString = &quot;La quantità deve essere minore di 1000000\n&quot;;</span>
+<span class="fc" id="L155">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.13&quot;)
+        void tc_1_1_13() {
+<span class="fc" id="L160">            populatePart(&quot;Burro&quot;, &quot;Santa Lucia&quot;, &quot;80.00&quot;, &quot;150&quot;, &quot;11/017-24&quot;);</span>
+<span class="fc" id="L161">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L162">            errorString = &quot;La data di scadenza non è valida\n&quot;;</span>
+<span class="fc" id="L163">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.14&quot;)
+        void tc_1_1_14() {
+<span class="fc" id="L168">            populatePart(&quot;Philadelphia&quot;, &quot;Benessere&quot;, &quot;80.00&quot;, &quot;150&quot;, &quot;2010-05-10&quot;);</span>
+<span class="fc" id="L169">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L170">            errorString = &quot;La data di scadenza deve essere posteriore a quella odierna\n&quot;;</span>
+<span class="fc" id="L171">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.15&quot;)
+        void tc_1_1_15() {
+<span class="fc" id="L176">            populatePart(&quot;Pangrattato&quot;, &quot;Mulino Bianco&quot;, &quot;60.00&quot;, &quot;100&quot;, &quot;2024-02-09&quot;);</span>
+<span class="fc" id="L177">            makeImage(&quot;foto.java&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L178">            errorString = &quot;La foto deve essere un'immagine con estensione: jpg, jpeg o png\n&quot;;</span>
+<span class="fc" id="L179">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.16&quot;)
+        void tc_1_1_16() {
+<span class="fc" id="L184">            populatePart(&quot;Burro di arachidi&quot;, &quot;Fiorentini&quot;, &quot;80.00&quot;, &quot;130&quot;, &quot;2024-04-17&quot;);</span>
+<span class="fc" id="L185">            makeImage(&quot;Foto.png&quot;, 5 * 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L186">            errorString = &quot;La foto deve essere minore di 2MB\n&quot;;</span>
+<span class="fc" id="L187">        }</span>
+    }
+
+    @Nested
+<span class="fc" id="L191">    class Correct {</span>
+        @AfterEach
+        void afterEach() throws ServletException, IOException {
+<span class="fc" id="L194">            when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));</span>
+<span class="fc" id="L195">            new AggiungiLotto().doPost(request, response);</span>
+<span class="fc" id="L196">        }</span>
+
+        @Test
+        @DisplayName(&quot;1.1.17&quot;)
+        void tc_1_1_17() {
+<span class="fc" id="L201">            populatePart(&quot;Pandoro&quot;, &quot;Balocco&quot;, &quot;65.00&quot;, &quot;150&quot;, &quot;2024-08-19&quot;);</span>
+<span class="fc" id="L202">            makeImage(&quot;Foto.png&quot;, 1024 * 1024, &quot;image/png&quot;);</span>
+<span class="fc" id="L203">        }</span>
+    }
+
+    private void populatePart(String nome, String marchio, String prezzo, String quantita, String dataScadenza)
+    {
+<span class="fc" id="L208">        val mockNomePart = mock(Part.class);</span>
+<span class="fc" id="L209">        val mockMarchioPart = mock(Part.class);</span>
+<span class="fc" id="L210">        val mockPrezzoPart = mock(Part.class);</span>
+<span class="fc" id="L211">        val mockQuantitaPart = mock(Part.class);</span>
+<span class="fc" id="L212">        val mockScadenzaPart = mock(Part.class);</span>
+<span class="fc" id="L213">        val mockFotoPart = mock(Part.class);</span>
+
+        try {
+<span class="fc" id="L216">            when(request.getPart(&quot;nome&quot;)).thenReturn(mockNomePart);</span>
+<span class="fc" id="L217">            when(request.getPart(&quot;marchio&quot;)).thenReturn(mockMarchioPart);</span>
+<span class="fc" id="L218">            when(request.getPart(&quot;prezzo&quot;)).thenReturn(mockPrezzoPart);</span>
+<span class="fc" id="L219">            when(request.getPart(&quot;quantita&quot;)).thenReturn(mockQuantitaPart);</span>
+<span class="fc" id="L220">            when(request.getPart(&quot;dataScadenza&quot;)).thenReturn(mockScadenzaPart);</span>
+<span class="fc" id="L221">            when(request.getPart(&quot;foto&quot;)).thenReturn(mockFotoPart);</span>
+
+<span class="fc" id="L223">            when(mockNomePart.getInputStream()).thenReturn(new ByteArrayInputStream(nome.getBytes()));</span>
+<span class="fc" id="L224">            when(mockMarchioPart.getInputStream()).thenReturn(new ByteArrayInputStream(marchio.getBytes()));</span>
+<span class="fc" id="L225">            when(mockPrezzoPart.getInputStream()).thenReturn(new ByteArrayInputStream(prezzo.getBytes()));</span>
+<span class="fc" id="L226">            when(mockQuantitaPart.getInputStream()).thenReturn(new ByteArrayInputStream(quantita.getBytes()));</span>
+<span class="fc" id="L227">            when(mockScadenzaPart.getInputStream()).thenReturn(new ByteArrayInputStream(dataScadenza.getBytes()));</span>
+<span class="nc" id="L228">        } catch (IOException | ServletException e) {</span>
+<span class="nc" id="L229">            throw new RuntimeException(e);</span>
+<span class="fc" id="L230">        }</span>
+<span class="fc" id="L231">    }</span>
+
+    private void makeImage(String fileName, long fileSize, String contentType){
+<span class="fc" id="L234">        byte[] fileContent = new byte[(int) fileSize];</span>
+<span class="fc" id="L235">        final InputStream inputStream = new ByteArrayInputStream(fileContent);</span>
+<span class="fc" id="L236">        final Part imagePart = mock(Part.class);</span>
+        try {
+<span class="fc" id="L238">            when(request.getPart(&quot;foto&quot;)).thenReturn(imagePart);</span>
+<span class="fc" id="L239">            when(imagePart.getInputStream()).thenReturn(inputStream);</span>
+<span class="nc" id="L240">        } catch (IOException | ServletException e) {</span>
+<span class="nc" id="L241">            throw new RuntimeException(e);</span>
+<span class="fc" id="L242">        }</span>
+<span class="fc" id="L243">        when(imagePart.getSubmittedFileName()).thenReturn(fileName);</span>
+<span class="fc" id="L244">        when(imagePart.getContentType()).thenReturn(contentType);</span>
+<span class="fc" id="L245">        when(imagePart.getSize()).thenReturn(fileSize);</span>
+<span class="fc" id="L246">        when(imagePart.getHeader(&quot;content-disposition&quot;)).thenReturn(&quot;filename=\&quot;&quot; + fileName + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L247">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

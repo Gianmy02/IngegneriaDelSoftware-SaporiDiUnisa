@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScaffaleController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.scaffale</a> &gt; <span class="el_source">ScaffaleController.java</span></div><h1>ScaffaleController.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.scaffale;
+
+import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
+import it.unisa.saporidiunisa.model.dao.LottoDAO;
+import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+
+import java.util.ArrayList;
+
+/**
+ * La classe &lt;code&gt;ScaffaleController\&lt;/code&gt; si interpone fra il database e le operazioni da effettuare sullo scaffale
+ * @author Simone Vittoria
+ */
+<span class="nc" id="L15">public class ScaffaleController</span>
+{
+
+    /**
+     * Il metodo &lt;code&gt;inserisciEsposizione&lt;/code&gt; mette in esposizione un prodotto appartenente a un lotto che non si trovava in esposizione
+     * @param quantita quantità da mettere in esposizione
+     * @param l lotto contenente i prodotti
+     */
+    public static void inserisciEsposizione(int quantita, Lotto l)
+    {
+<span class="fc" id="L25">        EsposizioneDAO.inserisciEsposizione(quantita, l);</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * Il metodo &lt;code&gt;eliminaScadutiScaffale&lt;/code&gt; elimina tutti gli scaduti dallo scaffale
+     */
+    public static void eliminaScadutiScaffale()
+    {
+<span class="nc" id="L33">        ArrayList&lt;Esposizione&gt; esposizioneScaffaleScaduti = EsposizioneDAO.getEsposizioneScaduti();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        for(Esposizione e: esposizioneScaffaleScaduti){</span>
+<span class="nc" id="L35">            EsposizioneDAO.rimuoviScaduto(e);</span>
+<span class="nc" id="L36">        }</span>
+<span class="nc" id="L37">    }</span>
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaProdottiScaffale()&lt;/code&gt; restituisce tutti i prodotti in esposizione al momento della chiamata
+     * @return ritorna un ArrayList dei prodotti in esposizione
+     */
+    public static ArrayList&lt;Esposizione&gt; visualizzaProdottiScaffale()
+    {
+<span class="fc" id="L45">        return EsposizioneDAO.getEsposizione();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaProdottiScaffaleScaduti&lt;/code&gt; restituisce tutti i prodotti scaduti in esposizione
+     * @return ritorna un ArrayList dei prodotti scaduti in esposizione
+     */
+    public static ArrayList&lt;Esposizione&gt; visualizzaProdottiScaffaleScaduti()
+    {
+<span class="nc" id="L54">        return EsposizioneDAO.getEsposizioneScaduti();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaProdottiMagazzino&lt;/code&gt; restituisce i lotti presenti in magazzino che non hanno nessun prodotto esposto
+     * @return ritorna un ArrayList dei lotti presenti in magazzino
+     */
+    public static ArrayList&lt;Lotto&gt; visualizzaProdottiMagazzino()
+    {
+<span class="fc" id="L63">        return LottoDAO.getLottiWithoutEsposizione();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;aumentaEsposizione&lt;/code&gt; aumenta la quantità di un prodotto gia in esposizione per un determinato lotto
+     * @param qnt quantità da aggiungere
+     * @param e contiene il prodotto e il lotto da aumentare
+     */
+    public static void aumentaEsposizione(int qnt, Esposizione e)
+    {
+<span class="fc" id="L73">        EsposizioneDAO.aumentaEsposizione(qnt, e);</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Il metodo &lt;code&gt;diminuisciLotto&lt;/code&gt; diminuisce la quantità del lotto in magazzino dopo aver effettuato un &lt;code&gt;aumentaEsposizione&lt;/code&gt;
+     * @param id lotto del quale diminuire la quantità
+     * @param qnt quantità da sottrarre
+     */
+    public static void diminuisciLotto(int id, int qnt)
+    {
+<span class="fc" id="L83">        LottoDAO.diminuisciLotto(id, qnt);</span>
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * Il metodo &lt;code&gt;getEspostiByProdotto&lt;/code&gt; restituisce la quantità totale del prodotto esposto passato come parametro
+     * @param p Prodotto del quale ci interessa la quantità
+     * @return intero, quantità in esposizione
+     */
+    public static int getEspostiByProdotto(Prodotto p){
+<span class="fc" id="L92">        return EsposizioneDAO.getEspostiByProdotto(p);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RimuoviLotto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura</a> &gt; <span class="el_source">RimuoviLotto.java</span></div><h1>RimuoviLotto.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
+
+import it.unisa.saporidiunisa.model.entity.Fornitura;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.val;
+
+/**
+ * Servlet, invocata tramite AJAX, che gestisce la rimozione di un lotto dalla fornitura che si sta inserendo
+ * @author Salvatore Ruocco
+ */
+@WebServlet(name = &quot;RimuoviLotto&quot;, value = &quot;/RimuoviLotto&quot;)
+<span class="nc" id="L16">public class RimuoviLotto extends HttpServlet {</span>
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+<span class="nc" id="L19">        val keyId = Integer.parseInt(req.getParameter(&quot;keyId&quot;));</span>
+
+<span class="nc" id="L21">        final HttpSession session = req.getSession();</span>
+<span class="nc" id="L22">        val fornitura = (Fornitura) session.getAttribute(&quot;fornitura&quot;);</span>
+
+<span class="nc" id="L24">        val lotti = fornitura.getLotti();</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        for(val l : lotti){</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">            if(l.getId() == keyId){</span>
+<span class="nc" id="L27">                lotti.remove(l);</span>
+                // Aggiorno la fornitura in sessione
+<span class="nc" id="L29">                fornitura.setLotti(lotti);</span>
+<span class="nc" id="L30">                session.setAttribute(&quot;fornitura&quot;, fornitura);</span>
+<span class="nc" id="L31">                break;</span>
+            }
+<span class="nc" id="L33">        }</span>
+<span class="nc" id="L34">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

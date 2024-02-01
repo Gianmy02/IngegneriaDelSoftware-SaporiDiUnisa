@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VisualizzaScaffale.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.scaffale.servlet</a> &gt; <span class="el_source">VisualizzaScaffale.java</span></div><h1>VisualizzaScaffale.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.scaffale.servlet;
+
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * La servlet &lt;code&gt;VisualizzaScaffale&lt;/code&gt; indirizza l'utente alla aggiunta_scaffale.jsp o alla visualizza_scaffale.jsp a seconda della richiesta.
+ * Prima di effettuare il dispatch, interroga il DB per recuperare i prodotti dallo scaffale ed eventualmente dal magazzino
+ * @author Simone Vittoria
+ */
+@WebServlet(name = &quot;VisualizzaScaffale&quot;, value = &quot;/VisualizzaScaffale&quot;)
+<span class="nc" id="L25">public class VisualizzaScaffale extends HttpServlet {</span>
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+<span class="nc" id="L29">        val session = req.getSession();</span>
+
+<span class="nc" id="L31">        val dipendente = (Dipendente)session.getAttribute(&quot;dipendente&quot;);</span>
+<span class="nc bnc" id="L32" title="All 4 branches missed.">        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.MAGAZZINIERE)</span>
+        {
+<span class="nc" id="L34">            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);</span>
+<span class="nc" id="L35">            return;</span>
+        }
+
+<span class="nc" id="L38">        String address = req.getParameter(&quot;address&quot;);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (address == null)</span>
+        {
+<span class="nc" id="L41">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;indirizzo&quot;), req, resp);</span>
+<span class="nc" id="L42">            return;</span>
+        }
+
+<span class="nc" id="L45">        ArrayList&lt;Esposizione&gt; lottiScaffale = ScaffaleController.visualizzaProdottiScaffale();</span>
+<span class="nc" id="L46">        req.setAttribute(&quot;lottiScaffale&quot;, lottiScaffale);</span>
+
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if(address.equalsIgnoreCase(&quot;aggiunta_scaffale&quot;)){</span>
+<span class="nc" id="L49">            ArrayList&lt;Lotto&gt; lottiMagazzino = ScaffaleController.visualizzaProdottiMagazzino();</span>
+<span class="nc" id="L50">            req.setAttribute(&quot;lottiMagazzino&quot;, lottiMagazzino);</span>
+<span class="nc" id="L51">        }</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        else if(address.equalsIgnoreCase(&quot;visualizza_scaffale&quot;))</span>
+        {
+<span class="nc" id="L54">            ArrayList&lt;Esposizione&gt; lottiScaffaleScaduti = ScaffaleController.visualizzaProdottiScaffaleScaduti();</span>
+<span class="nc" id="L55">            req.setAttribute(&quot;lottiScaffaleScaduti&quot;, lottiScaffaleScaduti);</span>
+<span class="nc" id="L56">        }</span>
+        else
+        {
+<span class="nc" id="L59">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;indirizzo&quot;), req, resp);</span>
+<span class="nc" id="L60">            return;</span>
+        }
+
+<span class="nc" id="L63">        req.getRequestDispatcher(&quot;view/scaffale/&quot; + address + &quot;.jsp&quot;).forward(req, resp);</span>
+<span class="nc" id="L64">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
