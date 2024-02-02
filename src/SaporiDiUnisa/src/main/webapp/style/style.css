@@ -41,6 +41,32 @@ header{
     background-color: #c9302c; /* Colore più scuro al passaggio del mouse */
 }
 
+.btn {
+    display: block;
+    margin: 80px auto 10px;
+    width: 50%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#indietro-button {
+    margin-top: 10px;
+    margin-bottom: 100px;
+    background-color: red;
+    color: white;
+}
+
+#indietro-button:hover {
+    background-color: #c9302c; /* Colore più scuro al passaggio del mouse */
+}
+
+a {
+    color: inherit; /* Fa sì che il colore del link sia lo stesso del testo circostante */
+    text-decoration: none; /* Rimuove la sottolineatura */
+}
+
 /* Main */
 html,body {
     background-color: white;

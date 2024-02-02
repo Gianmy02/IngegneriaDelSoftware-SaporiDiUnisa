@@ -25,6 +25,7 @@
         <p>Prodotti Magazzino</p>
     </form>
 </main>
+<a href="${pageContext.request.contextPath}/view/select/magazziniere.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
 <%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>

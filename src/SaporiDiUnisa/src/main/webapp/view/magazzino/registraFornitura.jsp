@@ -105,5 +105,6 @@
             </div>
         </div>
     </main>
+<a href="${pageContext.request.contextPath}/view/select/select_RegistraFornitura_VisualizzaForniture.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
 </body>
 </html>

@@ -26,6 +26,7 @@
         <input type="hidden" name="address" value="magazzino/visualizzaForniture">
     </form>
 </main>
+<a href="${pageContext.request.contextPath}/view/select/select_Forniture_Prodotti.jsp"><button class="btn" id="indietro-button">INDIETRO</button></a>
 <%@ include file="/WEB-INF/include/footer.html" %>
 </body>
 </html>
