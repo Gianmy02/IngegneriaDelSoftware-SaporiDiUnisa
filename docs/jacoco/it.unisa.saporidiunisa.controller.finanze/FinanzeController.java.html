@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FinanzeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.finanze</a> &gt; <span class="el_source">FinanzeController.java</span></div><h1>FinanzeController.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.finanze;
+
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.controller.vendite.VenditaController;
+import it.unisa.saporidiunisa.model.dao.LottoDAO;
+import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
+import it.unisa.saporidiunisa.model.entity.Bilancio;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import lombok.val;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+/**
+ * La classe &lt;code&gt;FinanzeController&lt;/code&gt; viene utilizzata per attingere al database e avere dati o funzioni utili in merito all'ambito finanziario
+ * @author Antonio Facchiano, Gianmarco Riviello
+ */
+<span class="nc" id="L18">public class FinanzeController</span>
+{
+    /**
+     * La funzione &lt;code&gt;visualizzaBilancio&lt;/code&gt; restituisce il bilancio Totale aggiornato al modello della chiamata
+     * @return Bilancio calcolato
+     */
+    public static Bilancio visualizzaBilancio()
+    {
+<span class="nc" id="L26">        val bilancio = new Bilancio();</span>
+
+<span class="nc" id="L28">        bilancio.setPerdite((float)LottoDAO.getPerditeTotali().stream().mapToDouble(l -&gt; l.getCostoProdotto() * l.getQuantitaAttuale()).sum());</span>
+<span class="nc" id="L29">        bilancio.setGuadagno(VenditaController.getGuadagniTotali());</span>
+<span class="nc" id="L30">        bilancio.setIncasso(VenditaController.getIncassiTotali());</span>
+<span class="nc" id="L31">        bilancio.setSpese(MagazzinoController.getSpeseTotali());</span>
+
+<span class="nc" id="L33">        return bilancio;</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaBilancioParziale&lt;/code&gt; restituisce un bilancio calcolato su un periodo scelto
+     * @param inizio parametro data di delimitazione iniziale del periodo
+     * @param fine parametro data di delimitazione finale del periodo
+     * @return Bilancio
+     */
+    public static Bilancio visualizzaBilancioParziale(LocalDate inizio, LocalDate fine)
+    {
+<span class="fc" id="L44">        val bilancio = new Bilancio();</span>
+
+<span class="pc" id="L46">        bilancio.setPerdite((float)LottoDAO.getPerdite(inizio, fine).stream().mapToDouble(l -&gt; l.getCostoProdotto() * l.getQuantitaAttuale()).sum());</span>
+<span class="fc" id="L47">        bilancio.setIncasso(VenditaController.getIncassi(inizio, fine));</span>
+<span class="fc" id="L48">        bilancio.setGuadagno(VenditaController.getGuadagni(inizio, fine));</span>
+<span class="fc" id="L49">        bilancio.setSpese(MagazzinoController.getSpese(inizio, fine));</span>
+
+<span class="fc" id="L51">        return bilancio;</span>
+    }
+
+    /* La funzione prenderebbe in ingresso un periodo e un prodotto correlato,
+       e restituirebbe un array di interi nel quale si ha, per ogni giorno,
+       vendite e acquisti del prodotto
+       */
+    @SuppressWarnings(&quot;unused&quot;)
+    public static ArrayList&lt;Integer&gt; visualizzaAndamentoProdotto(LocalDate dataInizio, LocalDate dataFine, Prodotto prodotto)
+    {
+<span class="nc bnc" id="L61" title="All 4 branches missed.">        if (dataInizio.isBefore(dataFine) || dataInizio.isEqual(dataFine))</span>
+        {
+            // TODO: da implementare
+<span class="nc" id="L64">            return new ArrayList&lt;&gt;();</span>
+        }
+
+<span class="nc" id="L67">        return null;</span>
+    }
+
+    /**
+     * La funzione &lt;code&gt;impostaSconto&lt;/code&gt; serve ad applicare uno sconto a un prodotto scelto
+     * @param prodotto prodotto al quale applicare lo sconto
+     * @param sconto percentuale dello sconto da applicare da 1 a 100
+     * @param dataInizio data di inizio dello sconto
+     * @param dataFine data di fine dello sconto
+     * @return booleano di conferma
+     */
+    public static boolean impostaSconto(Prodotto prodotto, int sconto, LocalDate dataInizio, LocalDate dataFine)
+    {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (!prodotto.isSconto())</span>
+        {
+<span class="fc" id="L82">            prodotto.setPrezzoScontato(prodotto.getPrezzo() - ((prodotto.getPrezzo() * sconto) / 100));</span>
+<span class="fc" id="L83">            prodotto.setInizioSconto(dataInizio);</span>
+<span class="fc" id="L84">            prodotto.setFineSconto(dataFine);</span>
+<span class="fc" id="L85">            return ProdottoDAO.updateSconto(prodotto);</span>
+        }
+
+<span class="fc" id="L88">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

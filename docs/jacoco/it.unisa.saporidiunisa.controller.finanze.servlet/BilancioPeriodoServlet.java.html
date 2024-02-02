@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BilancioPeriodoServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.finanze.servlet</a> &gt; <span class="el_source">BilancioPeriodoServlet.java</span></div><h1>BilancioPeriodoServlet.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.finanze.servlet;
+
+import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+import java.time.LocalDate;
+
+/**
+ * La servlet &lt;code&gt;bilancioPeriodoServlet&lt;/code&gt; visualizza il bilancio tra due date
+ * @author Antonio Facchiano
+ */
+@WebServlet(name = &quot;bilancioPeriodoServlet&quot;, value = &quot;/bilancio-periodo-servlet&quot;)
+<span class="fc" id="L22">public class BilancioPeriodoServlet extends HttpServlet</span>
+{
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L27">        val dipendente = (Dipendente)request.getSession().getAttribute(&quot;dipendente&quot;);</span>
+<span class="pc bpc" id="L28" title="2 of 4 branches missed.">        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)</span>
+        {
+<span class="nc" id="L30">            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);</span>
+<span class="nc" id="L31">            return;</span>
+        }
+
+<span class="fc" id="L34">        val inizio = request.getParameter(&quot;inizio&quot;);</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (inizio == null)</span>
+        {
+<span class="nc" id="L37">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;data inizio&quot;), request, response);</span>
+<span class="nc" id="L38">            return;</span>
+        }
+
+<span class="fc" id="L41">        val fine = request.getParameter(&quot;fine&quot;);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (fine == null)</span>
+        {
+<span class="nc" id="L44">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;data fine&quot;), request, response);</span>
+<span class="nc" id="L45">            return;</span>
+        }
+
+<span class="fc" id="L48">        val inizioDate = Utils.parseAsLocalDate(inizio);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (inizioDate == null)</span>
+        {
+<span class="fc" id="L51">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;data inizio&quot;), request, response);</span>
+<span class="fc" id="L52">            return;</span>
+        }
+
+<span class="fc" id="L55">        val fineDate = Utils.parseAsLocalDate(fine);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (fineDate == null)</span>
+        {
+<span class="fc" id="L58">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;data fine&quot;), request, response);</span>
+<span class="fc" id="L59">            return;</span>
+        }
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (inizioDate.isAfter(fineDate))</span>
+        {
+<span class="fc" id="L64">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;intervallo di date&quot;), request, response);</span>
+<span class="fc" id="L65">            return;</span>
+        }
+
+<span class="fc" id="L68">        val yesterday = LocalDate.now().minusDays(1);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (inizioDate.isAfter(yesterday))</span>
+        {
+<span class="nc" id="L71">            Utils.dispatchError(&quot;La data di inizio non può essere dopo quella di ieri&quot;, request, response);</span>
+<span class="nc" id="L72">            return;</span>
+        }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (fineDate.isAfter(yesterday))</span>
+        {
+<span class="fc" id="L76">            Utils.dispatchError(&quot;La data di fine non può essere dopo quella di ieri&quot;, request, response);</span>
+<span class="fc" id="L77">            return;</span>
+        }
+
+<span class="fc" id="L80">        request.setAttribute(&quot;dataInizio&quot;, inizioDate);</span>
+<span class="fc" id="L81">        request.setAttribute(&quot;dataFine&quot;, fineDate);</span>
+<span class="fc" id="L82">        request.setAttribute(&quot;bilancio&quot;, FinanzeController.visualizzaBilancioParziale(inizioDate, fineDate));</span>
+<span class="fc" id="L83">        request.getRequestDispatcher(&quot;/view/finanze/bilancio.jsp&quot;).forward(request, response);</span>
+<span class="fc" id="L84">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

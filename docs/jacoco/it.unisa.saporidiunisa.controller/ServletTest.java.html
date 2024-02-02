@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller</a> &gt; <span class="el_source">ServletTest.java</span></div><h1>ServletTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller;
+
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.val;
+
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L15">public abstract class ServletTest</span>
+{
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
+
+    protected void init()
+    {
+<span class="fc" id="L22">        this.request = mock();</span>
+<span class="fc" id="L23">        this.response = mock();</span>
+<span class="fc" id="L24">    }</span>
+
+    protected void mockSession()
+    {
+<span class="fc" id="L28">        val session = mock(HttpSession.class);</span>
+<span class="fc" id="L29">        when(this.request.getSession()).thenReturn(session);</span>
+<span class="fc" id="L30">    }</span>
+
+    protected void mockDipendente(final Dipendente.Ruolo ruolo)
+    {
+<span class="fc" id="L34">        val dipendente = new Dipendente();</span>
+<span class="fc" id="L35">        dipendente.setRuolo(ruolo);</span>
+<span class="fc" id="L36">        when(this.request.getSession().getAttribute(&quot;dipendente&quot;)).thenReturn(dipendente);</span>
+<span class="fc" id="L37">    }</span>
+
+    protected void mockDispatcher()
+    {
+<span class="fc" id="L41">        val dispatcher = mock(RequestDispatcher.class);</span>
+<span class="fc" id="L42">        when(this.request.getRequestDispatcher(anyString())).thenReturn(dispatcher);</span>
+<span class="fc" id="L43">    }</span>
+
+    protected void populateRequest(final Map&lt;String, String&gt; parameters)
+    {
+<span class="fc" id="L47">        parameters.forEach((key, value) -&gt; when(this.request.getParameter(key)).thenReturn(value));</span>
+<span class="fc" id="L48">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

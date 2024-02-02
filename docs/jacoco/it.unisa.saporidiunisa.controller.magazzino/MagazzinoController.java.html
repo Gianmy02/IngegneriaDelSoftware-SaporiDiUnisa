@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MagazzinoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.magazzino</a> &gt; <span class="el_source">MagazzinoController.java</span></div><h1>MagazzinoController.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.magazzino;
+
+import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
+import it.unisa.saporidiunisa.model.dao.FornituraDAO;
+import it.unisa.saporidiunisa.model.dao.LottoDAO;
+import it.unisa.saporidiunisa.model.dao.ProdottoDAO;
+import it.unisa.saporidiunisa.model.entity.Fornitura;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import lombok.val;
+
+import java.time.LocalDate;
+import java.util.*;
+
+/**
+ * La classe &lt;code&gt;MagazzinoController&lt;/code&gt; funge da tramite fra il database e le servlet per le operazioni sul magazzino
+ * @author Salvatore Ruocco
+ */
+<span class="nc" id="L19">public class MagazzinoController {</span>
+    /**
+     * Il metodo &lt;code&gt;registraFornitura&lt;/code&gt; registra una nuova fornitura del giorno nel db
+     * @param fornitura fornitura inserita in input
+     * @return booleano di conferma
+     */
+    public static boolean registraFornitura(final Fornitura fornitura) {
+<span class="nc bnc" id="L26" title="All 4 branches missed.">        if(fornitura == null || fornitura.getLotti().isEmpty())</span>
+<span class="nc" id="L27">            return false;</span>
+
+<span class="nc" id="L29">        FornituraDAO.insert(fornitura);</span>
+<span class="nc" id="L30">        val idFornitura = FornituraDAO.getLastId();</span>
+
+<span class="nc" id="L32">        val lotti = fornitura.getLotti();</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        for(var l : lotti){</span>
+<span class="nc" id="L34">            l.getFornitura().setId(idFornitura);</span>
+
+            // Prezzo cad. inserito nel form
+<span class="nc" id="L37">            float prezzoInserito = l.getCosto() / l.getQuantita();</span>
+
+<span class="nc" id="L39">            val prodotto = l.getProdotto();</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            if(ProdottoDAO.selectByNameAndBrand(prodotto.getNome(), prodotto.getMarchio()) == null){  // prodotto nuovo</span>
+                // Imposto il prezzo del prodotto al doppio di quello inserito
+<span class="nc" id="L42">                prodotto.setPrezzo(prezzoInserito * 2);</span>
+<span class="nc" id="L43">                ProdottoDAO.insert(prodotto);</span>
+<span class="nc" id="L44">                prodotto.setId(ProdottoDAO.getLastId());</span>
+            }
+            else{
+                // controllo se il prezzo inserito è almeno il doppio di quello attuale
+<span class="nc" id="L48">                float prezzoAttuale = prodotto.getPrezzo();</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                if((prezzoInserito * 2) &gt; prezzoAttuale)</span>
+<span class="nc" id="L50">                    ProdottoDAO.updatePrice(prezzoInserito * 2, prodotto.getId());</span>
+            }
+<span class="nc" id="L52">            LottoDAO.insert(l);</span>
+<span class="nc" id="L53">        }</span>
+<span class="nc" id="L54">        return true;</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;eliminaLotto&lt;/code&gt; permette di eliminare un lotto per emergenze alimentari da parte di admin
+     * @param l id int del lotto
+     * @return booleano di conferma
+     */
+    public static boolean eliminaLotto(int l) {
+<span class="nc" id="L63">        Lotto lotto = LottoDAO.getLottoById(l);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if(lotto!=null){</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if(EsposizioneDAO.getEsposizioneByLotto(lotto)!=null){</span>
+<span class="nc" id="L66">                LottoDAO.eliminaLotto(lotto);</span>
+<span class="nc" id="L67">                EsposizioneDAO.rimuoviScaduto(Objects.requireNonNull(EsposizioneDAO.getEsposizioneByLotto(lotto)));</span>
+<span class="nc" id="L68">                return true;</span>
+            }
+            else {
+<span class="nc" id="L71">                LottoDAO.eliminaLotto(lotto);</span>
+<span class="nc" id="L72">                return true;</span>
+            }
+        }
+<span class="nc" id="L75">        return false;</span>
+    }
+
+    @SuppressWarnings(&quot;unused&quot;)
+    public static boolean modificaFornitura(Fornitura fornitura)
+    {
+<span class="nc" id="L81">        return false;</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaProdottiMagazzino&lt;/code&gt; permette di avere per ogni prodotto tutti i lotti di quel prodotto
+     * @return mappa con tutti i lotti per ogni prodotto
+     */
+    public static HashMap&lt;Prodotto, ArrayList&lt;Lotto&gt;&gt; visualizzaProdottiMagazzino() {
+<span class="nc" id="L89">        return LottoDAO.getMagazzino();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaForniture&lt;/code&gt; fa visualizzare tutte le forniture avvenute dall'apertura a oggi
+     * @return lista di forniture
+     */
+    public static List&lt;Fornitura&gt; visualizzaForniture() {
+<span class="nc" id="L97">        return FornituraDAO.selectAll();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getSpese&lt;/code&gt; ritorna la somma delle spese (costi dei lotti) comprati in quel periodo
+     * @param dataInizio data inizio del periodo scelto
+     * @param dataFine data fine del periodo scelto
+     * @return float
+     */
+    public static float getSpese(LocalDate dataInizio, LocalDate dataFine) {
+<span class="fc" id="L107">        return LottoDAO.getSpese(dataInizio, dataFine);</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getSpeseTotali&lt;/code&gt; calcola tutti i soldi spesi per tutti i lotti dal giorno di apertura del supermercato
+     * @return totale
+     */
+    public static float getSpeseTotali() {
+<span class="nc" id="L115">        return LottoDAO.getSpeseTotali();</span>
+    }
+
+    /**
+     * La funzione &lt;code&gt;getProdottoById&lt;/code&gt; cerca il prodotto corrispondente all'id richiesto
+     * @param id prodotto da ricercare
+     * @return Prodotto trovato nel caso
+     */
+    public static Prodotto getProdottoById(int id){
+<span class="fc" id="L124">        return ProdottoDAO.findProdottoById(id);</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;checkProductExists&lt;/code&gt; controlla se e presente già un prodotto nella base dati
+     * @param nome nome del prodotto
+     * @param marchio marchio del prodotto
+     * @return Prodotto oppure null
+     */
+    public static Prodotto checkProductExists(final String nome, final String marchio){
+<span class="fc" id="L134">        return ProdottoDAO.selectByNameAndBrand(nome, marchio);</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getAllProducts&lt;/code&gt; restituisce tutti i prodotti contenuti nella banca dati
+     * @return lista di prodotti o null
+     */
+    public static List&lt;Prodotto&gt; getAllProducts() {
+<span class="fc" id="L142">        return ProdottoDAO.selectAll();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

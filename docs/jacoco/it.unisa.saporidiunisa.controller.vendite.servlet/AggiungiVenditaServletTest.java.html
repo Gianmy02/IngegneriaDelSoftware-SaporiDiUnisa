@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AggiungiVenditaServletTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.vendite.servlet</a> &gt; <span class="el_source">AggiungiVenditaServletTest.java</span></div><h1>AggiungiVenditaServletTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.vendite.servlet;
+
+import it.unisa.saporidiunisa.controller.ServletTest;
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import lombok.val;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import static org.mockito.Mockito.*;
+
+<span class="fc" id="L22">class AggiungiVenditaServletTest extends ServletTest</span>
+{
+    @BeforeEach
+    void beforeEach()
+    {
+<span class="fc" id="L27">        init();</span>
+<span class="fc" id="L28">        mockSession();</span>
+<span class="fc" id="L29">        mockDipendente(Dipendente.Ruolo.CASSIERE);</span>
+<span class="fc" id="L30">        mockDispatcher();</span>
+<span class="fc" id="L31">    }</span>
+
+    void populateJson(String prodotto, String quantita, String prezzo) throws IOException
+    {
+<span class="fc" id="L35">        val jsonString = &quot;[{\&quot;productId\&quot;: &quot; + prodotto + &quot;, \&quot;quantity\&quot;: &quot; + quantita + &quot;, \&quot;price\&quot;: &quot; + prezzo + &quot;}]&quot;;</span>
+
+        // Creare un InputStream dalla stringa JSON
+<span class="fc" id="L38">        val inputStream = new ByteArrayInputStream(jsonString.getBytes());</span>
+
+        // Creare un BufferedReader dallo InputStream
+<span class="fc" id="L41">        val bufferedReader = new BufferedReader(new InputStreamReader(inputStream));</span>
+
+        // Configurare il mock per restituire il BufferedReader
+<span class="fc" id="L44">        when(request.getReader()).thenReturn(bufferedReader);</span>
+<span class="fc" id="L45">    }</span>
+
+
+    @Nested
+<span class="fc" id="L49">    class Incorrect</span>
+    {
+
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L55">            try (val magazzinoController = mockStatic(MagazzinoController.class, Answers.CALLS_REAL_METHODS);</span>
+<span class="fc" id="L56">                 val scaffaleController = mockStatic(ScaffaleController.class, Answers.CALLS_REAL_METHODS);</span>
+<span class="fc" id="L57">                 val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L59">                val prodotto1 = new Prodotto(1, &quot;Farina&quot;, &quot;Caputo&quot;, 1.00F, 0, null, null, null);</span>
+<span class="fc" id="L60">                val prodotto2 = new Prodotto(2, &quot;Farina&quot;, &quot;Caputo&quot;, 1.00F, 0, null, null, null);</span>
+
+<span class="fc" id="L62">                magazzinoController.when(() -&gt; MagazzinoController.getProdottoById(1)).thenReturn(prodotto1);</span>
+<span class="fc" id="L63">                magazzinoController.when(() -&gt; MagazzinoController.getProdottoById(2)).thenReturn(prodotto2);</span>
+
+<span class="fc" id="L65">                scaffaleController.when(() -&gt; ScaffaleController.getEspostiByProdotto(prodotto1)).thenReturn(10);</span>
+<span class="fc" id="L66">                scaffaleController.when(() -&gt; ScaffaleController.getEspostiByProdotto(prodotto2)).thenReturn(1);</span>
+
+<span class="fc" id="L68">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L69">                utils.when(() -&gt; Utils.sendMessage(captor.capture(), eq(response))).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L71">                new AggiungiVenditaServlet().doPost(request, response);</span>
+
+<span class="fc" id="L73">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L75">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.1&quot;)
+        void tc_2_1_1() throws IOException
+        {
+<span class="fc" id="L81">            populateJson(&quot;0&quot;, &quot;1&quot;, &quot;1.00&quot;);</span>
+<span class="fc" id="L82">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.2&quot;)
+        void tc_2_1_2() throws IOException
+        {
+<span class="fc" id="L88">            populateJson(&quot;1&quot;, &quot;a&quot;, &quot;1.00&quot;);</span>
+<span class="fc" id="L89">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.3&quot;)
+        void tc_2_1_3() throws IOException
+        {
+<span class="fc" id="L95">            populateJson(&quot;1&quot;, &quot;0&quot;, &quot;1.00&quot;);</span>
+<span class="fc" id="L96">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.4&quot;)
+        void tc_2_1_4() throws IOException
+        {
+<span class="fc" id="L102">            populateJson(&quot;1&quot;, &quot;1000000&quot;, &quot;1.00&quot;);</span>
+<span class="fc" id="L103">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.5&quot;)
+        void tc_2_1_5() throws IOException
+        {
+<span class="fc" id="L109">            populateJson(&quot;2&quot;, &quot;5&quot;, &quot;1.00&quot;);</span>
+<span class="fc" id="L110">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.6&quot;)
+        void tc_2_1_6() throws IOException
+        {
+<span class="fc" id="L116">            populateJson(&quot;1&quot;, &quot;5&quot;, &quot;1.5555&quot;);</span>
+<span class="fc" id="L117">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.7&quot;)
+        void tc_2_1_7() throws IOException
+        {
+<span class="fc" id="L123">            populateJson(&quot;1&quot;, &quot;5&quot;, &quot;-1.00&quot;);</span>
+<span class="fc" id="L124">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.8&quot;)
+        void tc_2_1_8() throws IOException
+        {
+<span class="fc" id="L130">            populateJson(&quot;1&quot;, &quot;1&quot;, &quot;100000.00&quot;);</span>
+<span class="fc" id="L131">        }</span>
+    }
+
+    @Nested
+<span class="fc" id="L135">    class Correct</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L140">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L142">                utils.verify(() -&gt; Utils.dispatchError(any(), any(), any()), never());</span>
+<span class="fc" id="L143">                utils.verify(() -&gt; Utils.sendMessage(any(), any()), never());</span>
+
+<span class="fc" id="L145">                new AggiungiVenditaServlet().doPost(request, response);</span>
+            }
+<span class="fc" id="L147">        }</span>
+
+        @Test
+        @DisplayName(&quot;2.1.9&quot;)
+        void tc_2_1_9() throws IOException
+        {
+<span class="fc" id="L153">            populateJson(&quot;1&quot;, &quot;1&quot;, &quot;1.00&quot;);</span>
+<span class="fc" id="L154">        }</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

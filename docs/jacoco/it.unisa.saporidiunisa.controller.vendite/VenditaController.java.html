@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VenditaController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.vendite</a> &gt; <span class="el_source">VenditaController.java</span></div><h1>VenditaController.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.vendite;
+
+import it.unisa.saporidiunisa.model.dao.EsposizioneDAO;
+import it.unisa.saporidiunisa.model.dao.VendutoDAO;
+import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Venduto;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+/**
+ * La classe &lt;code&gt;VenditaController&lt;/code&gt;si interpone fra il database e le servlet rispetto alle vendite
+ * @author Gianmarco Riviello
+ */
+<span class="nc" id="L15">public class VenditaController {</span>
+    /**
+     * Il metodo conferma le vendite richieste di tutti i prodotti
+     *
+     * @param venduti sono tutti i prodotti venduti in un determinato momento a un cliente ipotetico
+     * @return booleano di conferma
+     */
+    public static boolean venditaProdotti(ArrayList&lt;Venduto&gt; venduti) {
+<span class="fc" id="L23">        boolean b = false;</span>
+        /*itero sulla lista di prodotti che si vogliono acquistare*/
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        for (Venduto v : venduti) {</span>
+<span class="fc" id="L26">            float guadagno = 0;</span>
+            //prendo tutti i prodotti in esposizione del prodotto specificato
+<span class="fc" id="L28">            ArrayList&lt;Esposizione&gt; e = EsposizioneDAO.getLottibyProdottoWithoutScaduti(v.getProdotto());</span>
+<span class="fc" id="L29">            int quantitaCount = v.getQuantita();</span>
+            //itero per la quantita di prodotti da comprare
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">            for (Esposizione es : e) {</span>
+                //se la quantita richiesta e maggiore di quella esposta del lotto preso in questione si continua
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">                if (quantitaCount &gt; es.getQuantita()) {</span>
+<span class="nc" id="L34">                    guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * es.getQuantita();</span>
+<span class="nc" id="L35">                    quantitaCount = quantitaCount - es.getQuantita();</span>
+<span class="nc" id="L36">                    EsposizioneDAO.diminuisciEsposizione(es.getQuantita(), es, true);</span>
+                }
+                //se e minore o ugualela quantita esposta di quel lotto va bene e quindi sarà l'ultima
+                else {
+<span class="fc" id="L40">                    guadagno += (v.getCosto() - es.getLotto().getCostoProdotto()) * v.getQuantita();</span>
+<span class="fc" id="L41">                    EsposizioneDAO.diminuisciEsposizione(quantitaCount, es, false);</span>
+<span class="fc" id="L42">                    break;</span>
+                }
+<span class="nc" id="L44">            }</span>
+<span class="fc" id="L45">            v.setGuadagno(guadagno);</span>
+                /*salva nel db i nuovi venduti del prodotto,
+            vedo se al giorno d'oggi ci sono state altre vendite del prodotto*/
+<span class="fc" id="L48">            Venduto attuale = VendutoDAO.getVendutiGiornalieroByProdotto(v.getProdotto());</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            if (attuale != null) {</span>
+<span class="nc" id="L50">                b = VendutoDAO.doUpdateVendita(v);</span>
+            } else {
+<span class="fc" id="L52">                b = VendutoDAO.doSaveVendita(v);</span>
+            }
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        return b;</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaStoricoVendite&lt;/code&gt; restituisce la somma delle attività di vendita di tutti i Prodotti in un determinato periodo scelto
+     *
+     * @param dataInizio data che delimita l'inizio del periodo
+     * @param dataFine data che delimita la fine del periodo
+     * @return ArrayList di venduti
+     */
+    public static ArrayList&lt;Venduto&gt; visualizzaStoricoVendite(LocalDate dataInizio, LocalDate dataFine) {
+<span class="nc" id="L66">        return VendutoDAO.getStorico(dataInizio, dataFine);</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;visualizzaProdottiEsposti&lt;/code&gt;mette in correlazione il db con le servlet ed e utile per la vista del cassiere sui prodotti
+     * @return arrayList di prodotti esposti
+     */
+    public static ArrayList&lt;Esposizione&gt; visualizzaProdottiEsposti() {
+<span class="nc" id="L74">        return EsposizioneDAO.visualizzaProdottiEspostiCassiere();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getIncassi&lt;/code&gt; serve per avere la somma degli incassi conseguiti nel periodo prescelto
+     *
+     * @param dataInizio data per la delimitazione del periodo iniziale
+     * @param dataFine   data per la delimitazione del periodo finale
+     * @return incassi, float
+     */
+    public static float getIncassi(LocalDate dataInizio, LocalDate dataFine) {
+<span class="fc" id="L85">        return VendutoDAO.getIncassi(dataInizio, dataFine);</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getGuadagni&lt;/code&gt; serve per avere la somma dei guadagni conseguiti nel periodo prescelto
+     * @param dataInizio data per la delimitazione del periodo iniziale
+     * @param dataFine   data per la delimitazione del periodo finale
+     * @return guadagni, float
+     */
+    public static float getGuadagni(LocalDate dataInizio, LocalDate dataFine) {
+<span class="fc" id="L95">        return VendutoDAO.getGuadagni(dataInizio, dataFine);</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getIncassiTotali&lt;/code&gt; restituisce gli incassi fatti dal primo giorno di apertura
+     * @return float incassi
+     */
+    public static float getIncassiTotali() {
+<span class="nc" id="L103">        return VendutoDAO.getIncassiTotali();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;getIncassiTotali&lt;/code&gt; restituisce i guadagni fatti dal primo giorno di apertura
+     * @return float guadagni
+     */
+    public static float getGuadagniTotali() {
+<span class="nc" id="L111">        return VendutoDAO.getGuadagniTotali();</span>
+    }
+
+    /**
+     * Il metodo &lt;code&gt;addGiornoVendite&lt;/code&gt; in caso di avvenuta vendita controlla se il giorno lavorativo odierno e gia salvato,
+     * nel caso non fosse così vorrebbe dire che si sta per effettuare la prima vendita della giornata.
+     */
+    public static void addGiornoVendite() {
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (VendutoDAO.searchGiornoLavorativo())</span>
+<span class="fc" id="L120">            VendutoDAO.doSaveGiornoLavorativo();</span>
+<span class="fc" id="L121">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

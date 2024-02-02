@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GoToServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller</a> &gt; <span class="el_source">GoToServlet.java</span></div><h1>GoToServlet.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+
+@Deprecated(since = &quot;Introduce una vulnerabilità che permetterebbe ad un utente malintenzionato di accedere arbitrariamente a qualsiasi JSP&quot;, forRemoval = true)
+@WebServlet(value = &quot;/GoToServlet&quot;)
+<span class="nc" id="L14">public class GoToServlet extends HttpServlet {</span>
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<span class="nc" id="L17">        val address = req.getParameter(&quot;address&quot;);</span>
+<span class="nc" id="L18">        req.getRequestDispatcher(&quot;view/&quot;+address+&quot;.jsp&quot;).forward(req, resp);</span>
+<span class="nc" id="L19">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AggiungiScaffaleTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.scaffale.servlet</a> &gt; <span class="el_source">AggiungiScaffaleTest.java</span></div><h1>AggiungiScaffaleTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.scaffale.servlet;
+
+import it.unisa.saporidiunisa.controller.ServletTest;
+import it.unisa.saporidiunisa.controller.scaffale.ScaffaleController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Esposizione;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import lombok.val;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import static java.util.Map.entry;
+import static java.util.Map.ofEntries;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mockStatic;
+
+<span class="fc" id="L25">public class AggiungiScaffaleTest extends ServletTest</span>
+{
+    @BeforeEach
+    void beforeEach()
+    {
+<span class="fc" id="L30">        init();</span>
+<span class="fc" id="L31">        mockSession();</span>
+<span class="fc" id="L32">        mockDipendente(Dipendente.Ruolo.MAGAZZINIERE);</span>
+<span class="fc" id="L33">        mockDispatcher();</span>
+<span class="fc" id="L34">    }</span>
+
+    @Nested
+<span class="fc" id="L37">    class Incorrect</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException {
+<span class="fc" id="L41">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS);</span>
+<span class="fc" id="L42">                 val scaffaleController = mockStatic(ScaffaleController.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L44">                val prodotto1 = new Prodotto(1, &quot;Farina&quot;, &quot;Caputo&quot;, 1.00F, 0, null, null, null);</span>
+<span class="fc" id="L45">                val lotto1 = new Lotto(1, 500F, LocalDate.of(2025, 3, 3), 700, 500, null, prodotto1);</span>
+<span class="fc" id="L46">                val esposizione1 = new Esposizione();</span>
+<span class="fc" id="L47">                esposizione1.setLotto(lotto1);</span>
+<span class="fc" id="L48">                esposizione1.setQuantita(50);</span>
+<span class="fc" id="L49">                esposizione1.setProdotto(prodotto1);</span>
+<span class="fc" id="L50">                ArrayList&lt;Esposizione&gt; lottiScaffale = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">                lottiScaffale.add(esposizione1);</span>
+
+<span class="fc" id="L53">                val prodotto2 = new Prodotto(2, &quot;Biscotti&quot;, &quot;Gocciole&quot;, 1.00F, 0, null, null, null);</span>
+<span class="fc" id="L54">                val lotto2 = new Lotto(2, 500F, LocalDate.of(2025, 3, 3), 500, 500, null, prodotto2);</span>
+<span class="fc" id="L55">                ArrayList&lt;Lotto&gt; lottiMagazzino = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L56">                lottiMagazzino.add(lotto2);</span>
+
+<span class="fc" id="L58">                scaffaleController.when(ScaffaleController::visualizzaProdottiScaffale).thenReturn(lottiScaffale);</span>
+<span class="fc" id="L59">                scaffaleController.when(ScaffaleController::visualizzaProdottiMagazzino).thenReturn(lottiMagazzino);</span>
+
+<span class="fc" id="L61">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L62">                utils.when(() -&gt; Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L64">                new AggiungiScaffale().doPost(request, response);</span>
+
+<span class="fc" id="L66">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L68">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.1&quot;)
+<span class="fc" id="L72">        void tc_4_1_1() { populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;-1&quot;), entry(&quot;qntMagazzino2&quot;, &quot;10&quot;))); }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.2&quot;)
+        void tc_4_1_2()
+        {
+<span class="fc" id="L78">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;1000000&quot;), entry(&quot;qntMagazzino2&quot;, &quot;10&quot;)));</span>
+<span class="fc" id="L79">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.3&quot;)
+        void tc_4_1_3()
+        {
+<span class="fc" id="L85">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;500a&quot;), entry(&quot;qntMagazzino2&quot;, &quot;10&quot;)));</span>
+<span class="fc" id="L86">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.4&quot;)
+        void tc_4_1_4()
+        {
+<span class="fc" id="L92">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;501&quot;), entry(&quot;qntMagazzino2&quot;, &quot;10&quot;)));</span>
+<span class="fc" id="L93">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.5&quot;)
+        void tc_4_1_5()
+        {
+<span class="fc" id="L99">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;10&quot;), entry(&quot;qntMagazzino2&quot;, &quot;-1&quot;)));</span>
+<span class="fc" id="L100">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.6&quot;)
+        void tc_4_1_6()
+        {
+<span class="fc" id="L106">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;10&quot;), entry(&quot;qntMagazzino2&quot;, &quot;1000000&quot;)));</span>
+<span class="fc" id="L107">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.7&quot;)
+        void tc_4_1_7()
+        {
+<span class="fc" id="L113">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;10&quot;), entry(&quot;qntMagazzino2&quot;, &quot;500a&quot;)));</span>
+<span class="fc" id="L114">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.8&quot;)
+        void tc_4_1_8()
+        {
+<span class="fc" id="L120">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;10&quot;), entry(&quot;qntMagazzino2&quot;, &quot;501&quot;)));</span>
+<span class="fc" id="L121">        }</span>
+
+    }
+
+    @Nested
+<span class="fc" id="L126">    class Correct</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L131">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L133">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L134">                utils.when(() -&gt; Utils.dispatchSuccess(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L136">                new AggiungiScaffale().doPost(request, response);</span>
+
+<span class="fc" id="L138">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L140">        }</span>
+
+        @Test
+        @DisplayName(&quot;4.1.9&quot;)
+        void tc_4_1_9()
+        {
+<span class="fc" id="L146">            populateRequest(ofEntries(entry(&quot;qntScaffale1&quot;, &quot;10&quot;), entry(&quot;qntMagazzino2&quot;, &quot;10&quot;)));</span>
+<span class="fc" id="L147">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

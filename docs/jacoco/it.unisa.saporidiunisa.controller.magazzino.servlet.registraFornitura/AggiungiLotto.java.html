@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AggiungiLotto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura</a> &gt; <span class="el_source">AggiungiLotto.java</span></div><h1>AggiungiLotto.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.magazzino.servlet.registraFornitura;
+
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.model.entity.Fornitura;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import lombok.val;
+import org.json.JSONObject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import org.apache.commons.io.IOUtils;
+
+/**
+ * Servlet, invocata tramite AJAX, che gestisce l'aggiunta di un lotto alla fornitura che si sta inserendo
+ * @author Salvatore Ruocco
+ */
+@MultipartConfig
+@WebServlet(name = &quot;AggiungiLotto&quot;, value = &quot;/AggiungiLotto&quot;)
+<span class="fc" id="L26">public class AggiungiLotto extends HttpServlet {</span>
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<span class="fc" id="L30">        val nome = Utils.readPart(req.getPart(&quot;nome&quot;));</span>
+<span class="fc" id="L31">        val marchio = Utils.readPart(req.getPart(&quot;marchio&quot;));</span>
+<span class="fc" id="L32">        val prezzo_str = Utils.readPart(req.getPart(&quot;prezzo&quot;));</span>
+<span class="fc" id="L33">        val quantita_str = Utils.readPart(req.getPart(&quot;quantita&quot;));</span>
+<span class="fc" id="L34">        val dataScadenza_str = Utils.readPart(req.getPart(&quot;dataScadenza&quot;));</span>
+
+<span class="fc" id="L36">        val errorString = _validateLotto(nome, marchio, prezzo_str, quantita_str, dataScadenza_str);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if(!errorString.isEmpty()){</span>
+<span class="fc" id="L38">            Utils.sendMessage(errorString, resp);</span>
+<span class="fc" id="L39">            return;</span>
+        }
+
+<span class="fc" id="L42">        val prezzo = Utils.parseAsFloat(prezzo_str);</span>
+<span class="fc" id="L43">        val quantita = Utils.parseAsInteger(quantita_str);</span>
+<span class="fc" id="L44">        val dataScadenza = Utils.parseAsLocalDate(dataScadenza_str);</span>
+
+<span class="fc" id="L46">        var prodotto = MagazzinoController.checkProductExists(nome, marchio);</span>
+        // se il prodotto è nuovo, controllo che sia stata caricata una foto
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if(prodotto == null){</span>
+<span class="fc" id="L49">            val fotoPart = req.getPart(&quot;foto&quot;);</span>
+<span class="fc" id="L50">            val errorPhotoString = _validatePhoto(fotoPart);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if(errorPhotoString != null) {</span>
+<span class="fc" id="L52">                Utils.sendMessage(errorPhotoString, resp);</span>
+<span class="fc" id="L53">                return;</span>
+            }
+            // se non ci sono errori
+<span class="fc" id="L56">            InputStream fileInputStream = fotoPart.getInputStream();</span>
+<span class="fc" id="L57">            byte[] imageBytes = IOUtils.toByteArray(fileInputStream);</span>
+<span class="fc" id="L58">            prodotto = new Prodotto(0, nome, marchio, prezzo, 0, null, null, imageBytes);</span>
+        }
+
+        // tengo l'id della fornitura in sessione per evitare ripetute select dal db
+<span class="fc" id="L62">        final HttpSession session = req.getSession();</span>
+<span class="fc" id="L63">        var fornitura = (Fornitura) session.getAttribute(&quot;fornitura&quot;);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if(fornitura == null)</span>
+<span class="fc" id="L65">            fornitura = new Fornitura();</span>
+
+        /*
+        il lotto ha come id non quello che sarà presente una volta salvato sul database
+        ma uno che indica l'i-esimo lotto della fornitura in sessione
+        id = fornitura.getLotti().size()
+        */
+<span class="fc" id="L72">        val lotto = new Lotto(fornitura.getLotti().size(), prezzo * quantita, dataScadenza, quantita, quantita, fornitura, prodotto);</span>
+<span class="fc" id="L73">        fornitura.getLotti().add(lotto);</span>
+<span class="fc" id="L74">        session.setAttribute(&quot;fornitura&quot;, fornitura);</span>
+
+        // ritorno il lotto appena inserito in formato json
+<span class="fc" id="L77">        val json = new JSONObject();</span>
+<span class="fc" id="L78">        json.put(&quot;keyId&quot;, lotto.getId());</span>
+<span class="fc" id="L79">        json.put(&quot;nome&quot;, nome);</span>
+<span class="fc" id="L80">        json.put(&quot;marchio&quot;, marchio);</span>
+<span class="fc" id="L81">        json.put(&quot;prezzo&quot;, String.format(&quot;%.2f €&quot;, prezzo));</span>
+<span class="fc" id="L82">        json.put(&quot;quantita&quot;, quantita);</span>
+<span class="fc" id="L83">        json.put(&quot;dataScadenza&quot;, dataScadenza.format(Patterns.DATE_TIME_FORMATTER));</span>
+<span class="fc" id="L84">        resp.setContentType(&quot;application/json&quot;);</span>
+<span class="fc" id="L85">        resp.getWriter().write(String.valueOf(json));</span>
+<span class="fc" id="L86">    }</span>
+
+    private String _validateLotto(final String nome, final String marchio, final String prezzo, final String quantita, final String dataScadenza) {
+<span class="fc" id="L89">        val s = new StringBuilder();</span>
+
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">        if(nome.isEmpty() || nome.isBlank())</span>
+<span class="nc" id="L92">            s.append(&quot;Il nome non può essere vuoto\n&quot;);</span>
+<span class="fc bfc" id="L93" title="All 4 branches covered.">        else if(nome.length() &lt; 2 || nome.length() &gt; 255)</span>
+<span class="fc" id="L94">            s.append(&quot;Il nome deve essere compreso tra 2 e 255 caratteri\n&quot;);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        else if(!Patterns.INPUT_STRING.matcher(nome).matches())</span>
+<span class="fc" id="L96">            s.append(&quot;Il nome non rispetta il formato\n&quot;);</span>
+
+<span class="pc bpc" id="L98" title="2 of 4 branches missed.">        if(marchio.isEmpty() || marchio.isBlank())</span>
+<span class="nc" id="L99">            s.append(&quot;Il marchio non può essere vuoto\n&quot;);</span>
+<span class="fc bfc" id="L100" title="All 4 branches covered.">        else if(marchio.length() &lt; 2 || marchio.length() &gt; 255)</span>
+<span class="fc" id="L101">            s.append(&quot;Il marchio deve essere compreso tra 2 e 255 caratteri\n&quot;);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        else if(!Patterns.INPUT_STRING.matcher(marchio).matches())</span>
+<span class="fc" id="L103">            s.append(&quot;Il marchio non rispetta il formato\n&quot;);</span>
+
+        Float _prezzo;
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">        if(prezzo.isEmpty() || prezzo.isBlank()) {</span>
+<span class="nc" id="L107">            s.append(&quot;Il prezzo non può essere vuoto\n&quot;);</span>
+        }
+        else{
+<span class="fc" id="L110">            _prezzo = Utils.parseAsFloat(prezzo);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">            if(_prezzo == null)</span>
+<span class="nc" id="L112">                s.append(&quot;Il prezzo deve essere un numero\n&quot;);</span>
+<span class="fc bfc" id="L113" title="All 4 branches covered.">            else if(_prezzo &lt;= 0 || _prezzo &gt;= 100000.00)</span>
+<span class="fc" id="L114">                s.append(&quot;Il prezzo deve essere compreso tra 0.01 € e 100000.00 €\n&quot;);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            else if(!Patterns.PRICE.matcher(prezzo).matches())</span>
+<span class="fc" id="L116">                s.append(&quot;Il prezzo non rispetta il formato\n&quot;);</span>
+        }
+
+        Integer _quantita;
+<span class="pc bpc" id="L120" title="2 of 4 branches missed.">        if(quantita.isEmpty() || quantita.isBlank()) {</span>
+<span class="nc" id="L121">            s.append(&quot;La quantità non può essere vuota\n&quot;);</span>
+        }
+        else{
+<span class="fc" id="L124">            _quantita = Utils.parseAsInteger(quantita);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            if(_quantita == null)</span>
+<span class="fc" id="L126">                s.append(&quot;La quantità deve essere un numero\n&quot;);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">            else if(!Patterns.QUANTITY.matcher(quantita).matches())</span>
+<span class="nc" id="L128">                s.append(&quot;La quantità non rispetta il formato\n&quot;);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">            else if(_quantita &lt;= 0)</span>
+<span class="fc" id="L130">                s.append(&quot;La quantità deve essere maggiore di 0\n&quot;);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            else if(_quantita &gt;= 1000000)</span>
+<span class="fc" id="L132">                s.append(&quot;La quantità deve essere minore di 1000000\n&quot;);</span>
+        }
+
+        LocalDate _dataScadenza;
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">        if(dataScadenza.isEmpty() || dataScadenza.isBlank()) {</span>
+<span class="nc" id="L137">            s.append(&quot;La data di scadenza non può essere vuota\n&quot;);</span>
+        }
+        else{
+<span class="fc" id="L140">            _dataScadenza = Utils.parseAsLocalDate(dataScadenza);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            if(_dataScadenza == null)</span>
+<span class="fc" id="L142">                s.append(&quot;La data di scadenza non è valida\n&quot;);</span>
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">            else if(_dataScadenza.isBefore(LocalDate.now()) || _dataScadenza.isEqual(LocalDate.now()))</span>
+<span class="fc" id="L144">                s.append(&quot;La data di scadenza deve essere posteriore a quella odierna\n&quot;);</span>
+        }
+
+<span class="fc" id="L147">        return s.toString();</span>
+    }
+
+    private String _validatePhoto(final Part foto){
+<span class="pc bpc" id="L151" title="2 of 4 branches missed.">        if(foto == null || foto.getSize() &lt;= 0)</span>
+<span class="nc" id="L152">            return &quot;La foto non può essere vuota\n&quot;;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        else if(foto.getSize() &gt; 1024 * 1024 * 2)</span>
+<span class="fc" id="L154">            return &quot;La foto deve essere minore di 2MB\n&quot;;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        else if(!Utils.checkImageExtension(foto))</span>
+<span class="fc" id="L156">            return &quot;La foto deve essere un'immagine con estensione: jpg, jpeg o png\n&quot;;</span>
+        else
+<span class="fc" id="L158">            return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

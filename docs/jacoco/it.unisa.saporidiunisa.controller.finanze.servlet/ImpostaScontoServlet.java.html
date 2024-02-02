@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImpostaScontoServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.finanze.servlet</a> &gt; <span class="el_source">ImpostaScontoServlet.java</span></div><h1>ImpostaScontoServlet.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.finanze.servlet;
+
+import it.unisa.saporidiunisa.controller.finanze.FinanzeController;
+import it.unisa.saporidiunisa.controller.magazzino.MagazzinoController;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+import java.time.LocalDate;
+
+/**
+ * La servlet &lt;code&gt;impostaScontoServlet&lt;/code&gt; inserisce uno sconto per un prodotto
+ * @author Antonio Facchiano
+ */
+@WebServlet(name = &quot;impostaScontoServlet&quot;, value = &quot;/imposta-sconto-servlet&quot;)
+<span class="fc" id="L23">public class ImpostaScontoServlet extends HttpServlet</span>
+{
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L28">        val session = request.getSession();</span>
+
+<span class="fc" id="L30">        val dipendente = (Dipendente)session.getAttribute(&quot;dipendente&quot;);</span>
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">        if (dipendente == null || dipendente.getRuolo() != Dipendente.Ruolo.FINANZE)</span>
+        {
+<span class="nc" id="L33">            Utils.dispatchError(Messages.NO_PERMISSIONS, request, response);</span>
+<span class="nc" id="L34">            return;</span>
+        }
+
+<span class="fc" id="L37">        val prodottoId = request.getParameter(&quot;prodotto&quot;);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (prodottoId == null)</span>
+        {
+<span class="nc" id="L40">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;prodotto&quot;), request, response);</span>
+<span class="nc" id="L41">            return;</span>
+        }
+
+<span class="fc" id="L44">        val id = Utils.parseAsInteger(prodottoId);</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (id == null)</span>
+        {
+<span class="nc" id="L47">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;id&quot;), request, response);</span>
+<span class="nc" id="L48">            return;</span>
+        }
+
+<span class="fc" id="L51">        val prodotto = MagazzinoController.getProdottoById(id);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (prodotto == null)</span>
+        {
+<span class="fc" id="L54">            Utils.dispatchError(Messages.NOT_FOUND.formatted(&quot;prodotto&quot;), request, response);</span>
+<span class="fc" id="L55">            return;</span>
+        }
+
+<span class="fc" id="L58">        val dataInizioSconto = request.getParameter(&quot;dataInizioSconto&quot;);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (dataInizioSconto == null)</span>
+        {
+<span class="nc" id="L61">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;data inizio&quot;), request, response);</span>
+<span class="nc" id="L62">            return;</span>
+        }
+
+<span class="fc" id="L65">        val dataFineSconto = request.getParameter(&quot;dataFineSconto&quot;);</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (dataFineSconto == null)</span>
+        {
+<span class="nc" id="L68">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;data fine&quot;), request, response);</span>
+<span class="nc" id="L69">            return;</span>
+        }
+
+<span class="fc" id="L72">        val dataInizioScontoDate = Utils.parseAsLocalDate(dataInizioSconto);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (dataInizioScontoDate == null)</span>
+        {
+<span class="fc" id="L75">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;data inizio&quot;), request, response);</span>
+<span class="fc" id="L76">            return;</span>
+        }
+
+<span class="fc" id="L79">        val dataFineScontoDate = Utils.parseAsLocalDate(dataFineSconto);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (dataFineScontoDate == null)</span>
+        {
+<span class="fc" id="L82">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;data fine&quot;), request, response);</span>
+<span class="fc" id="L83">            return;</span>
+        }
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (dataInizioScontoDate.isBefore(LocalDate.now()))</span>
+        {
+<span class="fc" id="L88">            Utils.dispatchError(&quot;La data di inizio è nel passato.&quot;, request, response);</span>
+<span class="fc" id="L89">            return;</span>
+        }
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (dataFineScontoDate.isBefore(dataInizioScontoDate))</span>
+        {
+<span class="fc" id="L94">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;intervallo di date&quot;), request, response);</span>
+<span class="fc" id="L95">            return;</span>
+        }
+
+<span class="fc" id="L98">        val sconto = request.getParameter(&quot;sconto&quot;);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (sconto == null)</span>
+        {
+<span class="nc" id="L101">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;sconto&quot;), request, response);</span>
+<span class="nc" id="L102">            return;</span>
+        }
+
+<span class="fc" id="L105">        val scontoInteger = Utils.parseAsInteger(sconto);</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (scontoInteger == null)</span>
+        {
+<span class="nc" id="L108">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;sconto&quot;), request, response);</span>
+<span class="nc" id="L109">            return;</span>
+        }
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (scontoInteger &lt; 1)</span>
+        {
+<span class="fc" id="L114">            Utils.dispatchError(&quot;Lo sconto è al di sotto del minimo consentito.&quot;, request, response);</span>
+<span class="fc" id="L115">            return;</span>
+        }
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (scontoInteger &gt; 100)</span>
+        {
+<span class="fc" id="L120">            Utils.dispatchError(&quot;Lo sconto è al di sopra del massimo consentito.&quot;, request, response);</span>
+<span class="fc" id="L121">            return;</span>
+        }
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (!FinanzeController.impostaSconto(prodotto, scontoInteger, dataInizioScontoDate, dataFineScontoDate))</span>
+        {
+<span class="fc" id="L126">            Utils.dispatchError(Messages.FAIL, request, response);</span>
+<span class="fc" id="L127">            return;</span>
+        }
+
+<span class="fc" id="L130">        session.setAttribute(&quot;prodotti&quot;, MagazzinoController.getAllProducts());</span>
+
+<span class="fc" id="L132">        Utils.dispatchSuccess(Messages.SUCCESS, request, response);</span>
+<span class="fc" id="L133">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

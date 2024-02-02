@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MostraLottiProdotto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.magazzino.servlet</a> &gt; <span class="el_source">MostraLottiProdotto.java</span></div><h1>MostraLottiProdotto.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.magazzino.servlet;
+
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.model.entity.Lotto;
+import it.unisa.saporidiunisa.model.entity.Prodotto;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
+/**
+ * Servlet che mostra i lotti di un determinato prodotto
+ * @author Gianmarco Riviello
+ */
+@WebServlet(name = &quot;MostraLottiProdotto&quot;, value = &quot;/MostraLottiProdotto&quot;)
+<span class="nc" id="L25">public class MostraLottiProdotto extends HttpServlet {</span>
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+<span class="nc" id="L29">        val session = req.getSession();</span>
+
+<span class="nc" id="L31">        val dipendente = (Dipendente)session.getAttribute(&quot;dipendente&quot;);</span>
+<span class="nc bnc" id="L32" title="All 6 branches missed.">        if (dipendente == null || dipendente.getRuolo() == Dipendente.Ruolo.CASSIERE || dipendente.getRuolo() == Dipendente.Ruolo.FINANZE)</span>
+        {
+<span class="nc" id="L34">            Utils.dispatchError(Messages.NO_PERMISSIONS, req, resp);</span>
+<span class="nc" id="L35">            return;</span>
+        }
+
+        int id;
+
+        try {
+<span class="nc" id="L41">            id = Integer.parseInt(req.getParameter(&quot;prodotto&quot;));</span>
+        }
+<span class="nc" id="L43">        catch (NumberFormatException ex)</span>
+        {
+<span class="nc" id="L45">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;prodotto&quot;), req, resp);</span>
+<span class="nc" id="L46">            return;</span>
+<span class="nc" id="L47">        }</span>
+
+<span class="nc" id="L49">        boolean trovato = false;</span>
+<span class="nc" id="L50">        Prodotto prodotto = new Prodotto();</span>
+<span class="nc" id="L51">        HashMap&lt;Prodotto, ArrayList&lt;Lotto&gt;&gt; lottiMagazzino = (HashMap&lt;Prodotto, ArrayList&lt;Lotto&gt;&gt;) session.getAttribute(&quot;magazzino&quot;);</span>
+<span class="nc" id="L52">        Set&lt;Prodotto&gt; prodotti = lottiMagazzino.keySet();</span>
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        for (Prodotto p : prodotti)</span>
+<span class="nc bnc" id="L55" title="All 4 branches missed.">            if(p.getId() == id &amp;&amp; !trovato) {</span>
+<span class="nc" id="L56">                trovato = true;</span>
+<span class="nc" id="L57">                prodotto = p;</span>
+            }
+
+
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if(trovato)</span>
+        {
+<span class="nc" id="L63">            req.setAttribute(&quot;prodotto&quot;, prodotto);</span>
+<span class="nc" id="L64">            req.getRequestDispatcher(&quot;view/mostraLotti.jsp&quot;).forward(req, resp);</span>
+        }
+        else
+        {
+<span class="nc" id="L68">            req.setAttribute(&quot;message&quot;, &quot;Prodotto non trovato&quot;);</span>
+<span class="nc" id="L69">            req.getRequestDispatcher(&quot;WEB-INF/error.jsp&quot;).forward(req, resp);</span>
+        }
+<span class="nc" id="L71">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

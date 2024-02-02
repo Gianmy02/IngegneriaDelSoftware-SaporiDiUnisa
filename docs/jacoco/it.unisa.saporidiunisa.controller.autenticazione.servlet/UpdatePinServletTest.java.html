@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdatePinServletTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.autenticazione.servlet</a> &gt; <span class="el_source">UpdatePinServletTest.java</span></div><h1>UpdatePinServletTest.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.autenticazione.servlet;
+
+import it.unisa.saporidiunisa.controller.ServletTest;
+import it.unisa.saporidiunisa.model.entity.Dipendente;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import lombok.val;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+
+import java.io.IOException;
+
+import static java.util.Map.entry;
+import static java.util.Map.ofEntries;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mockStatic;
+
+<span class="fc" id="L19">class UpdatePinServletTest extends ServletTest</span>
+{
+    @BeforeEach
+    void beforeEach()
+    {
+<span class="fc" id="L24">        init();</span>
+<span class="fc" id="L25">        mockSession();</span>
+<span class="fc" id="L26">        mockDipendente(Dipendente.Ruolo.ADMIN);</span>
+<span class="fc" id="L27">    }</span>
+
+    @Nested
+<span class="fc" id="L30">    class Incorrect</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L35">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L37">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L38">                utils.when(() -&gt; Utils.dispatchError(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L40">                new UpdatePinServlet().doPost(request, response);</span>
+
+<span class="fc" id="L42">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L44">        }</span>
+
+        @Test
+        @DisplayName(&quot;3.2.1&quot;)
+        void tc_3_2_1()
+        {
+<span class="fc" id="L50">            populateRequest(ofEntries(entry(&quot;newPin&quot;, &quot;bob456&quot;), entry(&quot;ruolo&quot;, &quot;CASSIERE&quot;)));</span>
+<span class="fc" id="L51">        }</span>
+
+        @Test
+        @DisplayName(&quot;3.2.2&quot;)
+        void tc_3_2_2()
+        {
+<span class="fc" id="L57">            populateRequest(ofEntries(entry(&quot;newPin&quot;, &quot;1234&quot;), entry(&quot;ruolo&quot;, &quot;CASSIERE&quot;)));</span>
+<span class="fc" id="L58">        }</span>
+    }
+
+    @Nested
+<span class="fc" id="L62">    class Correct</span>
+    {
+        @AfterEach
+        void afterEach() throws ServletException, IOException
+        {
+<span class="fc" id="L67">            try (val utils = mockStatic(Utils.class, Answers.CALLS_REAL_METHODS))</span>
+            {
+<span class="fc" id="L69">                val captor = ArgumentCaptor.forClass(String.class);</span>
+<span class="pc" id="L70">                utils.when(() -&gt; Utils.dispatchSuccess(captor.capture(), any(), any())).thenAnswer(Answers.RETURNS_DEFAULTS);</span>
+
+<span class="fc" id="L72">                new UpdatePinServlet().doPost(request, response);</span>
+
+<span class="fc" id="L74">                System.out.println(captor.getValue());</span>
+            }
+<span class="fc" id="L76">        }</span>
+
+        @Test
+        @DisplayName(&quot;3.2.3&quot;)
+        void tc_3_2_3()
+        {
+<span class="fc" id="L82">            populateRequest(ofEntries(entry(&quot;newPin&quot;, &quot;1111&quot;), entry(&quot;ruolo&quot;, &quot;CASSIERE&quot;)));</span>
+<span class="fc" id="L83">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.unisa.saporidiunisa.controller.autenticazione.servlet</a> &gt; <span class="el_source">LoginServlet.java</span></div><h1>LoginServlet.java</h1><pre class="source lang-java linenums">package it.unisa.saporidiunisa.controller.autenticazione.servlet;
+
+import it.unisa.saporidiunisa.controller.autenticazione.AutenticazioneController;
+import it.unisa.saporidiunisa.utils.Messages;
+import it.unisa.saporidiunisa.utils.Patterns;
+import it.unisa.saporidiunisa.utils.Utils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+
+import java.io.IOException;
+
+/**
+ * La servlet &lt;code&gt;loginServlet&lt;/code&gt; consente di effettuare il login al sistema con un account
+ * @author Antonio Facchiano, Gianmarco Riviello
+ */
+@WebServlet(name = &quot;loginServlet&quot;, value = &quot;/login-servlet&quot;)
+<span class="fc" id="L21">public class LoginServlet extends HttpServlet</span>
+{
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    {
+<span class="fc" id="L26">        val pin = request.getParameter(&quot;pin&quot;);</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (pin == null)</span>
+        {
+<span class="nc" id="L29">            Utils.dispatchError(Messages.INVALID_FIELD.formatted(&quot;pin&quot;), request, response);</span>
+<span class="nc" id="L30">            return;</span>
+        }
+
+<span class="fc" id="L33">        val matcherPin = Patterns.LOGIN_PIN.matcher(pin);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (!matcherPin.matches())</span>
+        {
+<span class="fc" id="L36">            Utils.dispatchError(Messages.INVALID_FORMAT.formatted(&quot;pin&quot;), request, response);</span>
+<span class="fc" id="L37">            return;</span>
+        }
+
+<span class="fc" id="L40">        val dipendente = AutenticazioneController.login(pin);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (dipendente == null)</span>
+        {
+<span class="fc" id="L43">            Utils.dispatchError(Messages.NOT_FOUND.formatted(&quot;dipendente&quot;), request, response);</span>
+<span class="fc" id="L44">            return;</span>
+        }
+
+<span class="fc" id="L47">        request.getSession().setAttribute(&quot;dipendente&quot;, dipendente);</span>
+<span class="pc bpc" id="L48" title="4 of 5 branches missed.">        response.sendRedirect(&quot;view/select/&quot; + switch (dipendente.getRuolo())</span>
+        {
+<span class="fc" id="L50">            case ADMIN -&gt; &quot;admin.jsp&quot;;</span>
+<span class="nc" id="L51">            case CASSIERE -&gt; &quot;cassiere.jsp&quot;;</span>
+<span class="nc" id="L52">            case MAGAZZINIERE -&gt; &quot;magazziniere.jsp&quot;;</span>
+<span class="pc" id="L53">            case FINANZE -&gt; &quot;finanze.jsp&quot;;</span>
+        });
+<span class="fc" id="L55">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
