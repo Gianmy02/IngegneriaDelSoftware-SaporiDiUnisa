@@ -159,7 +159,7 @@ public class RegistraFornituraTest extends Configuration {
         @Test
         @DisplayName("1.1.16")
         void tc_1_1_16() {
-            fillForm("Burro di arachidi", "Fiorentini", "80.00", "130", "2024-04-17", new File("src/main/webapp/img/icon/image_test.png"));
+            fillForm("Burro di arachidi", "Fiorentini", "80.00", "130", "2024-04-17", new File("src/main/webapp/img/test/image_test.png"));
             errorString = "La foto deve essere minore di 2MB";
         }
     }
