@@ -105,7 +105,7 @@ $(document).ready(function() {
                 alert("L'operazione è stata annullata");
         }
         else if(error)
-            alert("sono stati forniti degli input non validi");
+            alert("l'operazione non è valida");
         else
             alert("non sono state effettuate operazioni");
     });
